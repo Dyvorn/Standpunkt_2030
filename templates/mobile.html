@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Handy Controller</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; text-align: center; }
+        button {
+            width: 100%;
+            padding: 20px;
+            margin: 10px 0;
+            font-size: 1.5rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            color: white;
+        }
+        .btn-a { background-color: #e74c3c; } /* Rot */
+        .btn-b { background-color: #3498db; } /* Blau */
+    </style>
+</head>
+<body>
+    <h2>Deine Entscheidung</h2>
+    <p>Wähle weise...</p>
+    
+    <button class="btn-a" onclick="sendVote('DAGEGEN')">Ablehnen ❌</button>
+    <button class="btn-b" onclick="sendVote('DAFÜR')">Zustimmen ✅</button>
+
+    <script>
+        const ws = new WebSocket("ws://" + window.location.host + "/ws/mobile");
+
+        function sendVote(decision) {
+            // Sendet den Text an den Python-Server
+            ws.send(decision);
+            alert("Gesendet: " + decision);
+        }
+    </script>
+</body>
+</html>

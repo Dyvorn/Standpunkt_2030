@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Res Publica - Board</title>
+    <style>
+        body { 
+            background-color: #222; 
+            color: white; 
+            font-family: sans-serif; 
+            display: flex; 
+            flex-direction: column;
+            align-items: center; 
+            justify-content: center; 
+            height: 100vh; 
+            margin: 0;
+        }
+        h1 { font-size: 3rem; }
+        #status { 
+            font-size: 5rem; 
+            color: #4CAF50; 
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        .log { font-size: 1rem; color: #888; margin-top: 50px;}
+    </style>
+</head>
+<body>
+    <h1>Aktuelle Entscheidung:</h1>
+    <div id="status">Warte auf Eingabe...</div>
+    <div class="log" id="log">Verbinde...</div>
+
+    <script>
+        // Verbindung zum Python-Server herstellen
+        const ws = new WebSocket("ws://" + window.location.host + "/ws/board");
+
+        ws.onopen = function() {
+            document.getElementById("log").innerText = "System verbunden.";
+        };
+
+        ws.onmessage = function(event) {
+            // Hier kommt die Nachricht vom Handy an!
+            const msg = event.data;
+            console.log("Nachricht erhalten:", msg);
+            
+            // Text auf dem Bildschirm ändern
+            document.getElementById("status").innerText = msg;
+            
+            // Kleine Animation (optional)
+            document.getElementById("status").style.transform = "scale(1.2)";
+            setTimeout(() => {
+                document.getElementById("status").style.transform = "scale(1)";
+            }, 200);
+        };
+    </script>
+</body>
+</html>
