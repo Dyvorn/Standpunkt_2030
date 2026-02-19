@@ -1,57 +1,94 @@
+import json
+import os
+from pathlib import Path
 from fastapi import FastAPI, Request, WebSocket, WebSocketDisconnect
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
 import uvicorn
 
-# App initialisieren
 app = FastAPI()
 
-# Ordner verknüpfen
-app.mount("/static", StaticFiles(directory="static"), name="static")
-templates = Jinja2Templates(directory="templates")
+# --- PFADE ---
+BASE_DIR = Path(__file__).resolve().parent.parent
+static_path = BASE_DIR / "static"
+templates_path = BASE_DIR / "templates"
+data_path = BASE_DIR / "data"
 
-# Speicher für verbundene Geräte (Einfache Liste für den Anfang)
+# Ordner sicherstellen
+for p in [static_path, templates_path, data_path]:
+    if not p.exists():
+        os.makedirs(p)
+
+app.mount("/static", StaticFiles(directory=static_path), name="static")
+templates = Jinja2Templates(directory=templates_path)
+
+# --- GAME STATE ---
+# Hier laden wir die JSON Datei beim Start
+def load_scenario(filename):
+    path = data_path / filename
+    if path.exists():
+        with open(path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return None
+
+# Aktueller Status des Spiels (Global)
+# Wir laden direkt das erste Szenario
+current_game_state = {
+    "phase": "question",
+    "scenario": load_scenario("wehrpflicht.json"),
+    "votes": {"A": 0, "B": 0}
+}
+
 connected_clients = []
 
-# --- ROUTEN (Die Seiten) ---
-
+# --- ROUTEN ---
 @app.get("/", response_class=HTMLResponse)
 async def get_landing(request: Request):
-    """Startseite: Hier wählen wir später, ob wir Board oder Handy sind"""
     return templates.TemplateResponse("index.html", {"request": request})
 
 @app.get("/board", response_class=HTMLResponse)
 async def get_board(request: Request):
-    """Die Beamer-Ansicht"""
     return templates.TemplateResponse("board.html", {"request": request})
 
 @app.get("/play", response_class=HTMLResponse)
 async def get_mobile(request: Request):
-    """Die Handy-Ansicht für Schüler"""
     return templates.TemplateResponse("mobile.html", {"request": request})
 
-# --- WEBSOCKETS (Die Echtzeit-Verbindung) ---
-
+# --- WEBSOCKET LOGIC ---
 @app.websocket("/ws/{client_type}")
 async def websocket_endpoint(websocket: WebSocket, client_type: str):
     await websocket.accept()
     connected_clients.append(websocket)
+    
+    # 1. SOFORT den aktuellen Stand an den Neuen senden!
+    # Damit das Handy weiß, was es anzeigen soll.
+    await websocket.send_json(current_game_state)
+    
     try:
         while True:
-            # Warte auf Nachricht (z.B. Vote vom Handy)
-            data = await websocket.receive_text()
-            print(f"Nachricht von {client_type}: {data}")
+            # 2. Auf Nachrichten warten (Votes)
+            data = await websocket.receive_json()
             
-            # Sende Nachricht an ALLE zurück (Broadcast)
-            for client in connected_clients:
-                await client.send_text(f"Update: {data}")
+            if data.get("type") == "vote":
+                option = data.get("value")
+                # Vote zählen
+                if option in current_game_state["votes"]:
+                    current_game_state["votes"][option] += 1
+                
+                # Update an ALLE senden (damit Board Balken aktualisiert)
+                await broadcast_state()
+                
     except WebSocketDisconnect:
         connected_clients.remove(websocket)
-        print(f"{client_type} hat die Verbindung getrennt")
 
-# Server Starten (Nur wenn direkt ausgeführt)
+async def broadcast_state():
+    """Sendet den aktuellen Status an alle verbundenen Geräte"""
+    for client in connected_clients:
+        try:
+            await client.send_json(current_game_state)
+        except:
+            pass # Ignorieren, falls einer gerade disconnectet
+
 if __name__ == "__main__":
-    # Wir übergeben 'app' direkt als Objekt, nicht als String.
-    # Das funktioniert immer, egal wie du die Datei startest.
     uvicorn.run(app, host="0.0.0.0", port=8000)

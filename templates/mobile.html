@@ -3,37 +3,137 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Handy Controller</title>
+    <title>Res Publica - Mobile</title>
     <style>
-        body { font-family: sans-serif; padding: 20px; text-align: center; }
-        button {
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            padding: 20px; 
+            background-color: #f0f2f5;
+            color: #333;
+        }
+        
+        /* Das Szenario Box */
+        .scenario-box {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        h2 { margin-top: 0; color: #2c3e50; }
+
+        /* Die Info-Tafeln (Akkordeon) */
+        details {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+        summary {
+            font-weight: bold;
+            color: #2980b9;
+            outline: none;
+        }
+        .info-content {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* Voting Buttons */
+        .vote-btn {
             width: 100%;
-            padding: 20px;
+            padding: 15px;
             margin: 10px 0;
-            font-size: 1.5rem;
+            font-size: 1.1rem;
             border: none;
             border-radius: 10px;
             cursor: pointer;
             color: white;
+            font-weight: bold;
+            transition: transform 0.1s;
         }
-        .btn-a { background-color: #e74c3c; } /* Rot */
-        .btn-b { background-color: #3498db; } /* Blau */
+        .vote-btn:active { transform: scale(0.98); }
+        .btn-A { background-color: #e74c3c; }
+        .btn-B { background-color: #27ae60; }
+        
+        /* Gesperrte Buttons */
+        .locked {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
     </style>
 </head>
 <body>
-    <h2>Deine Entscheidung</h2>
-    <p>Wähle weise...</p>
-    
-    <button class="btn-a" onclick="sendVote('DAGEGEN')">Ablehnen ❌</button>
-    <button class="btn-b" onclick="sendVote('DAFÜR')">Zustimmen ✅</button>
+
+    <!-- Hier wird der Inhalt dynamisch reingeladen -->
+    <div id="game-container">
+        Lade Daten...
+    </div>
 
     <script>
         const ws = new WebSocket("ws://" + window.location.host + "/ws/mobile");
 
-        function sendVote(decision) {
-            // Sendet den Text an den Python-Server
-            ws.send(decision);
-            alert("Gesendet: " + decision);
+        ws.onmessage = function(event) {
+            const state = JSON.parse(event.data);
+            renderGame(state);
+        };
+
+        function renderGame(state) {
+            const container = document.getElementById("game-container");
+            const szenario = state.scenario;
+
+            if (!szenario) return;
+
+            // 1. Bauen der HTML Struktur für Info-Tafeln
+            let infoCardsHTML = "";
+            szenario.info_cards.forEach(card => {
+                infoCardsHTML += `
+                    <details>
+                        <summary>ℹ️ ${card.title}</summary>
+                        <div class="info-content">${card.text}</div>
+                    </details>
+                `;
+            });
+
+            // 2. Bauen der Buttons
+            let buttonsHTML = "";
+            szenario.options.forEach(opt => {
+                // Wir nehmen die ID (A/B) als Klasse für die Farbe
+                buttonsHTML += `
+                    <button class="vote-btn btn-${opt.id}" onclick="sendVote('${opt.id}')">
+                        ${opt.text}
+                    </button>
+                `;
+            });
+
+            // 3. Alles zusammenfügen
+            container.innerHTML = `
+                <div class="scenario-box">
+                    <h2>${szenario.title}</h2>
+                    <p>${szenario.description}</p>
+                </div>
+                
+                <h3>📂 Dossier (Tippen zum Öffnen):</h3>
+                ${infoCardsHTML}
+                
+                <h3>🗳️ Deine Entscheidung:</h3>
+                ${buttonsHTML}
+            `;
+        }
+
+        function sendVote(optionId) {
+            ws.send(JSON.stringify({
+                type: "vote", 
+                value: optionId
+            }));
+            // Optional: Visuelles Feedback
+            alert("Stimme für " + optionId + " abgegeben!");
         }
     </script>
 </body>
