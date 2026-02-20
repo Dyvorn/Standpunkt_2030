@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Standpunkt 2030 - Start</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background-color: #f0f2f5;}
+        .container { text-align: center; background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        h1 { color: #1a1a2e; }
+        .card { margin-top: 30px; padding: 20px; border: 1px solid #ddd; border-radius: 8px; }
+        input[type="text"] { padding: 10px; font-size: 1rem; width: 200px; margin-right: 10px; text-transform: uppercase; border: 1px solid #ccc; border-radius: 5px; }
+        button { padding: 10px 20px; font-size: 1rem; cursor: pointer; border: none; border-radius: 5px; background-color: #2980b9; color: white; }
+        #error-message { color: #c0392b; margin-bottom: 15px; font-weight: bold; }
+        .ip-hint { margin-top: 20px; color: #666; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Standpunkt 2030</h1>
+        <div id="error-message"></div>
+
+        <div class="card">
+            <h2>Als Spieler beitreten</h2>
+            <form action="/join" method="post">
+                <input type="text" name="room_code" placeholder="SPIEL-CODE" required maxlength="5" pattern="[A-Z0-9]{5}" title="5-stelliger Code" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false">
+                <button type="submit">Beitreten</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h2>Ein Spiel leiten (Host)</h2>
+            <form action="/create" method="post">
+                <button type="submit">Neues Spiel erstellen</button>
+            </form>
+        </div>
+
+        <div class="ip-hint">
+            Spieler-Adresse: <strong>http://{{ server_ip }}:8000</strong>
+        </div>
+    </div>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('error') === 'notfound') {
+            const input = document.querySelector('input[name="room_code"]');
+            document.getElementById('error-message').innerText = 'Spiel-Code nicht gefunden. Bitte erneut versuchen.';
+            if(input) input.focus();
+        }
+    </script>
+</body>
+</html>

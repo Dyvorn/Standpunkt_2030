@@ -1,0 +1,327 @@
+Standpunkt 2030 – game.txt  
+(Design-Dokument / Vollbeschreibung)
+
+------------------------------------------------
+1. Grundidee und Ziel des Spiels
+------------------------------------------------
+Titel: Standpunkt 2030  
+Genre: 2D Serious Game, interaktives, entscheidungsbasiertes Politik-Spiel für den Unterricht  
+Zielgruppe: Schulklassen (ca. 9.–13. Klasse), Politik / Sozialkunde / Ethik / Philosophie  
+
+Zweck:
+- Schüler sollen kontroverse politische Themen (Wehrpflicht, Tierschutz) aus verschiedenen Perspektiven kennen lernen und reflektieren.
+- Entscheidungen haben Folgen (Schmetterlingseffekt): Frühe Weichenstellungen verändern später die Situation im Land.
+- Das Spiel liefert sowohl emotionale Szenen (auf der Tafel) als auch sachliche Infos (auf den Handys).
+
+Kern-Setup:
+- Beamer/Interaktive Tafel zeigt das „Bühnenbild“ (News, Szenen, Balken, Endings).
+- Schüler nutzen ihre Handys als:
+  - Info-Geräte (Dossiers/Fakten zum Thema).
+  - Abstimmungsgeräte (Votes).
+
+Technik (nur zur Einordnung, nicht sichtbar im Game):
+- Python (FastAPI) als Server, WebSockets für Echtzeit.
+- Board-Client (Tafel) und Mobile-Clients (Handys) laufen im Browser.
+
+------------------------------------------------
+2. Rollen und „unsichtbare“ Werte
+------------------------------------------------
+Es gibt keine individuellen Rollen (keine einzelnen Avatare), sondern:
+- Die gesamte Klasse agiert gemeinsam als „Stimme der Bevölkerung“ oder „Bürgerrat“.
+- Die Lehrkraft ist Moderator und „Admin“, kann Szenen starten/stoppen.
+
+Im Hintergrund werden drei „Werte“ pro Thema geführt (Skala 0–100). Diese sieht der Spieler nicht direkt, sie beeinflussen aber spätere Nachrichten und Endings.
+
+Thema Wehrpflicht:
+- Sicherheit: Wie gut das Land militärisch und zivil verteidigt ist.
+- Freiheit: Wie stark individuelle Lebensplanung und Rechte eingeschränkt werden.
+- Budget: Wie stark der Staatshaushalt belastet ist.
+
+Thema Tierschutz:
+- Tierwohl: Wie gut es Nutztieren geht und wie nachhaltig produziert wird.
+- Lebenshaltungskosten: Preise für Essen, v. a. Fleisch.
+- Bauern-Zufriedenheit: Existenzsicherheit und Stimmung bei Landwirten.
+
+Jede Entscheidung verändert diese Werte (z. B. +20 Sicherheit, -30 Freiheit). Am Ende werden aus der Kombination der Werte unterschiedliche Endings ausgelöst.
+
+------------------------------------------------
+3. Struktur des Spiels im Unterricht
+------------------------------------------------
+Eine Spielsitzung besteht aus:
+- Einem Einstieg (Lehrer erklärt Rahmen, startet Thema auf der Tafel).
+- 2–3 Szenen pro Thema mit Entscheidungen.
+- Einem Ending (Nachrichtenlage 2035).
+- Reflexion / Diskussion im Unterricht.
+
+Modus:
+- **Single-Thema-Session:** Nur Wehrpflicht oder nur Tierschutz (ca. 30–45 Minuten).
+- **Doppel-Session:** Beide Themen nacheinander (90 Minuten).
+
+Ablauf pro Szene:
+1. Szene/News auf der Tafel (Board).
+2. Dossiers/Info-Tafeln auf den Handys.
+3. Diskussion in der Klasse (optional).
+4. Abstimmung per Handy.
+5. Board zeigt Live-Ergebnis (Balken).
+6. Werte werden angepasst, nächstes Szenario wird gewählt.
+
+------------------------------------------------
+4. Nutzeroberfläche – Board (Tafel)
+------------------------------------------------
+Board zeigt immer drei Ebenen:
+
+1. Szenen-Titel + Kurzbeschreibung
+   - Oben groß: Titel des aktuellen Szenarios (z. B. „Der Einberufungsbescheid“).
+   - Darunter 1–2 kurze Sätze Situationstext.
+
+2. Visualisierung der Stimmung / Votes
+   - Animierte Balken: Jede Entscheidungsoption (A, B, ggf. C) hat einen Balken.
+   - Balkenlänge = Anteil der Stimmen.
+   - Balken sind farblich unterschieden (A = Rot, B = Grün, C = Blau).
+
+3. News-Clips / Bilder
+   - Zwischen Entscheidungen zeigt das Board „News“-Screens:
+     - Beispiel: „Breaking News: Hunderttausende demonstrieren gegen Dienstpflicht“.
+     - Visuell: Großes Bild, Headline, 1–2 Bulletpoints.
+   - Diese News spiegeln die bisherige Entwicklung und machen den Schmetterlingseffekt sichtbar.
+
+Spezielle Screens:
+- Lobby/Start-Screen: Titel Standpunkt 2030, QR-Code, kurze Anleitung.
+- Zwischenbilanz: Kleine Übersicht nach Szene 2 (z. B. grafische Anzeige: Sicherheit hoch, Freiheit niedrig).
+
+------------------------------------------------
+5. Nutzeroberfläche – Handy (Mobile)
+------------------------------------------------
+Mobile-Screen besteht pro Szene aus:
+
+1. Szenario-Box
+   - Titel der Szene.
+   - Kurze Beschreibung (1–3 Sätze).
+   - Optional: kleines Icon/Bild (z. B. Brief, Kuh, Traktor).
+
+2. Info-Dossiers (aufklappbare Info-Tafeln)
+   - Unterüberschrift: „Dossier“.
+   - Mehrere aufklappbare „Details“-Elemente:
+     - Titel (z. B. „Grundgesetz Art. 12a“).
+     - Inhalt: kurzer Text, neutrale Fakten, evtl. einfache Grafiken/Kennzahlen (als Text beschrieben).
+   - Schüler tippen, um Details zu öffnen/zu schließen.
+
+3. Entscheidungsbereich
+   - Unterüberschrift: „Deine Entscheidung“.
+   - 2–3 große Buttons.
+   - Text pro Button beschreibt politische Maßnahme, z. B.:
+     - „Wehrpflicht wieder einführen“.
+     - „Nur Berufsarmee, bessere Bezahlung“.
+   - Optional: Buttons können in späterer Version gesperrt sein, wenn bestimmte Dossiers nicht gelesen wurden.
+
+Feedback:
+- Direkt nach der Stimmabgabe: kleines Popup „Stimme gezählt“.
+- Kein individuelles Ergebnis, nur kollektive Wirkung über das Board.
+
+------------------------------------------------
+6. Szenario-Struktur – Wehrpflicht
+------------------------------------------------
+Thema: „Wehrpflicht 2030 – Sicherheit vs. Freiheit“
+
+Szenario W1: Der Einberufungsbescheid (Start-Szene)
+- Setting:
+  - News: Spannungen in Europa, Cyberangriffe, Personalmangel bei Armee.
+  - Auf Board: „Bundeswehr fehlen 20.000 Soldaten. Regierung diskutiert Rückkehr der Wehrpflicht.“
+- Dossiers (Handy):
+  - Grundgesetz Art. 12a – rechtliche Grundlage.
+  - Historie der Wehrpflicht (Aussetzung 2011).
+  - Personalmangel und NATO-Verpflichtungen.
+  - Kritik: Eingriff in persönliche Freiheit, Bildungs- und Berufspläne.
+- Entscheidung:
+  - Option A: Wehrpflicht nicht wieder einführen, Berufsarmee stärken.
+  - Option B: Allgemeine Dienstpflicht für alle (Soziales + Militär).
+- Werte-Effekt:
+  - A: Sicherheit +5, Freiheit +10, Budget -15.
+  - B: Sicherheit +20, Freiheit -20, Budget -10.
+- Übergang:
+  - Wenn A: Szene W2-A.
+  - Wenn B: Szene W2-B.
+
+Szenario W2-A: „Teure Profis“
+- Ausgang von A (keine Wehrpflicht, nur Berufsarmee).
+- Board-News:
+  - High-Tech-Truppen, teure Ausrüstung, aber immer noch Personalmangel.
+  - Diskussion über Öffnung für EU-Bürger und Söldner.
+- Dossiers:
+  - Kosten pro Berufssoldat.
+  - Beispiele anderer Länder (z. B. USA, Frankreich).
+  - Ethische Diskussion: Kämpfen für Geld vs. Werte.
+- Entscheidung:
+  - A1: Armee für EU-Bürger und Söldner öffnen.
+  - A2: Armee verkleinern, voll auf Drohnen und Technologie setzen.
+- Werte:
+  - A1: Sicherheit +15, Freiheit ±0, Budget -20.
+  - A2: Sicherheit -10, Freiheit +5, Budget -5.
+- Übergang:
+  - A1: Szene W3-A1.
+  - A2: Szene W3-A2.
+
+Szenario W2-B: „Pflichtjahr für alle?“
+- Ausgang von B (Dienstpflicht eingeführt).
+- Board-News:
+  - Bilder von Jugendlichen in Uniform, Pflegeheimen, Katastrophenschutz.
+  - Wirtschaft klagt über fehlende Arbeitskräfte.
+- Dossiers:
+  - Wirkung auf Sozialbereiche (Pflege, Feuerwehr).
+  - Auswirkungen auf Wirtschaft / Fachkräftemangel.
+  - Debatte Gerechtigkeit: Reiche vs. Arme, Stadt vs. Land.
+- Entscheidung:
+  - B1: Ausnahmen für Azubis/Studierende einführen.
+  - B2: Keine Ausnahmen, alle Jahrgänge gleich behandeln.
+- Werte:
+  - B1: Sicherheit +10, Freiheit -10, Budget -10.
+  - B2: Sicherheit +15, Freiheit -25, Budget -15.
+- Übergang:
+  - B1: Szene W3-B1.
+  - B2: Szene W3-B2.
+
+Szenario W3-A1: „Die Söldner-Republik“ (mögliches Ending)
+- Board zeigt:
+  - News: Private Sicherheitsfirmen, ausländische Legionäre im Einsatz.
+  - Skandalberichte über Loyalität und Missbrauch.
+- Werte-Auswertung:
+  - Sicherheit hoch, Freiheit mittel, Budget stark belastet.
+- Botschaft:
+  - Sicherheit wurde erkauft, aber ethische und demokratische Probleme entstehen.
+
+Szenario W3-A2: „Der gläserne Schild“ (mögliches Ending)
+- Board:
+  - Drohnenflotte, automatisierte Verteidigung.
+  - Später: Großangriff per Cyberkrieg legt Systeme lahm.
+- Botschaft:
+  - Technologiefixierung macht abhängig und verletzlich.
+
+Szenario W3-B1: „Dienstpflicht light“ (mögliches Ending)
+- Board:
+  - System mit vielen Ausnahmen, de facto ungerecht.
+  - Gerichte und Verwaltungsaufwand explodieren.
+- Botschaft:
+  - Kompromisslösung scheitert, weil sie niemanden konsequent behandelt.
+
+Szenario W3-B2: „Die Bürger in Uniform“ (mögliches Ending)
+- Board:
+  - Hohe innere Sicherheit, aber massive Proteste, Auswanderungstendenzen.
+- Botschaft:
+  - Sicherheit vs. Freiheit ist ein Trade-off, kein „perfekter“ Zustand.
+
+------------------------------------------------
+7. Szenario-Struktur – Tierschutz
+------------------------------------------------
+Thema: „Fleisch 2030 – Tierwohl vs. soziale Gerechtigkeit“
+
+Szenario T1: Skandal-Schlachthof
+- Board:
+  - Viralvideo, entsetzliche Zustände.
+  - Land im Aufruhr.
+- Dossiers (Handy):
+  - Haltungsformen (1–4).
+  - Anteil des Bauern am Fleischpreis.
+  - Umweltbelastung durch Massentierhaltung.
+- Entscheidung:
+  - Option A: Haltungsform 1 und 2 verbieten (nur noch Tierwohl-orientierte Betriebe).
+  - Option B: Hohe Fleischsteuer einführen, Einnahmen in Tierwohl-Fonds.
+- Werte:
+  - A: Tierwohl +25, Lebenshaltungskosten +15, Bauern-Zufriedenheit -20.
+  - B: Tierwohl +15, Lebenshaltungskosten +20, Bauern-Zufriedenheit -5.
+- Übergänge:
+  - A: Szene T2-A.
+  - B: Szene T2-B.
+
+Szenario T2-A: „Leere Regale“
+- Board:
+  - Supermärkte: Fleisch knapp, Preise sehr hoch.
+  - Kleine Bauern können nicht schnell genug umbauen.
+- Dossiers:
+  - Umbaukosten für Ställe.
+  - Import von billigem Fleisch aus dem Ausland.
+- Entscheidung:
+  - A1: Importstopp für Billigfleisch (streng).
+  - A2: Import zulassen, dafür inländische Auflagen hoch halten.
+- Werte:
+  - A1: Tierwohl +10, Lebenshaltungskosten +10, Bauern-Zufriedenheit +5.
+  - A2: Tierwohl ±0 (abroad), Lebenshaltungskosten +5, Bauern-Zufriedenheit -5.
+- Übergänge:
+  - A1: Szene T3-A1 (Ending „Grüne Festung“).
+  - A2: Szene T3-A2 (Ending „Doppelmoral“).
+
+Szenario T2-B: „Teurer Döner“
+- Board:
+  - News: Döner kostet 12 €, Schnitzel 25 €.
+  - Proteste ärmerer Schichten.
+- Dossiers:
+  - Verteilung der Steuereinnahmen.
+  - Armutsgefährdung, wenn Lebensmittelpreise steigen.
+- Entscheidung:
+  - B1: Klimageld/Sozialausgleich (Geld an Bürger zurück).
+  - B2: Großes Investment in Laborfleisch/Fleischalternativen.
+- Werte:
+  - B1: Lebenshaltungskosten -10, Tierwohl +5, Bauern-Zufriedenheit -5.
+  - B2: Tierwohl +20 (langfristig), Bauern-Zufriedenheit -20, Lebenshaltungskosten -5 (langfristig).
+- Übergänge:
+  - B1: Szene T3-B1 (Ending „Klassenkampf am Grill“).
+  - B2: Szene T3-B2 (Ending „Cyber-Meat 2030“).
+
+Szenario T3-A1: Ending „Die grüne Festung“
+- Board:
+  - Fast vegane Gesellschaft, kaum Tierleid.
+  - Importstopps, Handelskonflikte, Fleisch-Schwarzmarkt.
+- Botschaft:
+  - Radikale Ethik kann zu Isolation und Kontrollproblemen führen.
+
+Szenario T3-A2: Ending „Doppelmoral“
+- Board:
+  - Deutschland sauber, andere Länder tragen die Last.
+- Botschaft:
+  - Probleme wurden verlagert, nicht gelöst.
+
+Szenario T3-B1: Ending „Klassenkampf am Grill“
+- Board:
+  - Grillen als politischer Akt, Reiche vs. Arme.
+- Botschaft:
+  - Klima-/Tierpolitik ist auch Sozialpolitik.
+
+Szenario T3-B2: Ending „Cyber-Meat 2030“
+- Board:
+  - Laborfleisch, Bauernsterben, Futuristische Fabriken.
+- Botschaft:
+  - Technische Lösungen haben Gewinner und Verlierer.
+
+------------------------------------------------
+8. Didaktik und Lehrerrolle
+------------------------------------------------
+Die Lehrkraft:
+- Startet das Spiel (Lobby).
+- Wählt das Thema (Wehrpflicht / Tierschutz).
+- Pausiert zwischen Szenen, um Diskussion zu ermöglichen.
+- Nutzt die Endings als Diskussionsanlass („War das gerecht? Hätte man etwas besser machen können?“).
+
+Mögliche Arbeitsaufträge:
+- Schüler notieren ihre Entscheidungen und Begründungen.
+- Vergleich: „Was hätte ich privat gewählt vs. was habe ich im Spiel gewählt?“
+- Transfer: „Welche Debatten seht ihr heute schon in den Nachrichten?“
+
+------------------------------------------------
+9. Erweiterungen (später möglich)
+------------------------------------------------
+- Mehr Themen (z. B. Überwachung vs. Datenschutz, Klimapolitik, KI-Überwachung).
+- Rollenprofile auf den Handys (z. B. einer ist „Bauer“, einer „Soldat“, einer „Minister“).
+- Lehrer-Admin-Panel mit manueller Szenenauswahl und Statistik.
+
+------------------------------------------------
+10. Zusammenfassung
+------------------------------------------------
+Standpunkt 2030 ist ein Unterrichtsspiel, in dem eine Klasse kollektiv politische Entscheidungen in zwei sensiblen Bereichen trifft:
+- Wehrpflicht: Sicherheit vs. Freiheit.
+- Tierschutz: Ethik vs. soziale Gerechtigkeit.
+
+Statt „richtig/falsch“ gibt es:
+- Sichtbare Konsequenzen auf der Tafel (News, Endings).
+- Unsichtbare Werte, die langfristig Auswirkungen haben.
+- Mehrere Endings, die zeigen, dass jede Entscheidung Trade-offs hat.
+
+Dieses game.txt dient als vollständige inhaltliche Blaupause für Story, Struktur, Entscheidungen und Schmetterlingseffekte.

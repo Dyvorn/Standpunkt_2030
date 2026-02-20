@@ -77,7 +77,17 @@
     </div>
 
     <script>
-        const ws = new WebSocket("ws://" + window.location.host + "/ws/mobile");
+        const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+        const ws = new WebSocket(protocol + "//" + window.location.host + "/ws/{{ room_code }}/mobile");
+
+        ws.onopen = function() {
+            console.log("Verbunden mit Server");
+        };
+
+        ws.onclose = function() {
+            document.getElementById("game-container").innerHTML = 
+                "<div style='text-align:center; color: #c0392b; margin-top: 50px;'><h3>Verbindung verloren!</h3><p>Bitte lade die Seite neu oder prüfe, ob der PC läuft.</p></div>";
+        };
 
         ws.onmessage = function(event) {
             const state = JSON.parse(event.data);
@@ -88,7 +98,10 @@
             const container = document.getElementById("game-container");
             const szenario = state.scenario;
 
-            if (!szenario) return;
+            if (!szenario) {
+                container.innerHTML = "<div style='text-align:center; margin-top: 50px;'><h3>Warte auf Spielstart...</h3><p>Der Lehrer hat das Thema noch nicht gestartet.</p></div>";
+                return;
+            }
 
             // 1. Bauen der HTML Struktur für Info-Tafeln
             let infoCardsHTML = "";
@@ -133,7 +146,7 @@
                 value: optionId
             }));
             // Optional: Visuelles Feedback
-            alert("Stimme für " + optionId + " abgegeben!");
+            // alert("Stimme für " + optionId + " abgegeben!"); // Alert nervt, lieber weglassen
         }
     </script>
 </body>

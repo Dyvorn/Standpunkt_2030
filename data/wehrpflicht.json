@@ -1,35 +1,96 @@
 {
-    "id": "szenario_01",
-    "title": "Der Einberufungsbescheid",
-    "description": "Die Sicherheitslage in Europa hat sich verschlechtert. Die Bundeswehr meldet massiven Personalmangel. Ein Brief liegt auf deinem Tisch: 'Einberufung gemäß Artikel 12a GG'.",
-    "image": "brief_tisch.png",
-    "info_cards": [
-        {
-            "id": "info_gg",
-            "title": "Grundgesetz Art. 12a",
-            "text": "Männer können vom vollendeten 18. Lebensjahr an zum Dienst in den Streitkräften, im Bundesgrenzschutz oder in einem Zivilschutzverband verpflichtet werden. Dies wurde 2011 ausgesetzt, aber nicht abgeschafft."
+    "meta": {
+        "title": "Wehrpflicht 2030",
+        "initial_stats": {"sicherheit": 50, "freiheit": 50, "budget": 50},
+        "start_scene": "W1"
+    },
+    "scenes": {
+        "W1": {
+            "title": "Der Einberufungsbescheid",
+            "description": "Die Sicherheitslage in Europa hat sich verschlechtert. Die Bundeswehr meldet massiven Personalmangel. Ein Brief liegt auf deinem Tisch: 'Einberufung gemäß Artikel 12a GG'.",
+            "info_cards": [
+                {"title": "Grundgesetz Art. 12a", "text": "Männer können ab 18 Jahren zum Dienst verpflichtet werden. 2011 ausgesetzt, aber nicht abgeschafft."},
+                {"title": "Personalmangel", "text": "Der Bundeswehr fehlen ca. 20.000 Soldaten für NATO-Ziele."},
+                {"title": "Kritik: Zwangsdienst", "text": "Eingriff in Freiheitsrechte und Berufsplanung junger Menschen."}
+            ],
+            "options": [
+                {
+                    "id": "A", "text": "Wehrpflicht ablehnen (Berufsarmee stärken)",
+                    "next_scene": "W2-A",
+                    "effects": {"sicherheit": 5, "freiheit": 10, "budget": -15}
+                },
+                {
+                    "id": "B", "text": "Allgemeine Dienstpflicht einführen",
+                    "next_scene": "W2-B",
+                    "effects": {"sicherheit": 20, "freiheit": -20, "budget": -10}
+                }
+            ]
         },
-        {
-            "id": "info_personal",
-            "title": "Personalmangel",
-            "text": "Aktuell fehlen der Bundeswehr ca. 20.000 Soldaten, um die Bündnisverpflichtungen der NATO zu erfüllen. Eine reine Berufsarmee findet nicht genug Nachwuchs."
+        "W2-A": {
+            "title": "Teure Profis",
+            "description": "Wir setzen auf eine High-Tech-Berufsarmee. Die Ausrüstung ist teuer, und es fehlen immer noch Leute. Sollen wir die Armee für EU-Bürger öffnen?",
+            "info_cards": [
+                {"title": "Kosten", "text": "Ein Berufssoldat kostet deutlich mehr als ein Wehrpflichtiger."},
+                {"title": "Fremdenlegionen", "text": "Länder wie Frankreich nutzen erfolgreich ausländische Rekruten."},
+                {"title": "Ethik", "text": "Kämpfen für Geld vs. Kämpfen für staatliche Werte?"}
+            ],
+            "options": [
+                {
+                    "id": "A", "text": "Armee für EU-Bürger & Söldner öffnen",
+                    "next_scene": "W3-A1",
+                    "effects": {"sicherheit": 15, "freiheit": 0, "budget": -20}
+                },
+                {
+                    "id": "B", "text": "Armee verkleinern, Fokus auf Drohnen",
+                    "next_scene": "W3-A2",
+                    "effects": {"sicherheit": -10, "freiheit": 5, "budget": -5}
+                }
+            ]
         },
-        {
-            "id": "info_zwang",
-            "title": "Kritik: Zwangsdienst",
-            "text": "Gegner argumentieren, dass ein Zwangsdienst tief in die Freiheitsrechte junger Menschen eingreift und ihre Berufsplanung um ein Jahr verzögert."
+        "W2-B": {
+            "title": "Pflichtjahr für alle?",
+            "description": "Die Dienstpflicht läuft. Pflegeheime und Kasernen sind voll. Aber die Wirtschaft klagt über fehlende Azubis. Wer darf sich befreien lassen?",
+            "info_cards": [
+                {"title": "Soziales", "text": "Pflege und Katastrophenschutz profitieren enorm von den Dienstleistenden."},
+                {"title": "Wirtschaft", "text": "Unternehmen fehlen ein Jahrgang an Fachkräften."},
+                {"title": "Gerechtigkeit", "text": "Wenn Reiche sich freikaufen können, sinkt die Akzeptanz."}
+            ],
+            "options": [
+                {
+                    "id": "A", "text": "Ausnahmen für Azubis/Studenten",
+                    "next_scene": "W3-B1",
+                    "effects": {"sicherheit": 10, "freiheit": -10, "budget": -10}
+                },
+                {
+                    "id": "B", "text": "Keine Ausnahmen, alle müssen ran",
+                    "next_scene": "W3-B2",
+                    "effects": {"sicherheit": 15, "freiheit": -25, "budget": -15}
+                }
+            ]
+        },
+        "W3-A1": {
+            "title": "ENDING: Die Söldner-Republik",
+            "description": "2035: Private Sicherheitsfirmen und Legionäre verteidigen das Land. Die Sicherheit ist hoch, aber die Loyalität der Truppe ist käuflich. Demokratische Kontrolle ist schwierig geworden.",
+            "info_cards": [],
+            "options": []
+        },
+        "W3-A2": {
+            "title": "ENDING: Der gläserne Schild",
+            "description": "2035: Wir haben kaum Soldaten, dafür tausende Drohnen. Ein Cyberangriff hat gestern Teile der Flotte lahmgelegt. Wir sind technologisch abhängig und verletzlich.",
+            "info_cards": [],
+            "options": []
+        },
+        "W3-B1": {
+            "title": "ENDING: Dienstpflicht Light",
+            "description": "2035: Das System ist bürokratisch und ungerecht. Wer schlau ist, drückt sich vor dem Dienst. Die Gerichte sind überlastet mit Klagen gegen die Einberufung.",
+            "info_cards": [],
+            "options": []
+        },
+        "W3-B2": {
+            "title": "ENDING: Die Bürger in Uniform",
+            "description": "2035: Die innere Sicherheit ist so hoch wie nie. Aber viele junge Menschen wandern aus, weil sie sich vom Staat bevormundet fühlen. Die Gesellschaft ist polarisiert.",
+            "info_cards": [],
+            "options": []
         }
-    ],
-    "options": [
-        {
-            "id": "A",
-            "text": "Wehrpflicht ablehnen (Berufsarmee stärken)",
-            "requires_info": []
-        },
-        {
-            "id": "B",
-            "text": "Allgemeine Dienstpflicht einführen",
-            "requires_info": ["info_gg", "info_personal"] 
-        }
-    ]
+    }
 }
