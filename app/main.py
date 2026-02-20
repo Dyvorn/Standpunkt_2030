@@ -75,7 +75,7 @@ async def create_room():
     room_code = generate_room_code()
     game_rooms[room_code] = {
         "active_theme_data": {},
-        "state": {"scenario": None, "votes": {}, "stats": {}},
+        "state": {"scenario": None, "votes": {}, "stats": {}, "inventory": [], "modifiers": []},
         "clients": []
     }
     return RedirectResponse(url=f"/admin/{room_code}", status_code=303)
@@ -96,6 +96,46 @@ async def get_board(request: Request, room_code: str):
 @app.get("/play/{room_code}", response_class=HTMLResponse)
 async def get_mobile(request: Request, room_code: str):
     return templates.TemplateResponse("mobile.html", {"request": request, "room_code": room_code.upper()})
+
+@app.post("/game/{room_code}/buy")
+async def buy_item(room_code: str, item_id: str = Form(...)):
+    """Kauft ein Item aus dem Shop, zieht Kosten ab und wendet Effekte an."""
+    room_code = room_code.upper()
+    room = game_rooms.get(room_code)
+    if not room:
+        return JSONResponse({"error": "Room not found"}, status_code=404)
+    
+    # Item im aktiven Theme suchen
+    shop_items = room["active_theme_data"].get("shop", [])
+    item = next((i for i in shop_items if i["id"] == item_id), None)
+    
+    if not item:
+        return JSONResponse({"error": "Item not found"}, status_code=404)
+    
+    # Prüfen ob bereits gekauft
+    if item_id in room["state"]["inventory"]:
+         return JSONResponse({"error": "Already owned"}, status_code=400)
+
+    # Kosten prüfen
+    stats = room["state"]["stats"]
+    costs = item.get("cost", {})
+    for stat, value in costs.items():
+        if stats.get(stat, 0) < value:
+            return JSONResponse({"error": f"Nicht genug {stat}"}, status_code=400)
+            
+    # Kosten abziehen und Effekte anwenden
+    for stat, value in costs.items():
+        stats[stat] -= value
+        
+    effects = item.get("effects", {})
+    for stat, value in effects.items():
+        if stat in stats:
+            stats[stat] += value
+            
+    room["state"]["inventory"].append(item_id)
+    
+    await broadcast_state(room_code)
+    return JSONResponse({"success": True, "stats": stats})
 
 # --- ADMIN ROUTEN ---
 @app.get("/admin/{room_code}", response_class=HTMLResponse)
@@ -122,11 +162,26 @@ async def start_game(room_code: str, theme: str = Form(...)):
     if data:
         room["active_theme_data"] = data
         room["state"]["stats"] = data["meta"]["initial_stats"].copy()
+        room["state"]["inventory"] = [] # Reset inventory on start
+        room["state"]["modifiers"] = [] # Reset modifiers on start
+        room["state"]["shop"] = data.get("shop", []) # Shop-Items in State laden
         start_scene_id = data["meta"]["start_scene"]
         
         load_scene(room_code, start_scene_id)
         await broadcast_state(room_code)
         
+    return RedirectResponse(url=f"/admin/{room_code}", status_code=303)
+
+@app.post("/admin/{room_code}/restart")
+async def restart_game(room_code: str):
+    """Setzt das Spiel zurück, behält aber den Raum."""
+    room_code = room_code.upper()
+    room = game_rooms.get(room_code)
+    if room:
+        # Reset state but keep clients connected
+        room["state"] = {"scenario": None, "votes": {}, "stats": {}, "inventory": [], "modifiers": []}
+        room["active_theme_data"] = {}
+        await broadcast_state(room_code)
     return RedirectResponse(url=f"/admin/{room_code}", status_code=303)
 
 @app.post("/admin/{room_code}/next")
@@ -136,13 +191,19 @@ async def next_scene(room_code: str):
     if not room:
         return HTMLResponse("Raum nicht gefunden", status_code=404)
 
-    votes = room["state"]["votes"]
-    if not votes:
-        return RedirectResponse(url=f"/admin/{room_code}", status_code=303)
-        
-    winner_id = max(votes, key=votes.get) if votes else "A"
-    
     current_scene = room["state"]["scenario"]
+    # If no options exist (Ending), we cannot proceed via voting
+    if not current_scene or not current_scene.get("options"):
+        return RedirectResponse(url=f"/admin/{room_code}", status_code=303)
+
+    votes = room["state"]["votes"]
+    # Determine winner. If no votes, default to first option (or handle as error)
+    # For now: Default to "A" if no votes, to keep flow moving in tests
+    winner_id = max(votes, key=votes.get) if votes else (current_scene["options"][0]["id"] if current_scene["options"] else None)
+    
+    if not winner_id:
+        return RedirectResponse(url=f"/admin/{room_code}", status_code=303)
+
     selected_option = next((opt for opt in current_scene["options"] if opt["id"] == winner_id), None)
     
     if selected_option:

@@ -1,90 +1,163 @@
 {
-    "meta": {
-        "title": "Fleisch 2030",
-        "initial_stats": {"tierwohl": 50, "kosten": 50, "bauern": 50},
-        "start_scene": "T1"
+  "meta": {
+    "title": "Fleisch 2030",
+    "initial_stats": {
+      "Tierwohl": 50,
+      "Lebenshaltungskosten": 50,
+      "Bauern_Zufriedenheit": 50
     },
-    "scenes": {
-        "T1": {
-            "title": "Skandal-Schlachthof",
-            "description": "Ein Video aus einem Großschlachthof geht viral. Die Zustände sind entsetzlich. Das Land ist im Aufruhr. Die Politik muss reagieren.",
-            "info_cards": [
-                {"title": "Haltungsformen", "text": "Aktuell leben viele Tiere in Stufe 1 (Stallhaltung). Stufe 4 (Bio) ist selten."},
-                {"title": "Preise", "text": "Bauern erhalten oft nur wenige Cent pro Kilo Fleisch."},
-                {"title": "Umwelt", "text": "Massentierhaltung belastet das Grundwasser durch Gülle."}
-            ],
-            "options": [
-                {
-                    "id": "A", "text": "Haltungsform 1 & 2 verbieten (Strenge Gesetze)",
-                    "next_scene": "T2-A",
-                    "effects": {"tierwohl": 25, "kosten": 15, "bauern": -20}
-                },
-                {
-                    "id": "B", "text": "Hohe Fleischsteuer für Tierwohl-Fonds",
-                    "next_scene": "T2-B",
-                    "effects": {"tierwohl": 15, "kosten": 20, "bauern": -5}
-                }
-            ]
+    "start_scene": "T1"
+  },
+  "scenes": {
+    "T1": {
+      "title": "Skandal-Schlachthof",
+      "description": "Ein Viralvideo zeigt entsetzliche Zustände. Das Land ist im Aufruhr.",
+      "board_news": {
+        "headline": "Tierschutz-Skandal erschüttert Verbraucher",
+        "bullets": ["Schockierende Bilder aus Großschlachthof", "Massive Proteste", "Politik unter Zugzwang"]
+      },
+      "dossiers": [
+        {"title": "Haltungsformen", "content": "Fleisch wird in Haltungsformen 1 (Stall) bis 4 (Premium/Bio) gekennzeichnet. Der Großteil des Angebots ist noch Form 1 & 2."},
+        {"title": "Preise", "content": "Bauern erhalten oft nur einen Bruchteil des Ladenpreises. Der Preisdruck durch Supermärkte ist enorm."},
+        {"title": "Umwelt", "content": "Massentierhaltung trägt signifikant zu Treibhausgasen und Nitratbelastung des Grundwassers bei."}
+      ],
+      "options": [
+        {
+          "id": "A",
+          "text": "Haltungsform 1 und 2 verbieten (nur noch Tierwohl-Betriebe)",
+          "effects": {"Tierwohl": 25, "Lebenshaltungskosten": 15, "Bauern_Zufriedenheit": -20},
+          "next_scene": "T2-A"
         },
-        "T2-A": {
-            "title": "Leere Regale",
-            "description": "Die strengen Gesetze wirken. Aber viele Bauern haben aufgegeben. Fleisch ist knapp und teuer. Billigfleisch aus dem Ausland flutet den Markt.",
-            "info_cards": [
-                {"title": "Umbaukosten", "text": "Ein artgerechter Stall kostet Millionen. Banken geben kaum Kredite."},
-                {"title": "Importe", "text": "Ausländisches Fleisch unterliegt oft nicht unseren Tierschutzgesetzen."}
-            ],
-            "options": [
-                {
-                    "id": "A", "text": "Importstopp für Billigfleisch",
-                    "next_scene": "T3-A1",
-                    "effects": {"tierwohl": 10, "kosten": 10, "bauern": 5}
-                },
-                {
-                    "id": "B", "text": "Import zulassen (Preise senken)",
-                    "next_scene": "T3-A2",
-                    "effects": {"tierwohl": 0, "kosten": 5, "bauern": -5}
-                }
-            ]
-        },
-        "T2-B": {
-            "title": "Teurer Döner",
-            "description": "Die Fleischsteuer macht Essen zum Luxus. Ein Döner kostet 12€. Ärmere Familien protestieren. Die Einnahmen sprudeln, aber wohin damit?",
-            "info_cards": [
-                {"title": "Soziale Frage", "text": "Lebensmittelpreise treffen Geringverdiener am härtesten."},
-                {"title": "Verwendung", "text": "Soll das Geld an die Bürger zurück oder in Forschung gesteckt werden?"}
-            ],
-            "options": [
-                {
-                    "id": "A", "text": "Klimageld: Geld an Bürger zurückzahlen",
-                    "next_scene": "T3-B1",
-                    "effects": {"tierwohl": 5, "kosten": -10, "bauern": -5}
-                },
-                {
-                    "id": "B", "text": "Investition in Laborfleisch-Fabriken",
-                    "next_scene": "T3-B2",
-                    "effects": {"tierwohl": 20, "kosten": -5, "bauern": -20}
-                }
-            ]
-        },
-        "T3-A1": {
-            "title": "ENDING: Die grüne Festung",
-            "description": "2035: Deutschland lebt fast vegan. Tierleid gibt es kaum noch. Aber wir sind isoliert, haben Handelskonflikte und einen Schwarzmarkt für Wurst.",
-            "info_cards": [], "options": []
-        },
-        "T3-A2": {
-            "title": "ENDING: Doppelmoral",
-            "description": "2035: Unsere Ställe sind leer und sauber. Aber wir essen Fleisch aus Ländern, wo Tiere leiden. Das Problem wurde nur verlagert.",
-            "info_cards": [], "options": []
-        },
-        "T3-B1": {
-            "title": "ENDING: Klassenkampf am Grill",
-            "description": "2035: Fleisch ist ein Statussymbol für Reiche. Die Gesellschaft streitet bei jedem Grillfest über Gerechtigkeit. Das Tierwohl hat sich nur mäßig verbessert.",
-            "info_cards": [], "options": []
-        },
-        "T3-B2": {
-            "title": "ENDING: Cyber-Meat 2030",
-            "description": "2035: Traditionelle Bauern gibt es kaum noch. Fleisch kommt aus riesigen Bioreaktoren. Es ist billig und tierleidfrei, aber die Landkultur ist gestorben.",
-            "info_cards": [], "options": []
+        {
+          "id": "B",
+          "text": "Hohe Fleischsteuer einführen, Einnahmen in Tierwohl-Fonds",
+          "effects": {"Tierwohl": 15, "Lebenshaltungskosten": 20, "Bauern_Zufriedenheit": -5},
+          "next_scene": "T2-B"
         }
+      ]
+    },
+    "T2-A": {
+      "title": "Leere Regale",
+      "description": "Fleisch ist knapp und teuer. Kleine Bauern geben auf.",
+      "board_news": {
+        "headline": "Versorgungsengpass bei Fleisch",
+        "bullets": ["Supermarkt-Regale leer", "Preissprung bei Lebensmitteln", "Bauernproteste"]
+      },
+      "dossiers": [
+        {"title": "Umbaukosten", "content": "Der Umbau eines Stalls für höhere Tierwohl-Standards kostet Hunderttausende Euro. Viele Bauern haben dieses Kapital nicht."},
+        {"title": "Importe", "content": "Billigfleisch aus dem Ausland könnte die Lücke füllen, entspricht aber oft nicht den heimischen Standards."}
+      ],
+      "options": [
+        {
+          "id": "A",
+          "text": "Importstopp für Billigfleisch (streng)",
+          "effects": {"Tierwohl": 10, "Lebenshaltungskosten": 10, "Bauern_Zufriedenheit": 5},
+          "next_scene": "T3-A1"
+        },
+        {
+          "id": "B",
+          "text": "Import zulassen, dafür inländische Auflagen hoch halten",
+          "effects": {"Tierwohl": 0, "Lebenshaltungskosten": 5, "Bauern_Zufriedenheit": -5},
+          "next_scene": "T3-A2"
+        }
+      ]
+    },
+    "T2-B": {
+      "title": "Teurer Döner",
+      "description": "Döner kostet 12 €, Schnitzel 25 €. Proteste ärmerer Schichten.",
+      "board_news": {
+        "headline": "Lebensmittelpreise auf Rekordhoch",
+        "bullets": ["Döner für 12 Euro", "Soziale Unruhen", "Ruf nach Entlastung"]
+      },
+      "dossiers": [
+        {"title": "Steuern", "content": "Wohin fließen die Einnahmen der Fleischsteuer? Eine Zweckbindung für Tierwohl ist rechtlich schwierig und umstritten."},
+        {"title": "Soziale Härte", "content": "Einkommensschwache Haushalte geben einen Großteil ihres Geldes für Essen aus. Preiserhöhungen treffen sie am härtesten."}
+      ],
+      "options": [
+        {
+          "id": "A",
+          "text": "Klimageld/Sozialausgleich (Geld an Bürger zurück)",
+          "effects": {"Lebenshaltungskosten": -10, "Tierwohl": 5, "Bauern_Zufriedenheit": -5},
+          "next_scene": "T3-B1"
+        },
+        {
+          "id": "B",
+          "text": "Großes Investment in Laborfleisch/Alternativen",
+          "effects": {"Tierwohl": 20, "Bauern_Zufriedenheit": -20, "Lebenshaltungskosten": -5},
+          "next_scene": "T3-B2"
+        }
+      ]
+    },
+    "T3-A1": {
+      "title": "Die grüne Festung",
+      "description": "Radikale Ethik kann zu Isolation und Kontrollproblemen führen.",
+      "board_news": {
+        "headline": "Deutschland isst anders",
+        "bullets": ["Fast vegane Gesellschaft", "Schwarzmarkt für Fleisch", "Handelskonflikte"]
+      },
+      "dossiers": [
+        {"title": "Fazit 2035", "content": "Deutschland ist ethischer Vorreiter, aber isoliert. Fleisch ist ein illegales Luxusgut geworden."}
+      ],
+      "options": []
+    },
+    "T3-A2": {
+      "title": "Doppelmoral",
+      "description": "Probleme wurden verlagert, nicht gelöst.",
+      "board_news": {
+        "headline": "Sauberes Gewissen, schmutziger Import",
+        "bullets": ["Tierleid ins Ausland verlagert", "Heimische Bauern pleite", "Verbraucher kaufen Billig-Importe"]
+      },
+      "dossiers": [
+        {"title": "Fazit 2035", "content": "Die heimische Landwirtschaft ist zerstört, das Tierleid findet nun einfach woanders statt."}
+      ],
+      "options": []
+    },
+    "T3-B1": {
+      "title": "Klassenkampf am Grill",
+      "description": "Klima-/Tierpolitik ist auch Sozialpolitik.",
+      "board_news": {
+        "headline": "Fleisch als Luxusgut",
+        "bullets": ["Grillen als Statussymbol", "Spaltung der Gesellschaft", "Neiddebatten"]
+      },
+      "dossiers": [
+        {"title": "Fazit 2035", "content": "Essen ist zur Klassenfrage geworden. Wer Geld hat, isst Fleisch, der Rest schaut zu."}
+      ],
+      "options": []
+    },
+    "T3-B2": {
+      "title": "Cyber-Meat 2030",
+      "description": "Technische Lösungen haben Gewinner und Verlierer.",
+      "board_news": {
+        "headline": "Das Ende der Landwirtschaft?",
+        "bullets": ["Laborfleisch erobert Markt", "Bauernhöfe sterben", "Futuristische Lebensmittelfabriken"]
+      },
+      "dossiers": [
+        {"title": "Fazit 2035", "content": "Traditionelle Bauernhöfe sind Geschichte. Fleisch kommt aus dem Bioreaktor. Effizient, aber steril."}
+      ],
+      "options": []
     }
+  },
+  "shop": [
+    {
+      "id": "shop_ts_1",
+      "title": "Werbekampagne",
+      "description": "Steigert das Bewusstsein für Tierwohl.",
+      "cost": {"Bauern_Zufriedenheit": 5},
+      "effects": {"Tierwohl": 5}
+    },
+    {
+      "id": "shop_ts_2",
+      "title": "Discounter-Deals",
+      "description": "Senkt die Preise durch Masse.",
+      "cost": {"Tierwohl": 10},
+      "effects": {"Lebenshaltungskosten": -10}
+    },
+    {
+      "id": "shop_ts_3",
+      "title": "Not-Zulassung",
+      "description": "Erlaubt günstigere Produktionsmittel.",
+      "cost": {"Tierwohl": 10},
+      "effects": {"Bauern_Zufriedenheit": 15}
+    }
+  ]
 }
