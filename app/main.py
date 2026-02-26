@@ -1,273 +1,217 @@
+import asyncio
 import json
-import os
-import secrets
-import string
-import socket
-import sys
+import uuid
 from pathlib import Path
-from fastapi import FastAPI, Request, WebSocket, WebSocketDisconnect, Form
-from fastapi.templating import Jinja2Templates
+from typing import Dict, List, Any
+
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import HTMLResponse, RedirectResponse, JSONResponse
-import uvicorn
 
 app = FastAPI()
 
-# --- PFADE ---
-if getattr(sys, 'frozen', False):
-    # Wenn das Programm als .exe läuft (PyInstaller)
-    BASE_DIR = Path(sys._MEIPASS)
-else:
-    # Wenn es normal als Skript läuft
-    BASE_DIR = Path(__file__).resolve().parent.parent
+# --- Game State Management ---
 
-static_path = BASE_DIR / "static"
-templates_path = BASE_DIR / "templates"
-data_path = BASE_DIR / "data"
+class ConnectionManager:
+    def __init__(self):
+        self.active_connections: Dict[str, WebSocket] = {}
 
-# Ordner sicherstellen
-for p in [static_path, templates_path, data_path]:
-    if not p.exists():
-        os.makedirs(p)
+    async def connect(self, websocket: WebSocket, client_id: str):
+        await websocket.accept()
+        self.active_connections[client_id] = websocket
 
-app.mount("/static", StaticFiles(directory=static_path), name="static")
-templates = Jinja2Templates(directory=templates_path)
+    def disconnect(self, client_id: str):
+        if client_id in self.active_connections:
+            del self.active_connections[client_id]
 
-# --- GAME STATE ---
-# Statt eines globalen Zustands verwalten wir mehrere Spielräume
-game_rooms = {}
+    async def broadcast(self, message: dict):
+        for connection in self.active_connections.values():
+            await connection.send_json(message)
 
-def generate_room_code(length=5):
-    """Generiert einen einzigartigen, leicht zu merkenden Raum-Code."""
-    alphabet = string.ascii_uppercase + string.digits
-    while True:
-        code = ''.join(secrets.choice(alphabet) for _ in range(length))
-        if code not in game_rooms:
-            return code
+manager = ConnectionManager()
 
-def get_local_ip():
-    """Ermittelt die lokale IP-Adresse des Computers im Netzwerk."""
-    try:
-        # Dummy-Verbindung aufbauen, um die eigene IP zu finden (sendet keine Daten)
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        s.connect(("8.8.8.8", 80))
-        ip = s.getsockname()[0]
-        s.close()
-        return ip
-    except Exception:
-        return "127.0.0.1"
+# In-memory storage for the game state. For a real-world app, this would be a database.
+game_state: Dict[str, Any] = {}
 
-def load_theme_file(filename):
-    path = data_path / filename
-    if path.exists():
-        with open(path, "r", encoding="utf-8") as f:
-            return json.load(f)
-    return None
+# Load scenario data from JSON
+SCENARIOS_PATH = Path(__file__).parent / "scenarios.json"
+with open(SCENARIOS_PATH, "r", encoding="utf-8") as f:
+    scenarios_data = json.load(f)
 
-# --- ROUTEN ---
-@app.get("/", response_class=HTMLResponse)
-async def get_landing(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request, "server_ip": get_local_ip()})
+def initialize_game_state(theme: str = "wehrpflicht"):
+    """Resets the game state to its initial values for a given theme."""
+    global game_state
 
-@app.post("/create")
-async def create_room():
-    """Erstellt einen neuen Spielraum und leitet den Host zur Admin-Seite."""
-    room_code = generate_room_code()
-    game_rooms[room_code] = {
-        "active_theme_data": {},
-        "state": {"scenario": None, "votes": {}, "stats": {}, "inventory": [], "modifiers": []},
-        "clients": []
+    initial_values = {
+        "wehrpflicht": {"sicherheit": 50, "freiheit": 65, "budget": 60},
+        "tierschutz": {"tierwohl": 40, "lebenshaltungskosten": 55, "bauernzufriedenheit": 60}
     }
-    return RedirectResponse(url=f"/admin/{room_code}", status_code=303)
 
-@app.post("/join")
-async def join_room(room_code: str = Form(...)):
-    """Leitet einen Spieler in einen Raum weiter, wenn dieser existiert."""
-    code = room_code.upper()
-    if code in game_rooms:
-        return RedirectResponse(url=f"/play/{code}", status_code=303)
-    else:
-        return RedirectResponse(url="/?error=notfound", status_code=303)
+    first_scenario = {
+        "wehrpflicht": "W1",
+        "tierschutz": "T1"
+    }
 
-@app.get("/board/{room_code}", response_class=HTMLResponse)
-async def get_board(request: Request, room_code: str):
-    return templates.TemplateResponse("board.html", {"request": request, "room_code": room_code.upper()})
+    current_scenario_id = first_scenario.get(theme, "W1")
 
-@app.get("/play/{room_code}", response_class=HTMLResponse)
-async def get_mobile(request: Request, room_code: str):
-    return templates.TemplateResponse("mobile.html", {"request": request, "room_code": room_code.upper()})
+    game_state = {
+        "session_id": f"session-{uuid.uuid4().hex[:8]}",
+        "theme": theme,
+        "current_scenario_id": current_scenario_id,
+        "current_phase": "reading",  # reading, voting, results
+        "values": initial_values.get(theme, {}),
+        "votes": {},
+        "clients": {},
+        "scenario_history": [current_scenario_id],
+    }
+    # Initialize votes for the first scenario
+    game_state["votes"][current_scenario_id] = {
+        option["id"]: 0 for option in scenarios_data[current_scenario_id].get("vote_options", [])
+    }
+    game_state["votes"][current_scenario_id]["total_voted"] = 0
 
-@app.post("/game/{room_code}/buy")
-async def buy_item(room_code: str, item_id: str = Form(...)):
-    """Kauft ein Item aus dem Shop, zieht Kosten ab und wendet Effekte an."""
-    room_code = room_code.upper()
-    room = game_rooms.get(room_code)
-    if not room:
-        return JSONResponse({"error": "Room not found"}, status_code=404)
-    
-    # Item im aktiven Theme suchen
-    shop_items = room["active_theme_data"].get("shop", [])
-    item = next((i for i in shop_items if i["id"] == item_id), None)
-    
-    if not item:
-        return JSONResponse({"error": "Item not found"}, status_code=404)
-    
-    # Prüfen ob bereits gekauft
-    if item_id in room["state"]["inventory"]:
-         return JSONResponse({"error": "Already owned"}, status_code=400)
 
-    # Kosten prüfen
-    stats = room["state"]["stats"]
-    costs = item.get("cost", {})
-    for stat, value in costs.items():
-        if stats.get(stat, 0) < value:
-            return JSONResponse({"error": f"Nicht genug {stat}"}, status_code=400)
-            
-    # Kosten abziehen und Effekte anwenden
-    for stat, value in costs.items():
-        stats[stat] -= value
-        
-    effects = item.get("effects", {})
-    for stat, value in effects.items():
-        if stat in stats:
-            stats[stat] += value
-            
-    room["state"]["inventory"].append(item_id)
-    
-    await broadcast_state(room_code)
-    return JSONResponse({"success": True, "stats": stats})
+initialize_game_state() # Initialize on startup
 
-# --- ADMIN ROUTEN ---
-@app.get("/admin/{room_code}", response_class=HTMLResponse)
-async def get_admin(request: Request, room_code: str):
-    if room_code.upper() in game_rooms:
-        return templates.TemplateResponse("admin.html", {"request": request, "room_code": room_code.upper(), "server_ip": get_local_ip()})
-    return HTMLResponse("Raum nicht gefunden", status_code=404)
+# --- WebSocket Endpoint ---
 
-@app.get("/admin/{room_code}/status")
-async def get_admin_status(room_code: str):
-    room = game_rooms.get(room_code.upper())
-    if room:
-        return JSONResponse(room["state"])
-    return JSONResponse({"error": "Room not found"}, status_code=404)
+@app.websocket("/ws/{client_id}/{client_type}")
+async def websocket_endpoint(websocket: WebSocket, client_id: str, client_type: str):
+    await manager.connect(websocket, client_id)
+    print(f"Client connected: {client_id} ({client_type})")
 
-@app.post("/admin/{room_code}/start")
-async def start_game(room_code: str, theme: str = Form(...)):
-    room_code = room_code.upper()
-    room = game_rooms.get(room_code)
-    if not room:
-        return HTMLResponse("Raum nicht gefunden", status_code=404)
+    # Add client to game state
+    game_state["clients"][client_id] = {"type": client_type, "connected": True}
 
-    data = load_theme_file(theme)
-    if data:
-        room["active_theme_data"] = data
-        room["state"]["stats"] = data["meta"]["initial_stats"].copy()
-        room["state"]["inventory"] = [] # Reset inventory on start
-        room["state"]["modifiers"] = [] # Reset modifiers on start
-        room["state"]["shop"] = data.get("shop", []) # Shop-Items in State laden
-        start_scene_id = data["meta"]["start_scene"]
-        
-        load_scene(room_code, start_scene_id)
-        await broadcast_state(room_code)
-        
-    return RedirectResponse(url=f"/admin/{room_code}", status_code=303)
+    # Send initial state to the newly connected client
+    await websocket.send_json({"event": "state_update", "payload": game_state})
+    await manager.broadcast({"event": "client_update", "payload": game_state["clients"]})
 
-@app.post("/admin/{room_code}/restart")
-async def restart_game(room_code: str):
-    """Setzt das Spiel zurück, behält aber den Raum."""
-    room_code = room_code.upper()
-    room = game_rooms.get(room_code)
-    if room:
-        # Reset state but keep clients connected
-        room["state"] = {"scenario": None, "votes": {}, "stats": {}, "inventory": [], "modifiers": []}
-        room["active_theme_data"] = {}
-        await broadcast_state(room_code)
-    return RedirectResponse(url=f"/admin/{room_code}", status_code=303)
-
-@app.post("/admin/{room_code}/next")
-async def next_scene(room_code: str):
-    room_code = room_code.upper()
-    room = game_rooms.get(room_code)
-    if not room:
-        return HTMLResponse("Raum nicht gefunden", status_code=404)
-
-    current_scene = room["state"]["scenario"]
-    # If no options exist (Ending), we cannot proceed via voting
-    if not current_scene or not current_scene.get("options"):
-        return RedirectResponse(url=f"/admin/{room_code}", status_code=303)
-
-    votes = room["state"]["votes"]
-    # Determine winner. If no votes, default to first option (or handle as error)
-    # For now: Default to "A" if no votes, to keep flow moving in tests
-    winner_id = max(votes, key=votes.get) if votes else (current_scene["options"][0]["id"] if current_scene["options"] else None)
-    
-    if not winner_id:
-        return RedirectResponse(url=f"/admin/{room_code}", status_code=303)
-
-    selected_option = next((opt for opt in current_scene["options"] if opt["id"] == winner_id), None)
-    
-    if selected_option:
-        effects = selected_option.get("effects", {})
-        for key, val in effects.items():
-            if key in room["state"]["stats"]:
-                room["state"]["stats"][key] += val
-        
-        next_id = selected_option.get("next_scene")
-        if next_id and next_id in room["active_theme_data"]["scenes"]:
-            load_scene(room_code, next_id)
-            await broadcast_state(room_code)
-            
-    return RedirectResponse(url=f"/admin/{room_code}", status_code=303)
-
-def load_scene(room_code: str, scene_id: str):
-    """Lädt eine Szene aus active_theme_data in den aktuellen State"""
-    room = game_rooms[room_code]
-    scene = room["active_theme_data"]["scenes"][scene_id]
-    room["state"]["scenario"] = scene
-    room["state"]["votes"] = {opt["id"]: 0 for opt in scene.get("options", [])}
-
-# --- WEBSOCKET LOGIC ---
-@app.websocket("/ws/{room_code}/{client_type}")
-async def websocket_endpoint(websocket: WebSocket, room_code: str, client_type: str):
-    room_code = room_code.upper()
-    room = game_rooms.get(room_code)
-    if not room:
-        await websocket.close(code=1008)
-        return
-
-    await websocket.accept()
-    room["clients"].append(websocket)
-    await websocket.send_json(room["state"])
-    
     try:
         while True:
             data = await websocket.receive_json()
-            
-            if data.get("type") == "vote":
-                option = data.get("value")
-                if option in room["state"]["votes"]:
-                    room["state"]["votes"][option] += 1
+            event = data.get("event")
+            payload = data.get("payload")
+
+            # --- Admin Events ---
+            if event == "admin:start_session":
+                print("Admin started a new session.")
+                theme = payload.get("theme", "wehrpflicht")
+                initialize_game_state(theme=theme)
+                await manager.broadcast({"event": "state_update", "payload": game_state})
+
+            if event == "admin:change_phase":
+                new_phase = payload.get("phase")
+                if new_phase in ["reading", "voting", "results"]:
+                    game_state["current_phase"] = new_phase
+                    print(f"Phase changed to {new_phase}")
+                    await manager.broadcast({"event": "phase_change", "payload": {"phase": new_phase}})
+
+            if event == "admin:next_scenario":
+                print("Admin triggered next scenario.")
+                current_scenario_id = game_state["current_scenario_id"]
+                votes = game_state["votes"][current_scenario_id]
+
+                if not votes or votes.get("total_voted", 0) == 0:
+                    votes = {opt["id"]: 1 for opt in scenarios_data[current_scenario_id]["vote_options"]}
                 
-                await broadcast_state(room_code)
+                # Determine winner
+                winner = max(votes, key=lambda k: votes[k] if k != "total_voted" else -1)
+
+                # Find next scenario ID
+                current_scenario_options = scenarios_data[current_scenario_id]["vote_options"]
+                next_scenario_id = None
+                for option in current_scenario_options:
+                    if option["id"] == winner:
+                        next_scenario_id = option["next_scenario_if_wins"]
+                        # Apply value effects
+                        for value, effect in option["value_effects"].items():
+                            if value in game_state["values"]:
+                                game_state["values"][value] += effect
+                        break
                 
+                if next_scenario_id and next_scenario_id in scenarios_data:
+                    game_state["current_scenario_id"] = next_scenario_id
+                    game_state["current_phase"] = "reading"
+                    game_state["scenario_history"].append(next_scenario_id)
+                    
+                    # Initialize votes for the new scenario
+                    if scenarios_data[next_scenario_id].get("vote_options"):
+                        game_state["votes"][next_scenario_id] = { 
+                            option["id"]: 0 for option in scenarios_data[next_scenario_id]["vote_options"]
+                        }
+                        game_state["votes"][next_scenario_id]["total_voted"] = 0
+
+                    await manager.broadcast({"event": "scenario_change", "payload": {
+                        "new_scenario_id": next_scenario_id,
+                        "values": game_state["values"]
+                    }})
+                    await manager.broadcast({"event": "state_update", "payload": game_state})
+                else:
+                    print(f"End of path or invalid next_scenario_id: {next_scenario_id}")
+
+
+            # --- Handy Events ---
+            if event == "handy:vote":
+                scenario_id = payload.get("scenario_id")
+                choice = payload.get("choice")
+                
+                # Simple check to prevent double voting
+                if game_state["clients"][client_id].get(f"voted_{scenario_id}"):
+                    continue
+
+                if scenario_id == game_state["current_scenario_id"] and game_state["current_phase"] == "voting":
+                    if choice in game_state["votes"][scenario_id]:
+                        game_state["votes"][scenario_id][choice] += 1
+                        game_state["votes"][scenario_id]["total_voted"] += 1
+                        game_state["clients"][client_id][f"voted_{scenario_id}"] = choice
+                        
+                        print(f"Vote received: {client_id} voted for {choice} in {scenario_id}")
+                        
+                        # Broadcast vote update
+                        await manager.broadcast({
+                            "event": "vote_update",
+                            "payload": {
+                                "scenario_id": scenario_id,
+                                "votes": game_state["votes"][scenario_id]
+                            }
+                        })
+
     except WebSocketDisconnect:
-        if websocket in room["clients"]:
-            room["clients"].remove(websocket)
+        manager.disconnect(client_id)
+        game_state["clients"][client_id]["connected"] = False
+        print(f"Client disconnected: {client_id}")
+        await manager.broadcast({"event": "client_update", "payload": game_state["clients"]})
 
-async def broadcast_state(room_code: str):
-    """Sendet den aktuellen Status an alle verbundenen Geräte in einem Raum."""
-    room_code = room_code.upper()
-    room = game_rooms.get(room_code)
-    if not room:
-        return
 
-    # Erstelle eine Kopie der Client-Liste, um sie sicher zu durchlaufen
-    for client in list(room["clients"]):
-        try:
-            await client.send_json(room["state"])
-        except Exception:
-            if client in room["clients"]:
-                room["clients"].remove(client)
+# --- API Endpoints ---
+
+@app.get("/api/scenarios")
+async def get_scenarios():
+    """Endpoint to get all scenario definitions."""
+    return scenarios_data
+
+@app.get("/api/state")
+async def get_state():
+    """Endpoint to get the current game state."""
+    return game_state
+
+# --- Static File Serving ---
+
+# Create a dummy root file for the server path
+@app.get("/")
+async def read_root():
+    return {"message": "Standpunkt 2030 Server is running. Connect clients to /admin, /board, or /handy."}
+
+
+# Mount the frontend directories
+frontend_path = Path(__file__).parent.parent / "frontend"
+app.mount("/admin", StaticFiles(directory=frontend_path / "admin", html=True), name="admin")
+app.mount("/board", StaticFiles(directory=frontend_path / "board", html=True), name="board")
+app.mount("/handy", StaticFiles(directory=frontend_path / "handy", html=True), name="handy")
+
 
 if __name__ == "__main__":
+    import uvicorn
+    # On startup, reset the game state
+    initialize_game_state()
     uvicorn.run(app, host="0.0.0.0", port=8000)

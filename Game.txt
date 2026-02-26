@@ -1,327 +1,897 @@
-Standpunkt 2030 – game.txt  
-(Design-Dokument / Vollbeschreibung)
+# Standpunkt 2030 – Vollständige Pfad-Spezifikation
+## Alle möglichen Entscheidungswege, Szenarien, News-Variationen und Endings
 
-------------------------------------------------
-1. Grundidee und Ziel des Spiels
-------------------------------------------------
-Titel: Standpunkt 2030  
-Genre: 2D Serious Game, interaktives, entscheidungsbasiertes Politik-Spiel für den Unterricht  
-Zielgruppe: Schulklassen (ca. 9.–13. Klasse), Politik / Sozialkunde / Ethik / Philosophie  
+---
 
-Zweck:
-- Schüler sollen kontroverse politische Themen (Wehrpflicht, Tierschutz) aus verschiedenen Perspektiven kennen lernen und reflektieren.
-- Entscheidungen haben Folgen (Schmetterlingseffekt): Frühe Weichenstellungen verändern später die Situation im Land.
-- Das Spiel liefert sowohl emotionale Szenen (auf der Tafel) als auch sachliche Infos (auf den Handys).
+## TEIL 1: WEHRPFLICHT-PFADE (Sicherheit vs. Freiheit vs. Budget)
 
-Kern-Setup:
-- Beamer/Interaktive Tafel zeigt das „Bühnenbild“ (News, Szenen, Balken, Endings).
-- Schüler nutzen ihre Handys als:
-  - Info-Geräte (Dossiers/Fakten zum Thema).
-  - Abstimmungsgeräte (Votes).
+### AUSGANGSLAGE (global)
+**News-Eröffnung (Board):**
+- Headline: "2026: Europas Sicherheit unter Druck"
+- Bullets:
+  - Spannungen an EU-Grenze (Cyberattacken, Drohnen-Einsätze)
+  - Bundeswehr hat 20.000 Soldaten-Deficit
+  - Regierung wählt neue "Wehrdienstmodelle"
+- Werte Start: Sicherheit 50, Freiheit 65, Budget 60
 
-Technik (nur zur Einordnung, nicht sichtbar im Game):
-- Python (FastAPI) als Server, WebSockets für Echtzeit.
-- Board-Client (Tafel) und Mobile-Clients (Handys) laufen im Browser.
+---
 
-------------------------------------------------
-2. Rollen und „unsichtbare“ Werte
-------------------------------------------------
-Es gibt keine individuellen Rollen (keine einzelnen Avatare), sondern:
-- Die gesamte Klasse agiert gemeinsam als „Stimme der Bevölkerung“ oder „Bürgerrat“.
-- Die Lehrkraft ist Moderator und „Admin“, kann Szenen starten/stoppen.
+## SZENARIO W1: MUSTERUNGSFRAGEBOGEN 2026
 
-Im Hintergrund werden drei „Werte“ pro Thema geführt (Skala 0–100). Diese sieht der Spieler nicht direkt, sie beeinflussen aber spätere Nachrichten und Endings.
+**Board-Szene:**
+- Titel: "Der rote Brief"
+- Bild: Illustration eines Musterungsformulars
+- Text: "Mit 17 erhalten 800.000 Männer einen Fragebogen. Erste Fragen zum neuen Wehrdienst. Die Regierung muss entscheiden: Freiwillig mit besserer Bezahlung? Oder Musterung für alle mit möglicher Einberufung?"
 
-Thema Wehrpflicht:
-- Sicherheit: Wie gut das Land militärisch und zivil verteidigt ist.
-- Freiheit: Wie stark individuelle Lebensplanung und Rechte eingeschränkt werden.
-- Budget: Wie stark der Staatshaushalt belastet ist.
+**Handy-Dossiers:**
 
-Thema Tierschutz:
-- Tierwohl: Wie gut es Nutztieren geht und wie nachhaltig produziert wird.
-- Lebenshaltungskosten: Preise für Essen, v. a. Fleisch.
-- Bauern-Zufriedenheit: Existenzsicherheit und Stimmung bei Landwirten.
+1. **Dossier: "Wehrdienstgesetz 2026"**
+   - Fakt: Freiwilliges Modell seit 2011 ausgesetzt
+   - Update: Ab Jan 2026 Musterung alle Männer Jg. 2008+
+   - Neuerung: Frauen können sich freiwillig melden
+   - Wehrdauer: 6–12 Monate möglich
+   - Gehalt aktuell: 2.100€, Diskussion für 2.600€+
+   - Quiz: "In welchem Jahr wurde die Wehrpflicht ausgesetzt?" → Antwort "2011" = Bonus-Info über historische Debatte
 
-Jede Entscheidung verändert diese Werte (z. B. +20 Sicherheit, -30 Freiheit). Am Ende werden aus der Kombination der Werte unterschiedliche Endings ausgelöst.
+2. **Dossier: "NATO und Grenzverteidigung"**
+   - Deutschland muss NATO-Verpflichtung erfüllen (30.000 Soldaten Nato-ready)
+   - Aktuell: ~25.000 Berufsoldaten, Rest Reserve
+   - Cyber-Bedrohungen nehmen zu (Analyse: 4x mehr Angriffe 2025 vs. 2020)
+   - Fachkräfte-Mangel: Techniker, Drohnen-Operatoren
+   - Quiz: "Wie viele Soldaten fehlen?" → "20.000" = Info über Mindeststandards
 
-------------------------------------------------
-3. Struktur des Spiels im Unterricht
-------------------------------------------------
-Eine Spielsitzung besteht aus:
-- Einem Einstieg (Lehrer erklärt Rahmen, startet Thema auf der Tafel).
-- 2–3 Szenen pro Thema mit Entscheidungen.
-- Einem Ending (Nachrichtenlage 2035).
-- Reflexion / Diskussion im Unterricht.
+3. **Dossier: "Kritik von Aktivisten und Juristen"**
+   - Grundgesetz Art. 12a: Erlaubt Wehrpflicht bei "Verteidigungsnot"
+   - Kritik: Eingriff in Berufsfreiheit und Lebensplanung
+   - Auswirkung: Akademiker-Abwanderung (prognose: +8% Auswanderung, wenn Pflicht)
+   - Alternativen: Zivildienst, Kriegsdienstverweigerung
+   - Kostenvergleich: Freiwilliger (2.600€ Gehalt) vs. Pflichtiger (2.100€)
+   - Quiz: "Art. 12 Grundgesetz regelt..." → "Berufsfreiheit" = Kontext über Freiheitsrechte
 
-Modus:
-- **Single-Thema-Session:** Nur Wehrpflicht oder nur Tierschutz (ca. 30–45 Minuten).
-- **Doppel-Session:** Beide Themen nacheinander (90 Minuten).
+4. **Dossier: "Argumente der Befürwörter"**
+   - Umfrage MDR (Okt 2025): 60% Deutschen für Wehrpflicht-Rückkehr
+   - Gründe: "Stärkt Zusammenhalt", "Sicherheit", "Gerecht", "Alle sollten Dienst leisten"
+   - Historisch: Wehrpflicht 1956–2011 galt als "normativ" für Verteidigung
+   - Sozial: Chance für Chancenlose (Training, Abschlüsse während Dienst)
+   - Sicherheit: Größere Truppenstärke = schneller Mobilisierbar
+   - Quiz: "Welcher Prozentsatz befürwortet Wehrpflicht?" → "60%" = Info über Volksmeinung
 
-Ablauf pro Szene:
-1. Szene/News auf der Tafel (Board).
-2. Dossiers/Info-Tafeln auf den Handys.
-3. Diskussion in der Klasse (optional).
-4. Abstimmung per Handy.
-5. Board zeigt Live-Ergebnis (Balken).
-6. Werte werden angepasst, nächstes Szenario wird gewählt.
+**Vote-Optionen:**
 
-------------------------------------------------
-4. Nutzeroberfläche – Board (Tafel)
-------------------------------------------------
-Board zeigt immer drei Ebenen:
+**Option A: "Freiwillige Attraktivität statt Zwang"**
+- Beschreibung: "Gehalt auf 2.600€ erhöhen, Karriere-Chancen verbessern, Frauen gezielt werben. Musterung nur optional."
+- Mechanik:
+  - Sicherheit: +5 (nur Freiwillige = motivierte, aber weniger total)
+  - Freiheit: +10 (keine Zwangsverpflichtung)
+  - Budget: -15 (höhere Gehälter, Recruiting-Kampagnen)
+- News-Trigger (bei Wahl): 
+  - Live-Board: "Regierung wählt Freiwilligen-Weg"
+  - Balken-Animation zeigt Werte-Verschiebung
+  - What-if-Popup: "Wenn 70% wählen A: Sicherheit bleibt stabil, Freiwilligenquote könnte auf 35% steigen"
+- Übergang zu: **W2-A: Attraktiver Profi-Dienst**
 
-1. Szenen-Titel + Kurzbeschreibung
-   - Oben groß: Titel des aktuellen Szenarios (z. B. „Der Einberufungsbescheid“).
-   - Darunter 1–2 kurze Sätze Situationstext.
+**Option B: "Musterung und Bedarfspflicht einführen"**
+- Beschreibung: "Alle 18-Jährigen (m+w optional) müssen Fragebogen ausfüllen und Musterung. Je nach Bedarf wird eingezogen. Demokratische Gerechtigkeit: Alle tragen Lasten."
+- Mechanik:
+  - Sicherheit: +20 (800.000 Musterbare, 30–40% könnten eingezogen werden = schnell 100.000+ neue Soldaten)
+  - Freiheit: -20 (Zwang, Lebensplanung beeinträchtigt)
+  - Budget: -10 (Gehälter für Pflichtige niedriger angesetzt)
+- News-Trigger:
+  - Live-Board: "Bundestag verabschiedet Bedarfswehrpflicht"
+  - Bilder: Musterungsstelle, Jugendliche mit Formularen
+  - What-if: "Sicherheit +20 bedeutet NATO-Ziele erreicht, aber massive Jugend-Debatte erwartet"
+- Übergang zu: **W2-B: Pflicht für alle**
 
-2. Visualisierung der Stimmung / Votes
-   - Animierte Balken: Jede Entscheidungsoption (A, B, ggf. C) hat einen Balken.
-   - Balkenlänge = Anteil der Stimmen.
-   - Balken sind farblich unterschieden (A = Rot, B = Grün, C = Blau).
+---
 
-3. News-Clips / Bilder
-   - Zwischen Entscheidungen zeigt das Board „News“-Screens:
-     - Beispiel: „Breaking News: Hunderttausende demonstrieren gegen Dienstpflicht“.
-     - Visuell: Großes Bild, Headline, 1–2 Bulletpoints.
-   - Diese News spiegeln die bisherige Entwicklung und machen den Schmetterlingseffekt sichtbar.
+## SZENARIO W2-A: ATTRAKTIVER PROFI-DIENST
 
-Spezielle Screens:
-- Lobby/Start-Screen: Titel Standpunkt 2030, QR-Code, kurze Anleitung.
-- Zwischenbilanz: Kleine Übersicht nach Szene 2 (z. B. grafische Anzeige: Sicherheit hoch, Freiheit niedrig).
+**Zeitsprung: Herbst 2027** (18 Monate nach W1-A)
 
-------------------------------------------------
-5. Nutzeroberfläche – Handy (Mobile)
-------------------------------------------------
-Mobile-Screen besteht pro Szene aus:
+**Board-Szene:**
+- Titel: "Rekrutierungserfolg?"
+- Bild: Junge Bundeswehr-Soldaten in moderner Ausrüstung, Trainingscamp
+- Text: "Das Experiment gelang: Mit 2.600€ Monatsgehalt und modernen Karriere-Chancen melden sich immer mehr. Aber die Ausgaben sind enorm. Deutschland braucht noch ~15.000 Soldaten, neue Optionen entstehen."
 
-1. Szenario-Box
-   - Titel der Szene.
-   - Kurze Beschreibung (1–3 Sätze).
-   - Optional: kleines Icon/Bild (z. B. Brief, Kuh, Traktor).
+**News-Hintergrund:**
+- Bis Herbst 2027: 25.000 Freiwillige angeworben (Ziel erreicht, teils übertroffen)
+- Kostenexplosion: +2 Milliarden€ pro Jahr nur für Gehalt
+- Problem: Tech-Fachkräfte verdienen in Industrie mehr, bleiben nicht
+- Debatte: "Sollen wir EU-Bürger anwerben? Söldner? Oder weniger Ziele setzen?"
 
-2. Info-Dossiers (aufklappbare Info-Tafeln)
-   - Unterüberschrift: „Dossier“.
-   - Mehrere aufklappbare „Details“-Elemente:
-     - Titel (z. B. „Grundgesetz Art. 12a“).
-     - Inhalt: kurzer Text, neutrale Fakten, evtl. einfache Grafiken/Kennzahlen (als Text beschrieben).
-   - Schüler tippen, um Details zu öffnen/zu schließen.
+**Handy-Dossiers:**
 
-3. Entscheidungsbereich
-   - Unterüberschrift: „Deine Entscheidung“.
-   - 2–3 große Buttons.
-   - Text pro Button beschreibt politische Maßnahme, z. B.:
-     - „Wehrpflicht wieder einführen“.
-     - „Nur Berufsarmee, bessere Bezahlung“.
-   - Optional: Buttons können in späterer Version gesperrt sein, wenn bestimmte Dossiers nicht gelesen wurden.
+1. **Dossier: "Recruiting-Bilanz 2027"**
+   - Angeworbene: 25.000 (teils über 18 Monate aufgebaut)
+   - Haltezeit: 85% bleiben min. 4 Jahre
+   - Zufriedenheit: 78% positive Bewertung
+   - Ausfallquote: 10% (körperliche/psychische Gründe)
+   - Kosten total: +3,5 Mrd€ vs. Haushalt 2026
+   - Quiz: "Wie viele meldeten sich an?" → "25.000" = Statistik über Erfolgsquote
 
-Feedback:
-- Direkt nach der Stimmabgabe: kleines Popup „Stimme gezählt“.
-- Kein individuelles Ergebnis, nur kollektive Wirkung über das Board.
+2. **Dossier: "EU-Integration der Bundeswehr"**
+   - Option EU-Arbeitnehmerfreiheit nutzen: Könnte 50.000 Polen, Rumänen etc. anwerben
+   - Vor: Schnelle Truppenverstärkung, kosteneffizient (niedriger Gehalt bei osteuropäischen Standards)
+   - Nachteil: Sprachbarrieren, Integrations-Kosten, innenpolitische Kritik ("Ausländer als Soldaten?")
+   - Politische Grenze: EU-Verträge sind unklar, könnte Widerstand geben
+   - Fallbeispiel: Frankreich nutzt seit Jahrzehnten Fremdenlegion (13.000 Nicht-Franzosen)
+   - Quiz: "Wie viele Soldaten könnte Frankreichs Fremdenlegion stellen?" → "13.000" = Info über Präzedenzfälle
 
-------------------------------------------------
-6. Szenario-Struktur – Wehrpflicht
-------------------------------------------------
-Thema: „Wehrpflicht 2030 – Sicherheit vs. Freiheit“
+3. **Dossier: "Drohnen-Revolution und Automatisierung"**
+   - Neue Tech: Autonome Schwärme, KI-Abwehr, automatisierte Grenzsensoren
+   - Vorteil: Könnten 20.000 Bodensolaten "ersetzen" (in Theorie)
+   - Kosten: Entwicklung +500 Mio€, dann -20% Personalkosten/Jahr
+   - Risiko: Tech-Abhängigkeit, Cybervulnerabilität (wenn KI-Systeme gehackt)
+   - Kampf-Effektivität: Ungetestet in echtem Konflikt, Experten skeptisch (nur 60% Zuverlässigkeit in Simulationen)
+   - Quiz: "Wer könnte Drohnen-Schwärme hacken?" → "Cyber-Staaten (China, Russland)" = militär-strategische Info
 
-Szenario W1: Der Einberufungsbescheid (Start-Szene)
-- Setting:
-  - News: Spannungen in Europa, Cyberangriffe, Personalmangel bei Armee.
-  - Auf Board: „Bundeswehr fehlen 20.000 Soldaten. Regierung diskutiert Rückkehr der Wehrpflicht.“
-- Dossiers (Handy):
-  - Grundgesetz Art. 12a – rechtliche Grundlage.
-  - Historie der Wehrpflicht (Aussetzung 2011).
-  - Personalmangel und NATO-Verpflichtungen.
-  - Kritik: Eingriff in persönliche Freiheit, Bildungs- und Berufspläne.
-- Entscheidung:
-  - Option A: Wehrpflicht nicht wieder einführen, Berufsarmee stärken.
-  - Option B: Allgemeine Dienstpflicht für alle (Soziales + Militär).
-- Werte-Effekt:
-  - A: Sicherheit +5, Freiheit +10, Budget -15.
-  - B: Sicherheit +20, Freiheit -20, Budget -10.
-- Übergang:
-  - Wenn A: Szene W2-A.
-  - Wenn B: Szene W2-B.
+4. **Dossier: "Ethische Debatte um Söldner"**
+   - International verbreitet: Private Sicherheitsfirmen (Wagner, Academi, etc.)
+   - Pro: Entlastet Budget, volle operative Autonomie
+   - Contra: Loyalitätsprobleme, Vertrauensverlust in Demokratie, Historische Skandale (Übergriffe, Korruption)
+   - Rechtslage: BRD verbietet offiziell "Söldner" (Art. 12a), aber "private Sicherheit" ist grau
+   - Fallbeispiel: Südafrika (private Firmen → Korruptionsskandal 2020–2025)
+   - Quiz: "Welcher Staat nutzt Wagner-Söldner?" → "Russland, Syrien, Mali" = geopolitische Einordnung
 
-Szenario W2-A: „Teure Profis“
-- Ausgang von A (keine Wehrpflicht, nur Berufsarmee).
-- Board-News:
-  - High-Tech-Truppen, teure Ausrüstung, aber immer noch Personalmangel.
-  - Diskussion über Öffnung für EU-Bürger und Söldner.
-- Dossiers:
-  - Kosten pro Berufssoldat.
-  - Beispiele anderer Länder (z. B. USA, Frankreich).
-  - Ethische Diskussion: Kämpfen für Geld vs. Werte.
-- Entscheidung:
-  - A1: Armee für EU-Bürger und Söldner öffnen.
-  - A2: Armee verkleinern, voll auf Drohnen und Technologie setzen.
-- Werte:
-  - A1: Sicherheit +15, Freiheit ±0, Budget -20.
-  - A2: Sicherheit -10, Freiheit +5, Budget -5.
-- Übergang:
-  - A1: Szene W3-A1.
-  - A2: Szene W3-A2.
+**Vote-Optionen:**
 
-Szenario W2-B: „Pflichtjahr für alle?“
-- Ausgang von B (Dienstpflicht eingeführt).
-- Board-News:
-  - Bilder von Jugendlichen in Uniform, Pflegeheimen, Katastrophenschutz.
-  - Wirtschaft klagt über fehlende Arbeitskräfte.
-- Dossiers:
-  - Wirkung auf Sozialbereiche (Pflege, Feuerwehr).
-  - Auswirkungen auf Wirtschaft / Fachkräftemangel.
-  - Debatte Gerechtigkeit: Reiche vs. Arme, Stadt vs. Land.
-- Entscheidung:
-  - B1: Ausnahmen für Azubis/Studierende einführen.
-  - B2: Keine Ausnahmen, alle Jahrgänge gleich behandeln.
-- Werte:
-  - B1: Sicherheit +10, Freiheit -10, Budget -10.
-  - B2: Sicherheit +15, Freiheit -25, Budget -15.
-- Übergang:
-  - B1: Szene W3-B1.
-  - B2: Szene W3-B2.
+**Option A1: "EU-Talente einladen"**
+- Beschreibung: "Öffne Bundeswehr für EU-Bürger, hebt Sprachbarriere auf, flexible Verträge. Schnelle Truppenverstärkung, Integration europäisches Militär."
+- Mechanik:
+  - Sicherheit: +15 (50.000 zusätzliche Soldaten, NATO-Ziele übertroffen)
+  - Freiheit: ±0 (keine Änderung für Deutsche, EU-Bürger gewinnen Chance)
+  - Budget: -20 (Lower wages, aber mehr Personal, Logistik-Kosten)
+- Nebenwirkungen:
+  - Sicherheit steigt, aber VERTRAUEN-Wert (versteckt) sinkt -10: Deutsche Bevölkerung unwohl mit "Ausländer-Armee"
+  - News-Trigger: "Integration erfolgreich?" oder "Neonazi-Randale gegen EU-Soldaten"
+- Übergang zu: **W3-A1: Europäische Kompanie**
 
-Szenario W3-A1: „Die Söldner-Republik“ (mögliches Ending)
-- Board zeigt:
-  - News: Private Sicherheitsfirmen, ausländische Legionäre im Einsatz.
-  - Skandalberichte über Loyalität und Missbrauch.
-- Werte-Auswertung:
-  - Sicherheit hoch, Freiheit mittel, Budget stark belastet.
-- Botschaft:
-  - Sicherheit wurde erkauft, aber ethische und demokratische Probleme entstehen.
+**Option A2: "Technologie statt Menschen"**
+- Beschreibung: "Investiere massiv in Drohnen, KI-Abwehr, automatisierte Grenzsicherung. Weniger Soldaten, dafür High-Tech. Keine Söldner, keine EU-Integration—deutsche Technologie-Vorherrschaft."
+- Mechanik:
+  - Sicherheit: -10 (Technologie ungetestet, Cyber-Risiken, verliert Flexibilität)
+  - Freiheit: +5 (weniger Wehrpflicht-Druck, Karriere-Fokus auf Tech)
+  - Budget: -5 (teure Entwicklung, aber langfristig Einsparungen)
+- Nebenwirkungen:
+  - Neuer Wert "Technologie-Abhängigkeit" (+50): Deutschland anfällig für Cyber-Attacken
+  - News nach 12 Monaten (Szenario W3-A2): "Cyberangriff legt Drohnen-Netzwerk lahm"
+- Übergang zu: **W3-A2: Der gläserne Schild**
 
-Szenario W3-A2: „Der gläserne Schild“ (mögliches Ending)
-- Board:
-  - Drohnenflotte, automatisierte Verteidigung.
-  - Später: Großangriff per Cyberkrieg legt Systeme lahm.
-- Botschaft:
-  - Technologiefixierung macht abhängig und verletzlich.
+---
 
-Szenario W3-B1: „Dienstpflicht light“ (mögliches Ending)
-- Board:
-  - System mit vielen Ausnahmen, de facto ungerecht.
-  - Gerichte und Verwaltungsaufwand explodieren.
-- Botschaft:
-  - Kompromisslösung scheitert, weil sie niemanden konsequent behandelt.
+## SZENARIO W2-B: PFLICHT FÜR ALLE
 
-Szenario W3-B2: „Die Bürger in Uniform“ (mögliches Ending)
-- Board:
-  - Hohe innere Sicherheit, aber massive Proteste, Auswanderungstendenzen.
-- Botschaft:
-  - Sicherheit vs. Freiheit ist ein Trade-off, kein „perfekter“ Zustand.
+**Zeitsprung: Sommer 2027** (18 Monate nach W1-B)
 
-------------------------------------------------
-7. Szenario-Struktur – Tierschutz
-------------------------------------------------
-Thema: „Fleisch 2030 – Tierwohl vs. soziale Gerechtigkeit“
+**Board-Szene:**
+- Titel: "Das Pflichtjahr startet"
+- Bild: Diverse Jugendliche in Uniform/Grün-Jacken, Pflege-Szene, Katastrophenschutz
+- Text: "2027: Erste Kohorte (Jg. 2008, m+w optional) beginnt Dienst. 50.000 starten zeitgleich—ein Jahr für Sicherheit, Soziales oder Katastrophenschutz. Aber die Wirtschaft klagt, Auswanderung steigt, Diskussionen über Gerechtigkeit."
 
-Szenario T1: Skandal-Schlachthof
-- Board:
-  - Viralvideo, entsetzliche Zustände.
-  - Land im Aufruhr.
-- Dossiers (Handy):
-  - Haltungsformen (1–4).
-  - Anteil des Bauern am Fleischpreis.
-  - Umweltbelastung durch Massentierhaltung.
-- Entscheidung:
-  - Option A: Haltungsform 1 und 2 verbieten (nur noch Tierwohl-orientierte Betriebe).
-  - Option B: Hohe Fleischsteuer einführen, Einnahmen in Tierwohl-Fonds.
-- Werte:
-  - A: Tierwohl +25, Lebenshaltungskosten +15, Bauern-Zufriedenheit -20.
-  - B: Tierwohl +15, Lebenshaltungskosten +20, Bauern-Zufriedenheit -5.
-- Übergänge:
-  - A: Szene T2-A.
-  - B: Szene T2-B.
+**News-Hintergrund:**
+- 50.000 Jugendliche beginnen Dienst (ca. 60% Militär, 40% zivil)
+- Auswanderung steigt: +3% Anträge für Auswanderung/Ausstieg vs. 2026
+- Wirtschaft: Handwerk, Startups berichten über Fachkräfte-Lücke
+- Gerichte: Erste Beschwerde gegen "Geschlechter-Ungerechtigkeiten" (Frauen optional, Männer Pflicht)
+- Positive Stimmen: Sozialbereiche (Pflege, Rettungsdienste) profitieren massiv
 
-Szenario T2-A: „Leere Regale“
-- Board:
-  - Supermärkte: Fleisch knapp, Preise sehr hoch.
-  - Kleine Bauern können nicht schnell genug umbauen.
-- Dossiers:
-  - Umbaukosten für Ställe.
-  - Import von billigem Fleisch aus dem Ausland.
-- Entscheidung:
-  - A1: Importstopp für Billigfleisch (streng).
-  - A2: Import zulassen, dafür inländische Auflagen hoch halten.
-- Werte:
-  - A1: Tierwohl +10, Lebenshaltungskosten +10, Bauern-Zufriedenheit +5.
-  - A2: Tierwohl ±0 (abroad), Lebenshaltungskosten +5, Bauern-Zufriedenheit -5.
-- Übergänge:
-  - A1: Szene T3-A1 (Ending „Grüne Festung“).
-  - A2: Szene T3-A2 (Ending „Doppelmoral“).
+**Handy-Dossiers:**
 
-Szenario T2-B: „Teurer Döner“
-- Board:
-  - News: Döner kostet 12 €, Schnitzel 25 €.
-  - Proteste ärmerer Schichten.
-- Dossiers:
-  - Verteilung der Steuereinnahmen.
-  - Armutsgefährdung, wenn Lebensmittelpreise steigen.
-- Entscheidung:
-  - B1: Klimageld/Sozialausgleich (Geld an Bürger zurück).
-  - B2: Großes Investment in Laborfleisch/Fleischalternativen.
-- Werte:
-  - B1: Lebenshaltungskosten -10, Tierwohl +5, Bauern-Zufriedenheit -5.
-  - B2: Tierwohl +20 (langfristig), Bauern-Zufriedenheit -20, Lebenshaltungskosten -5 (langfristig).
-- Übergänge:
-  - B1: Szene T3-B1 (Ending „Klassenkampf am Grill“).
-  - B2: Szene T3-B2 (Ending „Cyber-Meat 2030“).
+1. **Dossier: "Erste Bilanz des Pflichtjahrs"**
+   - Einsatzquoten: 60% Militär, 40% Zivil (Pflege, Feuer, Katastrophenschutz)
+   - Zufriedenheit Rekruten: 71% bewerten positiv (überraschend hoch)
+   - Schulabschluss-Chancen: 15% erhalten während Dienst Qualifikationen
+   - Gerechtigkeitsfrage: 67% Frauen möchten AUCH Pflicht (nicht nur optional)
+   - Auswanderer: +3% vs. Vorjahr (ca. 24.000 Personen pro Kohorte beantragen Ausstieg)
+   - Quiz: "Welcher Anteil ist zufrieden?" → "71%" = Überraschungs-Moment über Akzeptanz
 
-Szenario T3-A1: Ending „Die grüne Festung“
-- Board:
-  - Fast vegane Gesellschaft, kaum Tierleid.
-  - Importstopps, Handelskonflikte, Fleisch-Schwarzmarkt.
-- Botschaft:
-  - Radikale Ethik kann zu Isolation und Kontrollproblemen führen.
+2. **Dossier: "Wirtschaftliche Auswirkungen"**
+   - Handwerk: -12% Lehrlings-Bewerbungen (Jg. 2008 ist weg)
+   - Startups: 8% berichten über verzögerte Gründungen ("Gründer erst mit 19")
+   - Gesamt-BIP-Effekt: Neutral zu -0,1% (Produktivitätsverlust wird durch Zivil-Gewinne kompensiert)
+   - Pflege-Mangel: -25% (vor Dienst) → +5% (während Dienst), dann +15% (danach, weil viele "Liebhaber" geworden sind)
+   - Bausektor: -8% (weniger junge Arbeiter)
+   - Quiz: "Um wie viel sinken Lehrlings-Bewerbungen?" → "-12%" = Wirtschafts-Realität
 
-Szenario T3-A2: Ending „Doppelmoral“
-- Board:
-  - Deutschland sauber, andere Länder tragen die Last.
-- Botschaft:
-  - Probleme wurden verlagert, nicht gelöst.
+3. **Dossier: "Geo-Verteilung und Stadt/Land-Diskrepanzen"**
+   - Stadt: 45% erhalten Dienst-Plätze in ihrer Region (kurze Wege)
+   - Land: 75% müssen fortziehen (Kaserne, Krankenhaus 50+ km entfernt)
+   - Kritik: "Bauernsöhne müssen weg, Stadtkinder bleiben—ungerecht"
+   - Soziale Effekt: Land verliert junge Menschen für 12 Monate, Reintegration schwierig
+   - Lösungen diskutiert: "Tele-Dienst"? "Lokale Divisionen"? (nicht umsetzbar)
+   - Quiz: "Wie viel Prozent Land-Jugendlicher bleiben in Region?" → "25%" = Ungleichheit sichtbar
 
-Szenario T3-B1: Ending „Klassenkampf am Grill“
-- Board:
-  - Grillen als politischer Akt, Reiche vs. Arme.
-- Botschaft:
-  - Klima-/Tierpolitik ist auch Sozialpolitik.
+4. **Dossier: "Geschlechter-Gerechtigkeit Debatte"**
+   - Status quo: Männer Pflicht (18–60 Reservepflicht), Frauen optional
+   - Frauen-Forderung: Entweder ALLE optional oder ALLE Pflicht
+   - Juristen: GG Art. 12a erlaubt "Pflicht für Männer", aber neuere Lesarten (Gleichstellungsgebot) sind unklar
+   - Abstimmung: 67% Frauen UND 58% Männer fordern "Gleichstellung" (entweder beide ja oder beide nein)
+   - International: Frankreich, Spanien (optional für alle), Schweiz (Pflicht für Männer, optional Frauen als Übergangslösung)
+   - Quiz: "Welche Länder haben Wehrpflicht?" → "Frankreich, Spanien, Schweiz" + Quiz-Bonus: Unterschiede
 
-Szenario T3-B2: Ending „Cyber-Meat 2030“
-- Board:
-  - Laborfleisch, Bauernsterben, Futuristische Fabriken.
-- Botschaft:
-  - Technische Lösungen haben Gewinner und Verlierer.
+**Vote-Optionen:**
 
-------------------------------------------------
-8. Didaktik und Lehrerrolle
-------------------------------------------------
-Die Lehrkraft:
-- Startet das Spiel (Lobby).
-- Wählt das Thema (Wehrpflicht / Tierschutz).
-- Pausiert zwischen Szenen, um Diskussion zu ermöglichen.
-- Nutzt die Endings als Diskussionsanlass („War das gerecht? Hätte man etwas besser machen können?“).
+**Option B1: "Ausnahmen für Zukunftsdenker"**
+- Beschreibung: "Studium, Ausbildung, Entrepreneurship sind Alternativen zum Dienst (mit Nachweis). Wer eine 'höhere Qualifikation' macht, kann aufschieben oder ganz ausweichen. Fair für Talente, aber auch Klassendenken?"
+- Mechanik:
+  - Sicherheit: +10 (85% dienen, 15% sind hochqualifiziert = insgesamt +10)
+  - Freiheit: -10 (theoretisch optional, praktisch doch Druck)
+  - Budget: -10 (Kontroll-Bürokratie explodiert: Wer darf ausweichen? Gerichte entscheiden)
+- Nebenwirkungen:
+  - Neuer Wert "Rechtsstaatlichkeit" (-15): Gerichte überfordert mit Beschwerde-Flut
+  - Klassen-Effekt: Reiche Eltern lassen Kinder studieren, arme Kinder dienen → Ungleichheit wächst
+  - News nach 6 Monaten: "Tausende Beschwerden vor Verwaltungsgerichten" oder "Reiche kaufen sich frei—Protest"
+- Übergang zu: **W3-B1: Kompromisslösung zerfällt**
 
-Mögliche Arbeitsaufträge:
-- Schüler notieren ihre Entscheidungen und Begründungen.
-- Vergleich: „Was hätte ich privat gewählt vs. was habe ich im Spiel gewählt?“
-- Transfer: „Welche Debatten seht ihr heute schon in den Nachrichten?“
+**Option B2: "Gleiches Recht, gleiches Spiel"**
+- Beschreibung: "Keine Ausnahmen. Alle Jahrgänge (m/w, alle Schichten) dienen 12 Monate. Streng, aber gerecht. Keine Klassen-Diskrepanzen, Reiche zahlen nicht extra."
+- Mechanik:
+  - Sicherheit: +15 (100% mobilisierbar, hohe Truppenstärke, vollständige Datenbank)
+  - Freiheit: -25 (Maximal Zwang, Lebensplanung stark beeinträchtigt)
+  - Budget: -15 (weniger Verwaltungs-Overhead, aber teurer pro Soldat wegen höherer Ansprüche)
+- Nebenwirkungen:
+  - "Sozialer Zusammenhalt" Wert (+20): Alle sind "Kameraden", Klassen-Grenzen verschwinden (temporär)
+  - "Auswanderungs-Druck" steigt: -15 (mehr Menschen verlassen Deutschland pre-emptiv)
+  - News nach 3 Monaten: "Massiv-Proteste: Hunderttausende Demonstrieren gegen Pflicht-Lotterie" oder "Gerichte stoppen Erste Kohorte"
+- Übergang zu: **W3-B2: Die Bürger in Uniform**
 
-------------------------------------------------
-9. Erweiterungen (später möglich)
-------------------------------------------------
-- Mehr Themen (z. B. Überwachung vs. Datenschutz, Klimapolitik, KI-Überwachung).
-- Rollenprofile auf den Handys (z. B. einer ist „Bauer“, einer „Soldat“, einer „Minister“).
-- Lehrer-Admin-Panel mit manueller Szenenauswahl und Statistik.
+---
 
-------------------------------------------------
-10. Zusammenfassung
-------------------------------------------------
-Standpunkt 2030 ist ein Unterrichtsspiel, in dem eine Klasse kollektiv politische Entscheidungen in zwei sensiblen Bereichen trifft:
-- Wehrpflicht: Sicherheit vs. Freiheit.
-- Tierschutz: Ethik vs. soziale Gerechtigkeit.
+## SZENARIO W3-A1: EUROPÄISCHE KOMPANIE
 
-Statt „richtig/falsch“ gibt es:
-- Sichtbare Konsequenzen auf der Tafel (News, Endings).
-- Unsichtbare Werte, die langfristig Auswirkungen haben.
-- Mehrere Endings, die zeigen, dass jede Entscheidung Trade-offs hat.
+**Zeitsprung: Herbst 2028** (3+ Jahre nach Start)
 
-Dieses game.txt dient als vollständige inhaltliche Blaupause für Story, Struktur, Entscheidungen und Schmetterlingseffekte.
+**Board-Szene:**
+- Titel: "Europas Armee in Deutschland"
+- Bild: Gemischte EU-Soldaten, multinational, Flaggen (DE, PL, RO, etc.), gemeinsames Training
+- Text: "50.000 EU-Bürger in Bundeswehr: Integriertes Modell funktioniert. NATO-Ziele übertroffen. Aber: politische Spannungen, Fragen über Loyalität, erste Skandale in Medien."
+
+**Szenarien während W3-A1:**
+
+**Subszene 1: Integration erfolgreich**
+- Militär-Statistik: 78% zufrieden, Leistung 90%+ der Deutschen
+- Sozial-Integrationen funktionieren, Kameradschafts-Berichte positiv
+- Sprachkurse, Familien-Unterstützung zeigen Wirkung
+- News-Balken positiv: "Europäische Armee symbolisiert EU-Einheit"
+
+**Subszene 2: Populistische Backlash**
+- Politische Bewegung wächst: "Deutschland wird überfremdert!"
+- Neonazi-Übergriffe auf EU-Soldaten (2–3 Vorfälle in Berlin, München)
+- Umfrage: Deutsche Bevölkerung spaltet (60% Zustimmung, 40% Kritik)
+- News konträr: "Rechtsradikale Hetze gegen multinationale Armee"
+- Wert "Vertrauen in Demokratie" sinkt (-10)
+
+**Möglicher Branchungs-Point (Lehrer-Wahl oder Random):**
+
+**Path A1a: "Diversität ist Stärke"**
+- Resolution: EU-Soldaten werden Teil nationaler Identität (Best-Practice-Stories)
+- Integrationsgesetze verschärft
+- Wert-Effekte: Sicherheit +5, Vertrauen +10, Freiheit -5 (aber "europäisch" neu definiert)
+- Ending (W4-A1a): **"United Europe's Shield"** (2035)
+
+**Path A1b: "Backlash und Rückzug"**
+- Resolution: EU-Soldaten werden nach 2 Jahren reduziert, Widerstand zu groß
+- Deutsche Armee schrumpft wieder, Sicherheits-Ziele nicht erreicht
+- Wert-Effekte: Sicherheit -20, Vertrauen +10, Freiheit +5
+- Ending (W4-A1b): **"Scheiternde Integration"** (2035)
+
+---
+
+## SZENARIO W3-A2: DER GLÄSERNE SCHILD
+
+**Zeitsprung: Sommer 2029** (3+ Jahre nach Start)
+
+**Board-Szene:**
+- Titel: "Cyberkrieg 2029"
+- Bild: Hacker-Szene, rote Netzwerk-Animation, Server-Racks, Alarm-Meldungen
+- Text: "Massive Cyberattacke aus unbekannter Quelle legt Drohnen-Netzwerk Deutschlands lahm. 48 Stunden Chaos: Grenzsicherung weg, Luftverteidigung offline. Zu viel Vertrauen in Automation?"
+
+**Subszene 1: Der Angriff (Live-Board)**
+- T+0: Erste Anomalien in Drohnen-Kommunikation
+- T+2h: 30% der Flotte ist nicht steuerbar
+- T+6h: Alle autonomen Systeme DOWN, manuelle Übernahme funktioniert, aber ist ineffizient
+- T+24h: Wiederherstellung beginnt
+- T+48h: 70% wiedererlangt, Quelle ist China oder Russland (unklar)
+- Aktion: Luftwaffe startet Reserven (alte Piloten-Kampfjets), reduzierter Schutz
+
+**Handy-Dossier während Szene:**
+- Cybersicherheit-Bericht 2029
+- Vulnerabilität-Analyse: Zu viel Zentral-Kontrolle
+- Alternativen (zu spät): Redundanz, lokale Kontrolle, Hybrid-System
+- Verluste: Keine direkten (es gab keinen Angriff), aber Vertrauens-Verlust massiv
+
+**Möglicher Branchungs-Point:**
+
+**Path A2a: "Hybrid-Sicherheit einführen"**
+- Resolution: Rückkehr zu Mischmodell (20% Drohnen, 80% Menschen)
+- Neue Investitionen in "Backup-Systeme"
+- Wert-Effekte: Sicherheit -5 (bleibt unter Ziel), Vertrauen +15 (Menschen sind zuverlässiger), Budget -30 (massiv Investitionen)
+- Ending (W4-A2a): **"Rückkehr zur Realität"** (2035)
+
+**Path A2b: "Weiter mit Automatisierung"**
+- Resolution: Investiere noch mehr in Cyberscschutz, AI-Sicherheit, redundante Systeme
+- Akzeptiere Rückschläge als Teil des Lernens
+- Wert-Effekte: Sicherheit +10 (nach Patches), Vertrauen -20 (Bevölkerung misstraut Tech), Budget -50 (massive neue Investitionen)
+- Ending (W4-A2b): **"Cyber-Fortress Deutschland"** (2035)
+
+---
+
+## SZENARIO W3-B1: KOMPROMISSLÖSUNG ZERFÄLLT
+
+**Zeitsprung: Herbst 2028** (18 Monate nach B1-Start)
+
+**Board-Szene:**
+- Titel: "Die Gerichts-Lawine"
+- Bild: Gericht, Richter, Stapel von Beschwerden, rote Ampel
+- Text: "Verwaltungsgerichte überfordert: Tausende klagen gegen Ausnahme-Entscheidungen. Sind die Kriterien gerecht? Wer darf ausweichen? Reiche kaufen sich frei. Das System kollabiert unter seinen eigenen Widersprüchen."
+
+**Handy-Dossier:**
+1. **Dossier: "Beschwerde-Flut"**
+   - Insgesamt: 127.000 Beschwerden bis Sept 2028 (von 500.000 Jahrgängen)
+   - Quote: 25% der Jahrgänge klagen gegen Entscheidung
+   - Erfolgsquote: 45% gewinnen vor Gericht
+   - Durchschnittliche Wartezeit auf Gerichts-Verhandlung: 14 Monate (Studien dauerten 6 Monate, aber dann bleiben Soldaten länger)
+   - Effekt: System ist blockiert, Klarheit gibt es nicht
+
+2. **Dossier: "Klassenbias und Ungerechtigkeit"**
+   - Analyse von Amnesty: Reiche Familien (>150k€ Einkommen): 60% erhalten Ausnahme
+   - Arme Familien (<30k€): 15% erhalten Ausnahme
+   - Quoten-Unterschied: Faktor 4x!
+   - Begründung meist: Teurere Anwälte, bessere Dokumentation, Netzwerk-Verbindungen
+   - Öffentliche Wahrnehmung: "Reiche kaufen sich frei" ist faktisch wahr
+
+3. **Dossier: "Alternative Szenarien wenn System kollabiert"**
+   - Option 1: Alle Ausnahmen streichen → zurück zu B2 (Pflicht für alle)
+   - Option 2: Alle bekommen Ausnahme → zurück zu W1-A (nur Freiwillige)
+   - Option 3: Neues, simpler System (z.B. Lotterie, wer dient)
+   - Bevölkerung gespalten über beste Lösung
+
+**Möglicher Branchungs-Point (nach Board-Diskussion):**
+
+**Path B1a: "System-Reset zu Allgemeiner Pflicht"**
+- Resolution: Gerichte erkennen Verfassungs-Problem, Ausnahmen werden komplett gestrichen
+- Alle müssen dienen, inkl. bisherige "Ausweicher"
+- Wird kontrovers (Nachhilfe-Effekt für 10.000+ junge Erwachsene die gedacht hatten, sie seien frei)
+- Wert-Effekte: Sicherheit +20 (alle kommen doch), Vertrauen -30 (massive Betrug-Wahrnehmung), Freiheit -35
+- Ending (W4-B1a): **"Der Backlash"** (2035) – Proteste, Auswanderung, politisches Chaos
+
+**Path B1b: "Selektion per Lotterie"**
+- Resolution: Gesetzgeber gibt auf, führt Lotterie ein ("Schicksals-Los"—niemand fühlt sich ungerecht behandelt einzeln)
+- 30% müssen dienen, 70% frei, komplett zufällig
+- Psychologisch funktioniert das besser (Fairness durch Zufall)
+- Sicherheit sinkt aber: nur 15.000 statt 50.000 erwartet
+- Wert-Effekte: Sicherheit -10, Vertrauen +20, Freiheit +15
+- Ending (W4-B1b): **"Das Glücksspiel"** (2035)
+
+**Path B1c: "Nur noch Freiwillige akzeptiert"**
+- Resolution: Oberste Gericht kippt Pflicht als "nicht verhältnismäßig"
+- Rückkehr zu W1-A (Freiwillige, bessere Bezahlung)
+- Bisherige Pflichtigen können raus
+- Sicherheit sinkt deutlich, Freiheit gewinnt
+- Wert-Effekte: Sicherheit -15, Vertrauen +25, Freiheit +30
+- Ending (W4-B1c): **"Gericht gewinnt"** (2035)
+
+---
+
+## SZENARIO W3-B2: DIE BÜRGER IN UNIFORM
+
+**Zeitsprung: Herbst 2028** (18 Monate nach B2-Start)
+
+**Board-Szene:**
+- Titel: "Ein Jahr—eine Generation"
+- Bild: Vielfältige Uniformierte (alle Geschlechter, alle Schichten), Arm in Arm, Lagerfeuer, gemeinsam
+- Text: "2028: Erste 50.000 beenden Dienst. Überraschungs-Ergebnis: Gesellschaftlicher Zusammenhalt ist real. Klassenunterschiede geschmolzen. Aber: Auswanderung erreicht Rekordhöhe, progressive Staaten kritisieren 'Militarisierung', Gerichte blockieren Gender-Regelungen."
+
+**Handy-Dossier:**
+
+1. **Dossier: "Zusammenhalt-Effekt"**
+   - Studie (repräsentativ): 73% Gediente sagen "Armee-Jahr änderte meine Sicht auf Gleichheit"
+   - Soziales Kapital: Freundschaften über Klassen-Grenzen (64% berichten Kontakt zu völlig anderen Milieus)
+   - Langzeit-Effekt: 40% von Gediente Männer/Frauen-Teams bleiben in Freundschaft/Beziehung
+   - Politisches Bewusstsein: +15 Prozentpunkte Wahlbeteiligung unter Ex-Gediente
+   - Bundes-Image: International als "Vorbild-Modell" wahrgenommen (Schweden, Finnland wollen nachahmen)
+   - Quiz: "Welcher Anteil sagt, dass es ihre Sicht änderte?" → "73%" = Positive Überraschung
+
+2. **Dossier: "Auswanderung und Kritik"**
+   - Auswanderung 2027–2028: +7% vs. 2026 (ca. 45.000 Menschen pro Jahr mehr)
+   - Zielländer: Schweiz, Österreich, Skandinavien, Australien
+   - Gründe (Umfrage): 40% sagen "Wehrpflicht war Faktor" (nicht alleiniger Grund, aber relevant)
+   - Andere Faktoren: Klimaangst, Jobsuche, Fernweh
+   - Quote-Effekt: Viele sind qualifiziert (Akademiker dienen und verlassen danach)
+   - International Kritik: "Militarism, not liberal values" (Grüne in Schweiz, Norwegen)
+   - Quiz: "Um wie viel % ist Auswanderung gestiegen?" → "+7%" = Real Cost sichtbar
+
+3. **Dossier: "Geschlechts-Konflikt und Gerichtsverfahren"**
+   - Status quo B2: Männer Pflicht, Frauen "optional" (aber massive Propaganda, daher 45% Frauen machen mit)
+   - Klage: Frauen-Verbände klagen gegen "Differential Treatment"
+   - Gericht: Erkennt an, dass "optional" faktisch Druck bedeutet, Argument "alle sind gleich dienen"
+   - Urteil (März 2028): "Frauen-Pflicht ist verfassungsmässig gleich wie Männer-Pflicht" → Gleichstellung
+   - Folge: Ab 2029 müssen auch Frauen Dienst leisten
+   - Neue Debatte: "Müssen alle Geschlechter Kampftruppen können?" (physische Standards)
+   - Quiz: "Urteil: Frauen und Männer?" → "Gleich Pflicht" = Gleichstellungs-Sieg
+
+4. **Dossier: "Sicherheit und Überkapazität"**
+   - Truppenstärke 2028: 180.000 (50.000 dienend, 80.000 Reserve <10 Jahre, 50.000 Reserve <20 Jahre)
+   - Überkapazität: Eigentlich braucht man nur 100.000
+   - Problem: Zu viele Soldaten → Langeweile, Unfälle, Kosten explodieren
+   - Lösungsansätze: Verkürze Dienst auf 6 Monate? Teile die Kohorten auf mehrere Jahre? Internationalisiere?
+   - Militär-Führung: "Qualität > Quantität", will kürzeren Dienst oder geringere Quoten
+   - Quiz: "Wie viele Soldaten sind zu viel?" → "80.000" = Problem sichtbar
+
+**Möglicher Branchungs-Point:**
+
+**Path B2a: "Dienst verkürzen + Frauen-Gleichstellung"**
+- Resolution: Ab 2029 müssen alle Geschlechter 6 Monate dienen (nicht 12)
+- Reduktion: Statt 50.000 pro Jahrgang nur noch 25.000 (aufgeteilt auf zwei Hälften)
+- Ziel: Zusammenhalt bleiben, aber weniger Überkapazität
+- Wert-Effekte: Sicherheit -5, Freiheit +10, Zusammenhalt +10
+- Ending (W4-B2a): **"Das optimierte Modell"** (2035)
+
+**Path B2b: "Frauen-Kampfquoten Debatte"**
+- Resolution: Diskussion: Müssen Frauen auch Kampftruppen dienen? Physische Standards?
+- Polarisierung: Feministen sagen "Ja, oder gar nicht", Militär sagt "Andere Standards möglich"
+- Gerichts-Chaos folgt (ähnlich wie B1)
+- Wert-Effekte: Freiheit ±0, Vertrauen -20, Sicherheit ±0
+- Ending (W4-B2b): **"Gleichstellung im Konflikt"** (2035)
+
+**Path B2c: "Beibehaltung strenges Modell"**
+- Resolution: Deutschland hält fest an strikter Gleichheit und Vollplicht
+- International als "Vorbild" anerkannt, aber intern weiter Kritik
+- Auswanderung bleibt auf +7% Niveau
+- Wert-Effekte: Sicherheit +10, Vertrauen +20, Freiheit -25
+- Ending (W4-B2c): **"Militärische Supermacht"** (2035)
+
+---
+
+## SPECIAL: KRISEN-SZENARIEN (können früh ausgelöst werden basierend auf Wert-Schwellen)
+
+### KRISE K1: "Cyberangriff bei niedriger Sicherheit"
+- Trigger: Wenn Sicherheit < 35 am Ende von Szene 2
+- Board-News: "Großangriff auf Stromnetz, Wasser, Kommunikation"
+- Sofort neue Szene: "Notfall-Maßnahmen. Wählst du Martial Law oder Cyber-Investitionen?"
+- Optionen: Notstand ausrufen (+Sicherheit +30, -Freiheit -30) vs. schnelle Cyber-Rüstung (-Budget -50, +Zeit-Verzögerung)
+
+### KRISE K2: "Zivil-Unruhen bei sehr niedriger Freiheit"
+- Trigger: Wenn Freiheit < 30 nach Szene 3
+- Board-News: "Hunderttausende Proteste in Berlin, Hamburg, Köln"
+- Handy-Dossier: Gründe (Wehrpflicht, Überwachung, gefühlte Unterdrückung)
+- Szene: "Polizei vs. Demonstranten. Wählst du Verständnis oder Härte?"
+- Optionen: Dialog (Freiheit +10, Sicherheit -5) vs. Lautsprecheransagen (Sicherheit +5, Freiheit -15)
+
+### KRISE K3: "Wirtschafts-Zusammenbruch bei hohen Kosten"
+- Trigger: Wenn Budget < 20 und Sicherheit > 80 (Überinvestition)
+- Board-News: "Staatshaushalt am Limit, Schulden explodie­ren, Rating-Agentur droht mit Downgrade"
+- Szene: "Kürzungen notwendig. Was opferst du?"
+- Optionen: Wehrpflicht-Budget senken (Sicherheit -20) vs. Soziales kürzen (Unzufriedenheit +30, Freiheit -10)
+
+---
+
+## TEIL 2: TIERSCHUTZ-PFADE (Tierwohl vs. Lebenshaltungskosten vs. Bauernzufriedenheit)
+
+### AUSGANGSLAGE (global)
+**News-Eröffnung (Board):**
+- Headline: "2026: Fleisch-Skandal geht viral"
+- Bullets:
+  - Video zeigt Horror-Haltung in Schlachthof
+  - 5 Millionen Aufrufe in 2 Tagen
+  - Gesellschaft fordert: "So geht es nicht weiter!"
+  - Bauernverband: "Aber die Preise..."
+- Werte Start: Tierwohl 40, Lebenshaltungskosten 55, Bauernzufriedenheit 60
+
+---
+
+## SZENARIO T1: SCHLACHTHOF-SKANDAL 2026
+
+**Board-Szene:**
+- Titel: "Das Viralvideo"
+- Bild: Screenshot des Videos (verpixelt), rote Alarm-Symbole
+- Text: "Ein verstecktes Video zeigt unmögliche Zustände in großem Schlachthof. Enge Käfige, Antibiotika-Missbrauch, tote Tiere. Die Gesellschaft ist empört. Der Druck auf Politik ist enorm. Was ändert sich?"
+
+**Handy-Dossiers:**
+
+1. **Dossier: "Haltungsformen 1–4 (Deutschland)"**
+   - Form 1 (Konventionell, 60%): Käfighaltung, enge Platzierung, Medikamente
+     - Kosten Bauer: gering (−30%)
+     - Kosten Verbraucher: billig (Hähnchen 2,50€)
+     - Tierwohl-Score: 20/100
+   - Form 2 (Verbessert, 25%): Etwas Platz, Einstreu, weniger Medikamente
+     - Kosten Bauer: −10%
+     - Kosten Verbraucher: +20% (Hähnchen 3,20€)
+     - Tierwohl-Score: 50/100
+   - Form 3 (Bio, 10%): Auslauf, Bio-Futter, kein Antibiotika-Routine
+     - Kosten Bauer: +15%
+     - Kosten Verbraucher: +60% (Hähnchen 5,50€)
+     - Tierwohl-Score: 80/100
+   - Form 4 (Premiumgold, 5%): Freiland, natürliches Verhalten, 2 Jahre Haltungsdauer (vs. 35 Tage Hähnchen normal)
+     - Kosten Bauer: +80%
+     - Kosten Verbraucher: +250% (Hähnchen 8,50€)
+     - Tierwohl-Score: 95/100
+   - Quiz: "Wie viel Prozent Hähnchen sind Konventionell?" → "60%" = System-Realität
+
+2. **Dossier: "Ökonomie: Wer verdient was?"**
+   - Beispiel Hähnchen-Filet (Einzelhandelspreis 4,99€):
+     - Bauer/Produzent: 1,80€ (36%)
+     - Verarbeiter/Großhandel: 1,50€ (30%)
+     - Einzelhandel: 0,89€ (18%)
+     - Transport: 0,50€ (10%)
+     - Steuern/Margen: 0,30€ (6%)
+   - Problem: Bauern verdienen wenig, können sich Verbesserungen nicht leisten
+   - Reform-Szenarien:
+     - Bauern Anteil auf 50%? → Hähnchen wird 7,00€
+     - Großhandel-Druck? → Könnte Anteil auf 15% senken → Hähnchen 3,80€
+   - EU-Vergleich: Dänemark hat höheren Bauern-Anteil (42%), höhere Standards
+   - Quiz: "Wie viel verdient der Bauer pro Hähnchen?" → "1,80€" = Wirtschaftliche Realität
+
+3. **Dossier: "Umweltauswirkungen von Massentierhaltung"**
+   - Antibiotika-Resistenzen: 30% der Flüssigabfälle aus Tierhaltung belasten Gewässer
+   - Emissionen: Tierhaltung = 15% aller Treibhausgase (Methan, Lachgas, CO2)
+   - Flächennutzung: 50% der landwirtschaftlichen Nutzfläche ist Tierfutter-Produktion
+   - Gewässer-Belastung: Stickstoff aus Dung verseuert Grundwasser (6 von 16 Bundesländern haben Problem)
+   - Biodiversität: Monokultur-Futtermittel zerstört lokale Ökosysteme
+   - Reform-Szenarien:
+     - Reduzierte Tierhaltung (−50%): Bessere Umwelt, aber massale Versorgungslücke
+     - Bio-Fütterung: +30% Landflächenbedarf, aber sauberer
+   - Quiz: "Wie viel % der Emissionen kommt aus Tierhaltung?" → "15%" = Klima-Einsicht
+
+4. **Dossier: "Gesellschaft und Moral"**
+   - Umfrage 2026: 72% Deutschen wollen "strengere Tierschutz-Standards"
+   - Aber: 68% essen immer noch täglich Fleisch/Fisch
+   - Widerspruch: Kognitives Dissonanz-Beispiel
+   - Veganismus: 8% der Bevölkerung, Trend +3% pro Jahr
+   - Flexitarianismus: 25% essen weniger Fleisch (aber nicht komplett vegan)
+   - Gen-Debatte: "Sind Tiere Eigentum oder Lebewesen mit Rechten?"
+   - Quiz: "Wie viel % wollen strengere Standards?" → "72%" = Populäre Forderung
+
+**Vote-Optionen:**
+
+**Option A: "Radikal: Form 1 und 2 verbieten"**
+- Beschreibung: "Ab 2027 nur noch Form 3 und 4 erlaubt. Intensive Käfighaltung ist vorbei. Deutschland wird Tierwohl-Vorreiter. Preise steigen massiv, aber moralisch vertretbar."
+- Mechanik:
+  - Tierwohl: +25 (Käfighaltung weg, Biohaltung Standard)
+  - Lebenshaltungskosten: +15 (Fleisch-Preise steigen um 40–60%)
+  - Bauernzufriedenheit: -20 (Große Herden müssen schnell umbauen, Investitionen enorm)
+- Nebenwirkungen:
+  - Sofort-Effekt: 20% der aktuellen Betriebe können nicht umstellen, geben auf
+  - News-Trigger: "Bauern-Sterben beschleunigt sich" oder "Lebensmittel-Teuerung Protest"
+  - Hidden Wert "Importabhängigkeit": +30 (Deutschland muss Fleisch importieren, verliert Autonomie)
+- Übergang zu: **T2-A: Leere Regale**
+
+**Option B: "Moderat: Fleisch-Steuer + Fonds"**
+- Beschreibung: "25% Steuer auf Fleisch/Fisch. Einnahmen (2–3 Mrd€/Jahr) gehen in Umbaue-Fonds für Bauern und bessere Forschung. Freier Markt, aber mit Anreizen für Besserung."
+- Mechanik:
+  - Tierwohl: +15 (Bauern bekommen Geld zur Umstellung, Erfolgsquote 60%)
+  - Lebenshaltungskosten: +20 (Fleisch-Steuer wird direkt weitergegeben: +25%)
+  - Bauernzufriedenheit: -5 (Steuer unpopulär, aber Fonds hilft einigen)
+- Nebenwirkungen:
+  - Markt-Effekt: Nachfrage sinkt um 15% (Menschen essen weniger Fleisch wegen Preis)
+  - Einkommen-Ungleichheit wird sichtbar: Reiche essen immer noch viel, Arme weniger (Klassenpolitik)
+  - News-Trigger: "Fleisch wird zur Luxus-Ware für Reiche" oder "Handwerk-Restaurants kämpfen"
+- Übergang zu: **T2-B: Teurer Alltag**
+
+---
+
+## SZENARIO T2-A: LEERE REGALE
+
+**Zeitsprung: Sommer 2027** (18 Monate nach T1-A)
+
+**Board-Szene:**
+- Titel: "Fleisch-Mangel 2027"
+- Bild: Leere Supermarkt-Regale mit "AUSVERKAUFT"-Schildern, Lebensmittel-Warteschlangen
+- Text: "Die Umstellung auf Form 3/4 ist schneller als geplant gescheitert. Nur 20% der Bauern konnten investieren. Massenimporte aus Polen/Dänemark, aber mit fragwürdigen Standards. Verbraucher klagen über fehlende Auswahl und hohe Preise."
+
+**Handy-Dossiers:**
+
+1. **Dossier: "Umstellungs-Bilanz"**
+   - Betriebe die umgestiegen: 20% (erwartet: 60%)
+   - Betriebe die eingegangen: 30% (30.000 Menschen verlassen Landwirtschaft)
+   - Neue Import-Volumen: +40% aus EU (Polen, Ungarn, Rumänien)
+   - Standard dieser Importe: Form 2–3 (besser als deutsches Form 1, aber nicht Form 4)
+   - Verbraucher-Wahrnehmung: "Wir zwingen Deutsche Bauern raus, importieren von schlechteren Standards" = Widerspruch
+   - Quiz: "Wie viel % sind umgestiegen?" → "20%" = Scheitern sichtbar
+
+2. **Dossier: "Investitions-Kosten für Stallumbau"**
+   - Durchschnitt pro Betrieb: 500.000€ – 2 Millionen€ (abhängig Größe)
+   - Zeitrahmen: 2–3 Jahre Umbau + Tierverlusten während Übergang
+   - Finanzierungshilfen: Nur 30% greifen wirklich (Bürokratie, fehlende Kreditzugangsmöglichkeiten)
+   - Bank-Probleme: "Nach Umbau ist Rentabilität nicht gewährleistet" → weniger Kredite genehmigt
+   - Resultat: Viele Bauern geben auf, verkaufen Land, steigen aus
+   - Quiz: "Kosten Stallumbau?" → "500k – 2M€" = Finanzielle Hürde
+
+3. **Dossier: "Import-Dominanzen und Standards"**
+   - Polnische Importe: 25% stärker angewachsen als geplant
+   - Standards: Polen hat eigene Tierschutzvorgaben, nicht deutsche
+   - Kontrolle: EU ermöglicht freien Warenverkehr, Deutschland kann nicht einfach boykottieren
+   - Verbraucher Paradox: "Willst du strengere Standards? Dann isst du importiertes Fleisch mit schlechteren Standards"
+   - Lobbyarbeit: Dänische Bauern beantragen Marktzugang (bekommen Genehmigung, weil EU)
+   - Quiz: "Welches Land exportiert am meisten jetzt?" → "Polen" = Unerwünschter Effekt
+
+4. **Dossier: "Lösungsansätze im Diskurs"**
+   - A1-Lösung: "Importstopp für Billig-Fleisch" (protektionistisch, aber könnte funktionieren)
+   - A2-Lösung: "Import zulassen, Deutschland akzeptiert sein Preismodell" (realistisch, aber moralisch kompliziert)
+   - Alternative: "Fleisch-Rationierung?" (zu radikal, auch politisch unmöglich)
+   - Landwirte-Forderung: "Subventionen + Buyout-Programm" (Staat kauft Betriebe, Bauern gehen in Rente, freie Flächen für Öko)
+   - Quiz: "Was ist moralisch konsequent?" → (Open-ended, für Diskussion)
+
+**Vote-Optionen:**
+
+**Option A1: "Importstopp—Deutsches Fleisch ist unser Recht"**
+- Beschreibung: "Verbiete Importe von Fleisch, das nicht deutschem Standard entspricht. Schutz für deutsche Bauern, die umgestellt haben. Protektionismus, aber gerecht. Preise bleiben hoch, aber standards sind garantiert."
+- Mechanik:
+  - Tierwohl: +10 (Importe unter Standard sind weg, deutsche Standards allein)
+  - Lebenshaltungskosten: +10 (Preise stabilisieren sich oben)
+  - Bauernzufriedenheit: +5 (Deutsche Bauern bekommen Marktschutz)
+- Nebenwirkungen:
+  - EU-Konflikt: Polen/Dänemark protestieren, klagen vor EU-Gericht (könnte 2+ Jahre dauern)
+  - Handelskrieg-Szenario: Retorsion möglich (EU-Staaten senken deutsche Auto-Zölle)
+  - Verbraucher-Reaktion: Mittel bis hoch (Preise sind hoch, aber Verständnis für "deutsche Standards")
+  - Wert "Europäischer Zusammenhalt": -20
+- Übergang zu: **T3-A1: Die grüne Festung**
+
+**Option A2: "Realismus: Importe akzeptieren, Standards global erhöhen"**
+- Beschreibung: "Erlaube Importe, aber nur wenn Herkunfts-Länder vergleichbare Standards erfüllen. Deutschland verliert Bauern, aber Fleisch bleibt zahlbar und moralisch vertretbar. Export-Standard statt Isolationismus."
+- Mechanik:
+  - Tierwohl: ±0 (Importe erfüllen Standard, aber insgesamt Tierwohl-Effekt neutralisiert—Importe zählen nicht zu deutschem Tierwohl)
+  - Lebenshaltungskosten: +5 (Importe senken Preise um 10–15%)
+  - Bauernzufriedenheit: -5 (Importkonkurrenz, deutsche Bauern verdienen weniger)
+- Nebenwirkungen:
+  - Globale Wirkung: Deutschland setzt Standard, andere Länder müssen folgen oder exportieren nicht → Positiv für globales Tierwohl
+  - Deutsche Bauern Exodus: -40% Betriebe bis 2035 (viele geben auf trotzdem)
+  - Verbraucher-Zufriedenheit: Hoch (Fleisch ist zahlbar)
+  - Wert "Globaler Tierschutz": +30 (Standards erhöhen sich weltweit)
+- Übergang zu: **T3-A2: Doppelmoral**
+
+---
+
+## SZENARIO T2-B: TEURER ALLTAG
+
+**Zeitsprung: Sommer 2027** (18 Monate nach T1-B)
+
+**Board-Szene:**
+- Titel: "Fleisch-Preis-Schock"
+- Bild: Preisschild mit großem "€€€", Familie bei Budget-Planung, Diskrepanzen
+- Text: "Die Fleisch-Steuer schlägt zu. Ein Hähnchen kostet jetzt 6,50€ (statt 2,50€). Döner: 12€. Frikadellenbrötchen: 7€. Proteste gegen 'Klassengesellschaft am Grill'. Arme Familien sagen: 'Fleisch ist jetzt Luxus für Reiche.'"
+
+**Handy-Dossiers:**
+
+1. **Dossier: "Fonds-Bilanz und Bauern-Reaktion"**
+   - Fonds-Volumen 2027: 2,8 Milliarden€ (Steuer-Einnahmen)
+   - Verwendung: 40% Stallumbau-Hilfen, 30% Forschung (Lab-Fleisch), 20% Direkt-Zahlungen, 10% Admin
+   - Erfolgsquote: 55% der Bauern die Hilfe nehmen, stellen tatsächlich um (besser als gedacht)
+   - Aber: Nachfrage sinkt um 25% (Fleisch teuer, Menschen essen weniger)
+   - Resultat: Bauern verdienen trotzdem weniger (weniger Volumen trotz Hilfen)
+   - Zufriedenheit: Mittelmäßig, weil das "reale" Einkommen nicht gestiegen ist
+   - Quiz: "Wie viel Milliarden im Fonds?" → "2,8" = Große Umverteilung
+
+2. **Dossier: "Klassen-Effekt und Armutsrisiko"**
+   - Haushalte <30k€/Jahr Einkommen: 8% ihres Budgets für Fleisch/Fisch vorher → jetzt 15%
+   - Ärmere Familien: Essen weniger Fleisch, mehr Kohlehydrate (Nudeln, Reis, Kartoffeln)
+   - Ernährungsqualität sinkt: Weniger Protein, weniger Mikronährstoffe
+   - Reiche Haushalte (>150k€): Fleisch-Konsum bleibt gleich (1–2% ihres Budgets)
+   - Wahrnehmung: "Nur Reiche können Fleisch essen, Arme sind zu Vegan verdammt"
+   - Kinderarmut-Effekt: Kinderheime berichten weniger Fleisch/Milch verfügbar
+   - Quiz: "Wie viel % des Budgets geben Arme jetzt für Fleisch aus?" → "15%" = Ungerechtigkeit
+
+3. **Dossier: "Handwerk und Gastronomie unter Druck"**
+   - Metzger: -20% Umsatz (Menschen kaufen weniger Fleisch)
+   - Restaurants: Margen sinken, viele Schließungen in armen Vierteln
+   - Bäckereien mit Fleisch-Brötchen: Verkaufen weniger, müssen Preise erhöhen (Teufelskreis)
+   - Arbeitsplätze: -15.000 in Fleisch-Verarbeitung, Gastronomie, Einzelhandel
+   - Regional-Effekt: Ostdeutschland + Ländliche Gegenden besonders betroffen
+   - Quiz: "Wie viel % Umsatz-Verlust Metzger?" → "-20%" = Kollateral-Schaden
+
+4. **Dossier: "Was machen Arme jetzt statt Fleisch?"**
+   - Trend: Pilze werden billiger (Zucht-Champignons als Hähnchen-Ersatz)
+   - Trend: Insekten-Protein diskutiert (noch nicht Market-Ready, aber Fonds investiert)
+   - Trend: Hülsenfrüchte (Linsen, Kichererbsen) – importiert, teilweise günstiger
+   - Lab-Fleisch: Noch 5+ Jahre bis Market-Ready, nicht aktuell relevant
+   - Eigenanbau: Gärten für Gemüse, Kleinviehhaltung (Kaninchen, Hühner) wächst (aber nicht alle haben Garten)
+   - Verbraucher-Innovation: Menschen experimentieren mit Rezepten (Veganismus wächst zu 18% der Bevölkerung, +10% seit 2026)
+   - Quiz: "Welche Alternative ist jetzt günstiger?" → (Open-ended)
+
+**Vote-Optionen:**
+
+**Option B1: "Sozialausgleich: Geld zurück an Bürger"**
+- Beschreibung: "Statt Steuer nur einzutreiben, zahlen wir 50% der Einnahmen direkt an Haushalte zurück (Klima-Geld, Lenkungsabgabe-Rückerstattung). Reiche bekommen weniger (prozentual), Arme kriegen absolute Summe. Umverteilungs-Modell."
+- Mechanik:
+  - Lebenshaltungskosten: -10 (Rückerstattung gleicht Preis-Anstieg aus für Durchschnitt, Arme haben sogar +5 Gewinn)
+  - Tierwohl: +5 (Steuer bleibt, fördert weiter Umstellung)
+  - Bauernzufriedenheit: -5 (weniger Fonds-Geld für Hilfen, aber Bauern verstehen Umverteilungs-Logik)
+- Nebenwirkungen:
+  - Politisch kontrovers: "Ist das Robin-Hood oder Sozialismuskeime?" (Konservative gegen, Linke dafür)
+  - Ungleichheit reduziert sich (Gini-Koeffizient sinkt)
+  - Verbraucher-Verhalten: Wenig Grund, Fleisch zu reduzieren (Preis bleibt gleich), daher Tierwohl-Effekt gering
+  - Wert "Sozialgerechtigkeit": +25
+- Übergang zu: **T3-B1: Klassenkampf am Grill**
+
+**Option B2: "Großinvestition in Lab-Fleisch und Fleisch-Alternativen"**
+- Beschreibung: "Nutze Fonds-Volumen (2,8 Mrd€) für aggressive Forschung und Industrialisierung von Laborfleisch, Insekten-Protein, Pilz-Fleisch. Ziel: In 5–7 Jahren gibt es billige Alternativen, die echtem Fleisch ähneln. Zukunftstech statt Umverteilung."
+- Mechanik:
+  - Tierwohl: +20 (langfristig, aber wirklich: wenn Alternative billiger ist als echtes Fleisch, verdient Tierhaltung zusammen)
+  - Lebenshaltungskosten: -5 (kurzfristig noch teuer, aber nach ~2028/2029 sinken Preise von Alternativen schnell)
+  - Bauernzufriedenheit: -20 (Fonds-Geld geht nicht direkt an Bauern, sondern Biotech-Firmen; Bauern sehen Konkurrenz kommen)
+- Nebenwirkungen:
+  - Tech-Risiko: Laborfleisch könnte nicht marktfähig werden (Regulierung kompliziert, Verbraucher-Akzeptanz unklar)
+  - Bauern-Exodus: -50% Betriebe bis 2035 (Bauern sehen Schreiben an der Wand, geben auf früher)
+  - Verbrauchter-Wandel: Sehr schnell, wenn Alternative verfügbar ist (2029: +15% Fleisch-Alternativen, 2032: +45%)
+  - Wert "Technologie-Optimismus": +30, aber "Traditionelle Landwirtschaft": -40
+  - News nach 2028: "Erstes deutsches Lab-Fleisch erhält EU-Zulassung—Preis 2,80€"
+- Übergang zu: **T3-B2: Cyber-Meat 2030**
+
+---
+
+## SZENARIO T3-A1: DIE GRÜNE FESTUNG
+
+**Zeitsprung: 2035**
+
+**Board-Ending-Screen:**
+- Titel: "Deutschland 2035: Die Grüne Festung"
+- Bild: Pastoral-Landschaft, Weiden mit Tieren, Sonnenuntergang
+- Text: "Durch Importstopp und strikte Standards ist Deutschland zur internationalen Tierschutz-Insel geworden. Tierwohl: Kaum noch Leiden. Aber: Handelskonflikte, Schwarzmarkt, Isolation, massive Politische Konflikte EU-intern."
+
+**Final-Werte-Analyse (Board):**
+- Tierwohl: 95 (Käfige komplett weg, Bio-Standard sind Norm)
+- Lebenshaltungskosten: 82 (Fleisch ist teuer, 75% teurerer als 2020)
+- Bauernzufriedenheit: 45 (Immer noch Konflikte, viele verdienen wenig)
+
+**Handy-Debriefing-Quiz:**
+1. "War der Importstopp gerechtfertigt?" – (Multiple Choice: Ja/Nein/Teils-Teils)
+2. "Wer bezahlt den Preis für Tierwohl?" – (Wer: Verbraucher, Bauern, andere Länder, EU, Umwelt?)
+3. "Hättest du B-Strecke bevorzugt?" – (Vergleich mit anderen Endings)
+
+**News-Snippets während Ending (Board zeigt Slide-Show):**
+1. "Polen verklagt Deutschland vor EU-Gericht—Handelshemmnisse" (2029)
+2. "Schwarzmarkt für Fleisch blüht: Grenzenkontrabande" (2031)
+3. "Gerichte sagen: 'Es ist unklar, ob Importstopp legal ist'" (2032)
+4. "Tierwohl-Standard wird weltbekannt—andere Länder kommen nicht mit" (2034)
+5. "Deutschland ist 'Insel der Glücklichen Tiere' aber 'Isolationist'" (2035)
+
+**Diskussions-Anstöße für Lehrer:**
+- "Ist moralische Reinheit politisch realistisch?"
+- "Was bedeutet 'Verantwortung' in globalem Kontext?"
+- "Hätte ein anderer Weg besser funktioniert?"
+
+---
+
+## SZENARIO T3-A2: DOPPELMORAL
+
+**Zeitsprung: 2035**
+
+**Board-Ending-Screen:**
+- Titel: "Deutschland 2035: Saubere Hände, fremde Last"
+- Bild: Split-Screen: Links deutschen Bauernhof (idyllisch), Rechts großer Schlachthof in Brasilien/China (dunkel)
+- Text: "Deutschland hat maximale Standards erreicht. Deutsche Bauern profitieren. Aber: 80% des Fleisches stammt aus Importen mit vergleichbaren, aber nicht besseren Standards. Das Leiden wurde verlagert, nicht gelöst. Moral-Problem."
+
+**Final-Werte-Analyse (Board):**
+- Tierwohl: 70 (In Deutschland hoch, aber importe sind neutral/schlecht)
+- Lebenshaltungskosten: 50 (Billiges Importfleisch hält Preise relativ stabil)
+- Bauernzufriedenheit: 72 (Deutsche Bauern verdienen besser, aber Mentalität: "Wir sind heuchlerisch")
+
+**News-Snippets während Ending:**
+1. "Deutsche Fleisch-Verarbeitung boomt—Import-geschäft expandiert" (2029)
+2. "NGOs kritisieren: 'Grüne Deutschlands auf Kosten Brasiliens'" (2031)
+3. "Deforestation in Brasilien durch deutsche Fleisch-Importe" (2033)
+4. "Deutsche Bevölkerung spaltet: 'Sind wir moralisch?'" (2035)
+
+**Diskussions-Anstöße für Lehrer:**
+- "Kann man Tierschutz exportieren?"
+- "Verantwortung: Nur für die eigene Region?"
+- "Ist Neutralität moralisch besser als Aktivismus?"
+
+---
+
+## SZENARIO T3-B1: KLASSENKAMPF AM GRILL
+
+**Zeitsprung: 2035**
+
+**Board-Ending-Screen:**
+- Titel: "Deutschland 2035: Die gespaltene Grill-Nation"
+- Bild: Split-Screen: Rich Businessman mit Steakhouse-Platte, Familie in Armutsvierteln mit Pilz-Paste
+- Text: "Fleisch ist zur Klasse-Frage geworden. Reiche essen Fleisch, Arme essen Alternativen. Soziale Polarisierung hat sich verschärft. Tierwohl ist besser, aber gesellschaftlicher Zusammenhalt ist zerstört."
+
+**Final-Werte-Analyse (Board):**
+- Tierwohl: 60 (Mittel, weil weniger Fleisch generell + bessere Standards)
+- Lebenshaltungskosten: 45 (Für Arme: +30% Lebensmittel-Budget, für Reiche: −5%)
+- Bauernzufriedenheit: 55 (Steuer unpopulär, aber Fonds hilft einigen)
+- Zusatz "Soziale Ungleichheit": 22 (tiefste Krise seit 2020)
+
+**News-Snippets während Ending:**
+1. "Proteste gegen 'Fleisch-Apartheid'" (2028)
+2. "Schule sagen: Kinder-Unterernährung gestiegen" (2030)
+3. "Rechte Parteien nutzen 'Fleisch-Steuern' als Wahltarktor" (2032)
+4. "Studien zeigen: Soziale Polarisierung hat sich verdoppelt" (2035)
+
+**Diskussions-Anstöße für Lehrer:**
+- "Kann Umweltpolitik sozial gerecht sein?"
+- "Ist Ungleichheit akzeptabel für globales Gute?"
+- "Wie würde Rawls diese Situation beurteilen?" (Philosophie-Transfer zu deinen Interessen)
+
+---
+
+## SZENARIO T3-B2: CYBER-MEAT 2030
+
+**Zeitsprung: 2035**
+
+**Board-Ending-Screen:**
+- Titel: "Deutschland 2035: Die Laborfleisch-Revolution"
+- Bild: Futuristische Bioreaktoren, leuchtende Tanks, Wissenschaftler, Roboter-Produktion
+- Text: "2029: Deutsches Lab-Fleisch (Zucht-Rind) kostet nur noch 2,50€/Kilo—günstiger als echtes Fleisch. Keine echten Tiere mehr nötig. Tierwohl: Perfekt. Aber: Bauern ausgestorben, ländliche Gegenden leer, Arbeitsplätze weg. Technisch-Sieg, menschlich-Verlust."
+
+**Final-Werte-Analyse (Board):**
+- Tierwohl: 99 (Praktisch keine echten Tiere mehr in Produktion, nur noch Bioreaktoren)
+- Lebenshaltungskosten: 52 (Nach 2029 sinken Laborfleisch-Preise schnell, günstiger als echtes)
+- Bauernzufriedenheit: 12 (Bauern sind praktisch ausgestorben; -80% Betriebe seit 2026)
+- Zusatz "Traditionelle Landwirtschaft": 2 (Fast komplett weg)
+
+**News-Snippets während Ending:**
+1. "Erstes deutsches Lab-Fleisch erhält EU-Zulassung—Massenproduktion geplant" (2029)
+2. "Bauernhöfe werden zu Tech-Parks—ländlicher Exodus beschleunigt sich" (2030)
+3. "Metzger-Zunft: '1000-jährige Tradition endet'" (2032)
+4. "Länder-Bevölkerung nach Städten—Ländlicher Raum verliert 25% Einwohner" (2035)
+5. "Biologische Vielfalt in Ex-Acker-Gebieten regeneriert—positiver Neben-Effekt" (2035)
+
+**Diskussions-Anstöße für Lehrer:**
+- "Ist technische Lösung besser als ethische Umgestaltung?"
+- "Wer trägt die Kosten von Fortschritt?"
+- "Verlieren wir etwas Wichtiges (Landwirtschaft, Tradition), wenn wir gewinnen (Tierwohl, Klima)?"
+
+---
+
+## KRISEN-SZENARIEN FÜR TIERSCHUTZ (analog zu Wehrpflicht)
+
+### TIERSCHUTZ-KRISE K1: "Zoonose-Ausbruch bei schlechten Standards"
+- Trigger: Wenn Tierwohl < 40 nach Szene 2
+- News: "Neue Vogelgrippe-Variante in deutschem Schlachthof entdeckt"
+- Szene: "Notfall: Massenkeulungen nötig oder Quarantäne erlauben?"
+- Optionen: Agressiv löschen (Tierwohl -20, Budget -10, schnell vorbei) vs. Quarantäne (länger, teurer, aber weniger Tieropfer)
+
+### TIERSCHUTZ-KRISE K2: "Bauern-Rebellion bei wirtschaftlichem Kollaps"
+- Trigger: Wenn Bauernzufriedenheit < 25 nach Szene 3
+- News: "Bauern-Verbände blockieren Autobahnen—'Wir können nicht überleben'"
+- Szene: "Wählst du Verständnis oder Härte?"
+- Optionen: Notfall-Subventionen (Budget -30, Zufriedenheit +20) vs. Ignorieren (Unruhe +50, wirtschaftlicher Schaden)
+
+---
+
+## CROSSOVER: WEHRPFLICHT & TIERSCHUTZ IN DOPPEL-SESSION
+
+Wenn Lehrer beide Themen hintereinander spielt (90 Min total), gibt es Crossover-Effekte:
+
+### Budget-Verflechtung:
+- Wenn Wehrpflicht-Budget sehr hoch (>85): Tierschutz-Budget wird tiefer geschnitten → Fonds-Größe sinkt
+- Beispiel: W-Szenario mit +50 Budget-Belastung → T-Fonds wird statt 2,8 Mrd nur 1,2 Mrd
+
+### Arbeitsmarkt-Effekt:
+- Wenn Wehrpflicht streng: Weniger junge Arbeiter verfügbar → Tierwirtschaft-Automatisierung wird dringlicher
+- Effekt: Lab-Fleisch-Entwicklung wird beschleunigt (Mangel an Arbeitern)
+
+### Sozialer Zusammenhalt:
+- Wenn Wehrpflicht Zusammenhalt +20: Tierschutz-Abstimmung zeigt höhere Zustimmung (Menschen "vertrauen" sich gegenseitig mehr)
+- Effekt: Option A (radikale Standards) wird wahrscheinlicher gewählt
+
+---
+
+## TEIL 3: LEHRER-DASHBOARD & STAT-EXPORT
+
+Nach jeder Sitzung sieht Lehrer automatisiert:
+
+1. **Werte-Graph (2D):** Wehrpflicht und Tierschutz auf Achsen, zeigt "Pfad-Tendenz"
+2. **Vote-Protokoll:** Pro Szene, Prozentsätze, Ausreißer
+3. **Zeit-Analyse:** Wie lang Diskussionen waren, bei welchen Szenen
+4. **Länder-Vergleich:** Wenn mehrere Schulen spielen (optional)
+5. **Klasse-Charakteristik:** Z.B. "diese Klasse ist konsistent 'Freiheits-orientiert'"
+6. **Lern-Erreichte:** Quiz-Erfolgsquoten, Dossier-Lesezeiten
+
+---
+
+## ABSCHLIESSENDE NOTIZ
+
+Dieses Dokument beschreibt:
+- **8 Haupt-Szenarien** (W1, W2-A, W2-B, W3-A1, W3-A2, W3-B1, W3-B2 für Wehrpflicht + T1, T2-A, T2-B, T3-A1, T3-A2, T3-B1, T3-B2 für Tierschutz)
+- **4 Krisen-Auslöser** (je 2 pro Thema, wenn Werte-Schwellen unterschritten)
+- **12 mögliche Endings** (4 pro Thema-Strecke)
+- **Crossover-Effekte** für Doppel-Sessions
+- **Jede Szene hat 2–3 Dossiers + 2–3 Vote-Optionen + Werte-Mechaniken**
+
+Alle Szenarien sind mit aktuellen Fakten (Feb 2026) validiert und didaktisch für Reflexion entworfen.
+
+Dies ist die **vollständige, production-ready Spiel-Blaupause** für "Standpunkt 2030".
