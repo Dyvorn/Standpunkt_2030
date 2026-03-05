@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Res Publica - Live Board</title>
+    <style>
+        /* --- DESIGN FÜR GROSSE LEINWÄNDE --- */
+        body { 
+            background-color: #1a1a2e; /* Dunkles Blau/Schwarz */
+            color: #ffffff; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            display: flex; 
+            flex-direction: column;
+            align-items: center; 
+            justify-content: center; 
+            height: 100vh; 
+            margin: 0;
+            overflow: hidden; /* Keine Scrollbalken auf dem Beamer */
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            color: #e94560; /* Akzentfarbe */
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        #scenario-text {
+            font-size: 1.5rem;
+            max-width: 80%;
+            text-align: center;
+            margin-bottom: 50px;
+            color: #ccc;
+        }
+
+        /* Container für die Balken */
+        #results-container {
+            width: 80%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Ein einzelner Ergebnis-Balken */
+        .result-row {
+            display: flex;
+            align-items: center;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative; /* Wichtig für den Balken */
+        }
+
+        /* Der farbige Füll-Balken */
+        .bar-fill {
+            height: 100%;
+            background-color: #4CAF50;
+            width: 0%; /* Startet bei 0 */
+            transition: width 0.5s ease-out; /* Animation! */
+        }
+
+        /* Text über dem Balken */
+        .bar-label {
+            position: absolute;
+            left: 20px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            z-index: 2;
+            text-shadow: 1px 1px 2px black;
+        }
+
+        .bar-count {
+            position: absolute;
+            right: 20px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            z-index: 2;
+        }
+
+        /* Farben für A, B, C... */
+        .fill-A { background-color: #e74c3c; } /* Rot */
+        .fill-B { background-color: #27ae60; } /* Grün */
+        .fill-C { background-color: #3498db; } /* Blau */
+
+    </style>
+</head>
+<body>
+
+    <!-- Hier kommen die Daten rein -->
+    <h1 id="scenario-title">Lade Thema...</h1>
+    <div id="scenario-text">Bitte warten...</div>
+
+    <div id="results-container">
+        <!-- Hier werden die Balken per JS generiert -->
+    </div>
+
+    <script>
+        const ws = new WebSocket("ws://" + window.location.host + "/ws/board");
+        let maxVotes = 1; // Damit wir die % berechnen können
+
+        ws.onmessage = function(event) {
+            const state = JSON.parse(event.data);
+            renderBoard(state);
+        };
+
+        function renderBoard(state) {
+            if (!state.scenario) return;
+
+            // 1. Texte aktualisieren
+            document.getElementById("scenario-title").innerText = state.scenario.title;
+            // Wir kürzen die Beschreibung für den Beamer, falls sie zu lang ist
+            document.getElementById("scenario-text").innerText = state.scenario.description;
+
+            // 2. Gesamtstimmen zählen (für Prozentrechnung)
+            let totalVotes = 0;
+            for (let key in state.votes) {
+                totalVotes += state.votes[key];
+            }
+            // Verhindert Division durch Null
+            if (totalVotes === 0) totalVotes = 1; 
+
+            // 3. Balken bauen oder aktualisieren
+            const container = document.getElementById("results-container");
+            container.innerHTML = ""; // Einfachheitshalber leeren und neu bauen (sauberer wäre Update)
+
+            state.scenario.options.forEach(opt => {
+                const count = state.votes[opt.id] || 0;
+                const percentage = (count / totalVotes) * 100;
+                
+                // HTML für einen Balken
+                const html = `
+                    <div class="result-row">
+                        <div class="bar-fill fill-${opt.id}" style="width: ${percentage}%"></div>
+                        <span class="bar-label">${opt.id}: ${opt.text}</span>
+                        <span class="bar-count">${count} Stimmen</span>
+                    </div>
+                `;
+                container.innerHTML += html;
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,234 @@
+{
+  "themen": {
+    "wehrpflicht": {
+      "werte": {
+        "sicherheit": 50,
+        "freiheit": 65,
+        "budget": 60
+      },
+      "szenarien": {
+        "lobby": {
+          "titel": "Standpunkt 2030",
+          "text": "QR-Scan für Handy. Thema wählen.",
+          "buttons": [
+            "Start Wehrpflicht"
+          ]
+        },
+        "w1": {
+          "titel": "Der rote Brief",
+          "text": "800.000 Männer bekommen Musterungsfragebogen. Entscheidung?",
+          "dossiers": [
+            {
+              "titel": "Wehrdienstgesetz 2026",
+              "text": "Ab 2026 Musterung Jg. 2008+. Gehalt 2.600€?"
+            },
+            {
+              "titel": "NATO-Pflicht",
+              "text": "20.000 Soldaten fehlen. Cyber-Bedrohungen ↑"
+            },
+            {
+              "titel": "Art. 12a GG",
+              "text": "Erlaubt Wehrpflicht bei Verteidigungsnot."
+            },
+            {
+              "titel": "Umfrage",
+              "text": "60% für Wehrpflicht-Rückkehr (MDR 2025)"
+            }
+          ],
+          "optionen": [
+            {
+              "id": "A",
+              "text": "Freiwillige (2.600€)",
+              "delta": {
+                "sicherheit": 5,
+                "freiheit": 10,
+                "budget": -15
+              },
+              "next": "w2a"
+            },
+            {
+              "id": "B",
+              "text": "Musterung alle",
+              "delta": {
+                "sicherheit": 20,
+                "freiheit": -20,
+                "budget": -10
+              },
+              "next": "w2b"
+            }
+          ]
+        },
+        "w2a": {
+          "titel": "Profi-Dienst",
+          "text": "25.000 Freiwillige. Noch 15.000 fehlen.",
+          "optionen": [
+            {
+              "id": "A1",
+              "text": "EU-Soldaten",
+              "delta": {
+                "sicherheit": 15,
+                "budget": -20
+              },
+              "next": "ending_eu"
+            },
+            {
+              "id": "A2",
+              "text": "Drohnen",
+              "delta": {
+                "sicherheit": -10,
+                "freiheit": 5
+              },
+              "next": "ending_drohnen"
+            }
+          ]
+        },
+        "w2b": {
+          "titel": "Pflichtjahr",
+          "text": "50.000 starten. Wirtschaft klagt.",
+          "optionen": [
+            {
+              "id": "B1",
+              "text": "Ausnahmen",
+              "delta": {
+                "sicherheit": 10,
+                "freiheit": -10
+              },
+              "next": "ending_ausnahmen"
+            },
+            {
+              "id": "B2",
+              "text": "Alle gleich",
+              "delta": {
+                "sicherheit": 15,
+                "freiheit": -25
+              },
+              "next": "ending_uniform"
+            }
+          ]
+        },
+        "ending_eu": {
+          "titel": "EU-Armee 2035",
+          "text": "50.000 EU-Soldaten. NATO stark, aber Vertrauenskrise."
+        },
+        "ending_drohnen": {
+          "titel": "Cyber-Fortress",
+          "text": "Drohnen gehackt. Tech-Abhängigkeit."
+        },
+        "ending_ausnahmen": {
+          "titel": "Gerichts-Chaos",
+          "text": "127.000 Klagen. Reiche kaufen sich frei."
+        },
+        "ending_uniform": {
+          "titel": "Bürgerarmee",
+          "text": "+7% Auswanderung, aber Zusammenhalt ↑"
+        }
+      }
+    },
+    "tierschutz": {
+      "werte": {
+        "tierwohl": 40,
+        "kosten": 55,
+        "bauern": 60
+      },
+      "szenarien": {
+        "lobby": {
+          "titel": "Tierschutz 2030",
+          "text": "Skandal-Video viral. Entscheidung?",
+          "buttons": [
+            "Start Tierschutz"
+          ]
+        },
+        "t1": {
+          "titel": "Schlachthof-Skandal",
+          "text": "Horror-Video 5M Aufrufe. Haltungsform 1/2 verbieten?",
+          "dossiers": [
+            {
+              "titel": "Haltungsformen",
+              "text": "Form 1 (60%): Käfige. Form 4 (5%): Freiland."
+            },
+            {
+              "titel": "Bauern-Anteil",
+              "text": "Hähnchen 4,99€ → Bauer kriegt 1,80€ (36%)"
+            },
+            {
+              "titel": "Emissionen",
+              "text": "Tierhaltung = 15% CO2. Methan, Lachgas."
+            },
+            {
+              "titel": "Umfrage",
+              "text": "72% wollen strengere Standards."
+            }
+          ],
+          "optionen": [
+            {
+              "id": "A",
+              "text": "Form 1/2 verbieten",
+              "delta": {
+                "tierwohl": 25,
+                "kosten": 15,
+                "bauern": -20
+              },
+              "next": "t2a"
+            },
+            {
+              "id": "B",
+              "text": "Fleischsteuer",
+              "delta": {
+                "tierwohl": 15,
+                "kosten": 20,
+                "bauern": -5
+              },
+              "next": "t2b"
+            }
+          ]
+        },
+        "t2a": {
+          "titel": "Leere Regale",
+          "optionen": [
+            {
+              "id": "A1",
+              "text": "Importstopp",
+              "next": "ending_festung"
+            },
+            {
+              "id": "A2",
+              "text": "Import OK",
+              "next": "ending_doppelmoral"
+            }
+          ]
+        },
+        "t2b": {
+          "titel": "Teurer Döner (12€)",
+          "optionen": [
+            {
+              "id": "B1",
+              "text": "Sozialgeld",
+              "next": "ending_klassenkampf"
+            },
+            {
+              "id": "B2",
+              "text": "Lab-Fleisch",
+              "next": "ending_cybermeat"
+            }
+          ]
+        },
+        "ending_festung": {
+          "titel": "Grüne Festung",
+          "text": "Tierwohl 95. Aber Schwarzmarkt + EU-Konflikt."
+        },
+        "ending_doppelmoral": {
+          "titel": "Doppelmoral",
+          "text": "80% Import. Leiden verlagert."
+        },
+        "ending_klassenkampf": {
+          "titel": "Klassenkampf",
+          "text": "Reiche essen Fleisch, Arme Pilze."
+        },
+        "ending_cybermeat": {
+          "titel": "Cyber-Meat",
+          "text": "Lab-Fleisch 2,50€. Bauern ausgestorben."
+        }
+      }
+    }
+  }
+}

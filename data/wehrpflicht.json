@@ -1,0 +1,203 @@
+{
+<<<<<<< HEAD
+    "id": "szenario_01",
+    "title": "Der Einberufungsbescheid",
+    "description": "Die Sicherheitslage in Europa hat sich verschlechtert. Die Bundeswehr meldet massiven Personalmangel. Ein Brief liegt auf deinem Tisch: 'Einberufung gemäß Artikel 12a GG'.",
+    "image": "brief_tisch.png",
+    "info_cards": [
+        {
+            "id": "info_gg",
+            "title": "Grundgesetz Art. 12a",
+            "text": "Männer können vom vollendeten 18. Lebensjahr an zum Dienst in den Streitkräften, im Bundesgrenzschutz oder in einem Zivilschutzverband verpflichtet werden. Dies wurde 2011 ausgesetzt, aber nicht abgeschafft."
+        },
+        {
+            "id": "info_personal",
+            "title": "Personalmangel",
+            "text": "Aktuell fehlen der Bundeswehr ca. 20.000 Soldaten, um die Bündnisverpflichtungen der NATO zu erfüllen. Eine reine Berufsarmee findet nicht genug Nachwuchs."
+        },
+        {
+            "id": "info_zwang",
+            "title": "Kritik: Zwangsdienst",
+            "text": "Gegner argumentieren, dass ein Zwangsdienst tief in die Freiheitsrechte junger Menschen eingreift und ihre Berufsplanung um ein Jahr verzögert."
+        }
+    ],
+    "options": [
+        {
+            "id": "A",
+            "text": "Wehrpflicht ablehnen (Berufsarmee stärken)",
+            "requires_info": []
+        },
+        {
+            "id": "B",
+            "text": "Allgemeine Dienstpflicht einführen",
+            "requires_info": ["info_gg", "info_personal"] 
+        }
+    ]
+}
+=======
+  "meta": {
+    "title": "Wehrpflicht 2030",
+    "initial_stats": {
+      "Sicherheit": 50,
+      "Freiheit": 50,
+      "Budget": 50
+    },
+    "start_scene": "W1"
+  },
+  "scenes": {
+    "W1": {
+      "title": "Der Einberufungsbescheid",
+      "description": "Bundeswehr fehlen 20.000 Soldaten. Regierung diskutiert Rückkehr der Wehrpflicht.",
+      "board_news": {
+        "headline": "Personalnot bei der Bundeswehr",
+        "bullets": ["Spannungen in Europa nehmen zu", "Massiver Personalmangel", "Diskussion über Dienstpflicht"]
+      },
+      "dossiers": [
+        {"title": "Grundgesetz Art. 12a", "content": "Männer können vom vollendeten 18. Lebensjahr an zum Dienst in den Streitkräften, im Bundesgrenzschutz oder in einem Zivilschutzverband verpflichtet werden."},
+        {"title": "Historie", "content": "Die Wehrpflicht wurde 2011 in Deutschland ausgesetzt, aber nicht abgeschafft. Die Strukturen zur Einberufung wurden weitgehend abgebaut."},
+        {"title": "Personalmangel", "content": "Der Bundeswehr fehlen aktuell über 20.000 Fachkräfte. Die NATO fordert eine Erhöhung der Truppenstärke."},
+        {"title": "Kritik", "content": "Ein Zwangsdienst greift tief in die persönliche Freiheit ein. Junge Menschen verlieren ein Jahr für Ausbildung oder Studium."}
+      ],
+      "options": [
+        {
+          "id": "A",
+          "text": "Wehrpflicht nicht wieder einführen, Berufsarmee stärken",
+          "effects": {"Sicherheit": 5, "Freiheit": 10, "Budget": -15},
+          "next_scene": "W2-A"
+        },
+        {
+          "id": "B",
+          "text": "Allgemeine Dienstpflicht für alle (Soziales + Militär)",
+          "effects": {"Sicherheit": 20, "Freiheit": -20, "Budget": -10},
+          "next_scene": "W2-B"
+        }
+      ]
+    },
+    "W2-A": {
+      "title": "Teure Profis",
+      "description": "High-Tech-Truppen und teure Ausrüstung, aber immer noch Personalmangel.",
+      "board_news": {
+        "headline": "Berufsarmee stößt an Grenzen",
+        "bullets": ["Hohe Kosten für Personal", "Rekrutierungsprobleme bleiben", "Debatte über Söldner"]
+      },
+      "dossiers": [
+        {"title": "Kosten", "content": "Ein Berufssoldat kostet den Staat inkl. Gehalt und Versorgung deutlich mehr als ein Wehrdienstleistender."},
+        {"title": "International", "content": "Länder wie die USA oder Frankreich setzen auf reine Berufsarmeen. Frankreich nutzt zudem die Fremdenlegion."},
+        {"title": "Ethik", "content": "Ist es moralisch vertretbar, Sicherheit gegen Geld an Dritte auszulagern? Kämpfen für Geld vs. Kämpfen für Werte."}
+      ],
+      "options": [
+        {
+          "id": "A",
+          "text": "Armee für EU-Bürger und Söldner öffnen",
+          "effects": {"Sicherheit": 15, "Freiheit": 0, "Budget": -20},
+          "next_scene": "W3-A1"
+        },
+        {
+          "id": "B",
+          "text": "Armee verkleinern, voll auf Drohnen/Tech setzen",
+          "effects": {"Sicherheit": -10, "Freiheit": 5, "Budget": -5},
+          "next_scene": "W3-A2"
+        }
+      ]
+    },
+    "W2-B": {
+      "title": "Pflichtjahr für alle?",
+      "description": "Jugendliche in Uniform und im Pflegeeinsatz. Wirtschaft klagt über fehlende Arbeitskräfte.",
+      "board_news": {
+        "headline": "Dienstpflicht verändert Gesellschaft",
+        "bullets": ["Jugendliche im Einsatz", "Pflege profitiert", "Wirtschaft warnt vor Fachkräftemangel"]
+      },
+      "dossiers": [
+        {"title": "Soziales", "content": "Pflegeheime, Krankenhäuser und Rettungsdienste profitieren massiv von den zusätzlichen Helfern."},
+        {"title": "Wirtschaft", "content": "Unternehmen fehlen junge Fachkräfte, da diese ein Jahr später in den Beruf starten. Der Fachkräftemangel verschärft sich."},
+        {"title": "Gerechtigkeit", "content": "Soll es Ausnahmen geben? Reiche vs. Arme, Stadt vs. Land. Wer entscheidet, wer dient?"}
+      ],
+      "options": [
+        {
+          "id": "A",
+          "text": "Ausnahmen für Azubis/Studierende einführen",
+          "effects": {"Sicherheit": 10, "Freiheit": -10, "Budget": -10},
+          "next_scene": "W3-B1"
+        },
+        {
+          "id": "B",
+          "text": "Keine Ausnahmen, alle Jahrgänge gleich behandeln",
+          "effects": {"Sicherheit": 15, "Freiheit": -25, "Budget": -15},
+          "next_scene": "W3-B2"
+        }
+      ]
+    },
+    "W3-A1": {
+      "title": "Die Söldner-Republik",
+      "description": "Sicherheit wurde erkauft, aber ethische und demokratische Probleme entstehen.",
+      "board_news": {
+        "headline": "Sicherheit in privater Hand?",
+        "bullets": ["Private Sicherheitsfirmen dominieren", "Skandale um Loyalität", "Hohe Kosten"]
+      },
+      "dossiers": [
+        {"title": "Fazit 2035", "content": "Die Bundeswehr besteht fast nur noch aus bezahlten Kräften. Die Loyalität gilt dem Scheckbuch, nicht der Verfassung."}
+      ],
+      "options": []
+    },
+    "W3-A2": {
+      "title": "Der gläserne Schild",
+      "description": "Technologiefixierung macht abhängig und verletzlich.",
+      "board_news": {
+        "headline": "Cyber-Angriff legt Verteidigung lahm",
+        "bullets": ["Drohnenflotte gehackt", "Systemausfall", "Abhängigkeit von Technik rächt sich"]
+      },
+      "dossiers": [
+        {"title": "Fazit 2035", "content": "Ohne menschliche Reserve ist das Land bei Systemausfällen wehrlos. Die Technik war zu anfällig."}
+      ],
+      "options": []
+    },
+    "W3-B1": {
+      "title": "Dienstpflicht light",
+      "description": "Kompromisslösung scheitert, weil sie niemanden konsequent behandelt.",
+      "board_news": {
+        "headline": "Bürokratie-Monster Dienstpflicht",
+        "bullets": ["Klagewelle gegen Einberufung", "Ungerechtigkeit durch viele Ausnahmen", "Verwaltungschaos"]
+      },
+      "dossiers": [
+        {"title": "Fazit 2035", "content": "Der Versuch, es allen recht zu machen, hat das System lahmgelegt. Weder Wirtschaft noch Armee sind zufrieden."}
+      ],
+      "options": []
+    },
+    "W3-B2": {
+      "title": "Die Bürger in Uniform",
+      "description": "Sicherheit vs. Freiheit ist ein Trade-off, kein perfekter Zustand.",
+      "board_news": {
+        "headline": "Sicher, aber unfrei?",
+        "bullets": ["Hohe innere Sicherheit", "Massive Proteste der Jugend", "Auswanderungstendenzen"]
+      },
+      "dossiers": [
+        {"title": "Fazit 2035", "content": "Die Gesellschaft ist militarisiert. Die Sicherheit ist gewährleistet, aber der Preis ist die Freiheit der jungen Generation."}
+      ],
+      "options": []
+    }
+  },
+  "shop": [
+    {
+      "id": "shop_wp_1",
+      "title": "Staatsanleihen",
+      "description": "Frisches Geld für den Haushalt, aber Schulden für später.",
+      "cost": {"Sicherheit": 5},
+      "effects": {"Budget": 15}
+    },
+    {
+      "id": "shop_wp_2",
+      "title": "Überwachungskameras",
+      "description": "Mehr Sicherheit im öffentlichen Raum.",
+      "cost": {"Freiheit": 10},
+      "effects": {"Sicherheit": 10}
+    },
+    {
+      "id": "shop_wp_3",
+      "title": "Bürgerdialog",
+      "description": "Beruhigt die Bevölkerung.",
+      "cost": {"Budget": 5},
+      "effects": {"Freiheit": 5}
+    }
+  ]
+}
+>>>>>>> ba2548bdb6ac0dd147c4c05d8df2d41534217c07
