@@ -1,12 +1,13 @@
 import asyncio
 import json
-import os
 from pathlib import Path
 from fastapi import FastAPI, Request, WebSocket, WebSocketDisconnect
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
 import uvicorn
+import socket
+import qrcode
 
 app = FastAPI()
 
@@ -18,8 +19,7 @@ data_path = BASE_DIR / "data"
 
 # Ordner sicherstellen
 for p in [static_path, templates_path, data_path]:
-    if not p.exists():
-        os.makedirs(p)
+    p.mkdir(parents=True, exist_ok=True)
 
 app.mount("/static", StaticFiles(directory=static_path), name="static")
 templates = Jinja2Templates(directory=templates_path)
@@ -27,7 +27,7 @@ templates = Jinja2Templates(directory=templates_path)
 # --- GAME STATE ---
 # Lädt alle Szenarien aus der zentralen JSON-Datei
 def load_all_scenarios(filename="scenarios.json"):
-    path = data_path / filename
+    path = Path(__file__).resolve().parent / filename
     if path.exists():
         with open(path, "r", encoding="utf-8") as f:
             return json.load(f)
@@ -106,12 +106,12 @@ def end_voting_and_show_results():
     current_game_state["winning_option_id"] = winner_id
     current_game_state["next_scenario_id"] = winning_option_data.get("next_scenario_if_wins")
 
-def reset_game():
+def reset_game(start_scenario_id: str = "W1"):
     """Setzt das Spiel auf den Anfangszustand zurück."""
     global current_game_state
     current_game_state = _create_initial_state()
-    change_scenario("W1") # Startpunkt des Spiels
-    print("Spiel zurückgesetzt auf Szenario W1.")
+    change_scenario(start_scenario_id)
+    print(f"Spiel zurückgesetzt auf Szenario {start_scenario_id}.")
 
 # --- ROUTEN ---
 @app.get("/", response_class=HTMLResponse)
@@ -148,7 +148,8 @@ async def websocket_endpoint(websocket: WebSocket, client_type: str):
                     await broadcast_state()
 
             elif message_type == "reset_game":
-                reset_game()
+                start_id = data.get("start_scenario_id", "W1") # Default to Wehrpflicht
+                reset_game(start_id)
                 await broadcast_state()
 
             elif message_type == "advance_game":
@@ -173,7 +174,42 @@ async def broadcast_state():
         except:
             pass # Ignorieren, falls einer gerade disconnectet
 
+def get_local_ip():
+    """Ermittelt die lokale IP-Adresse des Servers im Netzwerk."""
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    try:
+        # Muss nicht erreichbar sein, dient nur zum Ermitteln der lokalen IP
+        s.connect(('10.255.255.255', 1))
+        IP = s.getsockname()[0]
+    except Exception:
+        IP = '127.0.0.1' # Fallback
+    finally:
+        s.close()
+    return IP
+
 if __name__ == "__main__":
     # On startup, reset the game state
-    reset_game()
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    reset_game() # Startet standardmäßig mit "W1"
+
+    # Generate QR Code for local network access
+    HOST_IP = get_local_ip()
+    PORT = 8000
+    play_url = f"http://{HOST_IP}:{PORT}/play"
+    
+    # QR-Code als Bild im Static-Ordner speichern
+    qr_code_path = static_path / "qr_code.png"
+    try:
+        qrcode.make(play_url).save(str(qr_code_path))
+        print("="*50)
+        print("Spiel-Server wird gestartet. So können Spieler beitreten:")
+        print(f"1. Alle Geräte mit demselben WLAN/Hotspot verbinden.")
+        print(f"   (Es wird KEINE Internetverbindung benötigt)")
+        print(f"2. Auf dem 'Board' (Beamer) die Seite http://{HOST_IP}:{PORT}/board öffnen.")
+        print(f"3. Spieler scannen den QR-Code oder geben die URL ein:")
+        print(f"   {play_url}")
+        print("="*50)
+    except Exception as e:
+        print(f"FEHLER beim Erstellen des QR-Codes: {e}")
+        print("Stellen Sie sicher, dass 'qrcode' und 'Pillow' installiert sind: pip install qrcode[pil]")
+
+    uvicorn.run(app, host="0.0.0.0", port=PORT)
