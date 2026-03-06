@@ -1,40 +1,4 @@
 {
-<<<<<<< HEAD
-    "id": "szenario_01",
-    "title": "Der Einberufungsbescheid",
-    "description": "Die Sicherheitslage in Europa hat sich verschlechtert. Die Bundeswehr meldet massiven Personalmangel. Ein Brief liegt auf deinem Tisch: 'Einberufung gemäß Artikel 12a GG'.",
-    "image": "brief_tisch.png",
-    "info_cards": [
-        {
-            "id": "info_gg",
-            "title": "Grundgesetz Art. 12a",
-            "text": "Männer können vom vollendeten 18. Lebensjahr an zum Dienst in den Streitkräften, im Bundesgrenzschutz oder in einem Zivilschutzverband verpflichtet werden. Dies wurde 2011 ausgesetzt, aber nicht abgeschafft."
-        },
-        {
-            "id": "info_personal",
-            "title": "Personalmangel",
-            "text": "Aktuell fehlen der Bundeswehr ca. 20.000 Soldaten, um die Bündnisverpflichtungen der NATO zu erfüllen. Eine reine Berufsarmee findet nicht genug Nachwuchs."
-        },
-        {
-            "id": "info_zwang",
-            "title": "Kritik: Zwangsdienst",
-            "text": "Gegner argumentieren, dass ein Zwangsdienst tief in die Freiheitsrechte junger Menschen eingreift und ihre Berufsplanung um ein Jahr verzögert."
-        }
-    ],
-    "options": [
-        {
-            "id": "A",
-            "text": "Wehrpflicht ablehnen (Berufsarmee stärken)",
-            "requires_info": []
-        },
-        {
-            "id": "B",
-            "text": "Allgemeine Dienstpflicht einführen",
-            "requires_info": ["info_gg", "info_personal"] 
-        }
-    ]
-}
-=======
   "meta": {
     "title": "Wehrpflicht 2030",
     "initial_stats": {
@@ -200,4 +164,3 @@
     }
   ]
 }
->>>>>>> ba2548bdb6ac0dd147c4c05d8df2d41534217c07

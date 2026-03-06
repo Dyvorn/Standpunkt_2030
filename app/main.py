@@ -33,13 +33,16 @@ def load_scenario(filename):
             return json.load(f)
     return None
 
+def initialize_game_state():
+    """Erstellt den initialen Spielstatus."""
+    return {
+        "phase": "question",
+        "scenario": load_scenario("wehrpflicht.json"),
+        "votes": {"A": 0, "B": 0}
+    }
+
 # Aktueller Status des Spiels (Global)
-# Wir laden direkt das erste Szenario
-current_game_state = {
-    "phase": "question",
-    "scenario": load_scenario("wehrpflicht.json"),
-    "votes": {"A": 0, "B": 0}
-}
+current_game_state = initialize_game_state()
 
 connected_clients = []
 
@@ -92,7 +95,6 @@ async def broadcast_state():
             pass # Ignorieren, falls einer gerade disconnectet
 
 if __name__ == "__main__":
-    import uvicorn
     # On startup, reset the game state
-    initialize_game_state()
+    # current_game_state is already initialized above
     uvicorn.run(app, host="0.0.0.0", port=8000)
