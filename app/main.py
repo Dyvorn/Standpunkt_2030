@@ -25,26 +25,93 @@ app.mount("/static", StaticFiles(directory=static_path), name="static")
 templates = Jinja2Templates(directory=templates_path)
 
 # --- GAME STATE ---
-# Hier laden wir die JSON Datei beim Start
-def load_scenario(filename):
+# Lädt alle Szenarien aus der zentralen JSON-Datei
+def load_all_scenarios(filename="scenarios.json"):
     path = data_path / filename
     if path.exists():
         with open(path, "r", encoding="utf-8") as f:
             return json.load(f)
-    return None
+    print(f"FEHLER: Konnte '{filename}' nicht finden.")
+    return {}
 
-def initialize_game_state():
-    """Erstellt den initialen Spielstatus."""
+ALL_SCENARIOS = load_all_scenarios()
+
+def _create_initial_state():
+    """Helper to create the base state dictionary."""
+    initial_values = {
+        "sicherheit": 50, "freiheit": 65, "budget": 60,
+        "tierwohl": 40, "lebenshaltungskosten": 55, "bauernzufriedenheit": 60
+    }
     return {
-        "phase": "question",
-        "scenario": load_scenario("wehrpflicht.json"),
-        "votes": {"A": 0, "B": 0}
+        "values": initial_values,
+        "current_scenario_id": None,
+        "theme": None,
+        "scenario_data": {},
+        "votes": {},
+        "phase": "loading", # Startphase
     }
 
 # Aktueller Status des Spiels (Global)
-current_game_state = initialize_game_state()
+current_game_state = _create_initial_state()
 
 connected_clients = []
+
+def change_scenario(scenario_id: str):
+    """Wechselt das Spiel zum angegebenen Szenario und setzt den Status zurück."""
+    global current_game_state
+    
+    next_scenario_data = ALL_SCENARIOS.get(scenario_id)
+    if not next_scenario_data:
+        print(f"FEHLER: Szenario '{scenario_id}' nicht in scenarios.json gefunden.")
+        # Gracefully end the game if scenario is not found
+        current_game_state["phase"] = "end"
+        current_game_state["scenario_data"] = {"title": "Spielende", "board": {"title_text": f"Szenario '{scenario_id}' konnte nicht geladen werden."}}
+        return
+
+    current_game_state["current_scenario_id"] = scenario_id
+    current_game_state["scenario_data"] = next_scenario_data
+    current_game_state["theme"] = next_scenario_data.get("theme")
+    
+    vote_options = next_scenario_data.get("vote_options", [])
+    current_game_state["votes"] = {opt["id"]: 0 for opt in vote_options}
+    
+    current_game_state["phase"] = "voting" if vote_options else "end"
+        
+    current_game_state.pop("winning_option_id", None)
+    current_game_state.pop("next_scenario_id", None)
+
+def end_voting_and_show_results():
+    """Ermittelt den Gewinner, wendet Effekte an und wechselt in die 'result' Phase."""
+    global current_game_state
+
+    votes = current_game_state.get("votes", {})
+    if not votes: return
+
+    # Gewinner ermitteln (höchste Stimmenzahl, bei Gleichstand gewinnt die erste Option)
+    winner_id = max(votes, key=votes.get)
+
+    winning_option_data = next((opt for opt in current_game_state["scenario_data"].get("vote_options", []) if opt["id"] == winner_id), None)
+    
+    if not winning_option_data:
+        print(f"FEHLER: Gewinner-Option '{winner_id}' nicht in Szenario-Daten gefunden.")
+        return
+
+    # Effekte anwenden
+    for key, value in winning_option_data.get("value_effects", {}).items():
+        if key in current_game_state["values"]:
+            current_game_state["values"][key] += value
+
+    # Status für die 'result'-Phase aktualisieren
+    current_game_state["phase"] = "result"
+    current_game_state["winning_option_id"] = winner_id
+    current_game_state["next_scenario_id"] = winning_option_data.get("next_scenario_if_wins")
+
+def reset_game():
+    """Setzt das Spiel auf den Anfangszustand zurück."""
+    global current_game_state
+    current_game_state = _create_initial_state()
+    change_scenario("W1") # Startpunkt des Spiels
+    print("Spiel zurückgesetzt auf Szenario W1.")
 
 # --- ROUTEN ---
 @app.get("/", response_class=HTMLResponse)
@@ -71,17 +138,29 @@ async def websocket_endpoint(websocket: WebSocket, client_type: str):
     
     try:
         while True:
-            # 2. Auf Nachrichten warten (Votes)
             data = await websocket.receive_json()
+            message_type = data.get("type")
             
-            if data.get("type") == "vote":
-                option = data.get("value")
-                # Vote zählen
-                if option in current_game_state["votes"]:
-                    current_game_state["votes"][option] += 1
-                
-                # Update an ALLE senden (damit Board Balken aktualisiert)
+            if message_type == "vote" and current_game_state.get("phase") == "voting":
+                option_id = data.get("value")
+                if option_id in current_game_state.get("votes", {}):
+                    current_game_state["votes"][option_id] += 1
+                    await broadcast_state()
+
+            elif message_type == "reset_game":
+                reset_game()
                 await broadcast_state()
+
+            elif message_type == "advance_game":
+                phase = current_game_state.get("phase")
+                if phase == "voting":
+                    end_voting_and_show_results()
+                    await broadcast_state()
+                elif phase == "result":
+                    next_id = current_game_state.get("next_scenario_id")
+                    if next_id:
+                        change_scenario(next_id)
+                        await broadcast_state()
                 
     except WebSocketDisconnect:
         connected_clients.remove(websocket)
@@ -96,5 +175,5 @@ async def broadcast_state():
 
 if __name__ == "__main__":
     # On startup, reset the game state
-    # current_game_state is already initialized above
+    reset_game()
     uvicorn.run(app, host="0.0.0.0", port=8000)

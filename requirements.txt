@@ -1,5 +1,4 @@
-<<<<<<< HEAD
 fastapi
 uvicorn[standard]
-=======
->>>>>>> parent of b1475a7 (server and .exe and improvements)
+jinja2
+aiofiles
