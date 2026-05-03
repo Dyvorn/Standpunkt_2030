@@ -67,6 +67,11 @@ class HostWindow(QMainWindow):
         self.ui_bridge.update_players_signal.connect(self.update_lobby_list)
         self.ui_bridge.answer_received_signal.connect(self.update_answer_count)
 
+        # Timer-Logik für Fragen
+        self.question_timer = QTimer()
+        self.question_timer.timeout.connect(self.update_countdown)
+        self.remaining_time = 0
+
         # Initialisierung der einzelnen Screens
         self.init_setup_screen()
         self.init_lobby_screen()
@@ -171,6 +176,11 @@ class HostWindow(QMainWindow):
         self.q_progress.setFont(QFont("Segoe UI", 14, QFont.Weight.Bold))
         self.q_progress.setStyleSheet("color: #6366f1; letter-spacing: 2px;")
         layout.addWidget(self.q_progress, alignment=Qt.AlignmentFlag.AlignCenter)
+
+        self.timer_display = QLabel("20")
+        self.timer_display.setFont(QFont("Segoe UI", 36, QFont.Weight.Bold))
+        self.timer_display.setStyleSheet("color: #f59e0b; background: #1e293b; border-radius: 40px; padding: 10px; min-width: 80px;")
+        layout.addWidget(self.timer_display, alignment=Qt.AlignmentFlag.AlignCenter)
 
         self.q_text = QLabel("Fragentext")
         self.q_text.setFont(QFont("Segoe UI", 28, QFont.Weight.Bold))
@@ -295,6 +305,10 @@ class HostWindow(QMainWindow):
 
     def trigger_next_question(self):
         """Wechselt zur nächsten Frage oder zu den Endergebnissen."""
+        # Schutz vor doppeltem Aufruf (z.B. Video-Ende + manueller Klick + Timer)
+        if self.engine.state != "RESOLUTION" and self.engine.state != "LOBBY":
+            return
+            
         self.media_player.stop() # Stoppt das Video, falls es noch läuft
         q = self.engine.next_question()
         if q:
@@ -303,17 +317,43 @@ class HostWindow(QMainWindow):
             for i, ans in enumerate(q["antworten"]):
                 self.ans_labels[i].setText(f"{['▲','◆','●','■'][i]} {ans['text']}")
             self.ans_counter.setText("0 geantwortet")
+            
+            # Lesezeit starten (5 Sekunden)
+            self.remaining_time = 5
+            self.timer_display.setText(str(self.remaining_time))
+            self.timer_display.setStyleSheet("color: #6366f1; background: #1e293b; border-radius: 40px; padding: 10px; min-width: 80px;")
+            self.question_timer.start(1000)
+            
             self.server.broadcast_question(q)
             self.stack.setCurrentIndex(2) # Wechsel zum Game-Screen
         else:
             self.show_final_results()
 
+    def update_countdown(self):
+        self.remaining_time -= 1
+        self.timer_display.setText(str(self.remaining_time))
+        if self.remaining_time <= 0:
+            if self.engine.is_reading_time:
+                # Lesezeit vorbei -> Abstimmung starten
+                self.engine.start_voting()
+                self.remaining_time = 20
+                self.timer_display.setText(str(self.remaining_time))
+                self.timer_display.setStyleSheet("color: #f59e0b; background: #1e293b; border-radius: 40px; padding: 10px; min-width: 80px;")
+                self.server.broadcast_start_voting()
+            else:
+                self.question_timer.stop()
+                self.show_resolution()
+
     def update_answer_count(self, count):
         """Aktualisiert die Anzeige der eingegangenen Antworten."""
         self.ans_counter.setText(f"{count} von {len(self.engine.players)} geantwortet")
+        if count >= len(self.engine.players) and self.engine.state == "QUESTION":
+            self.question_timer.stop()
+            self.show_resolution()
 
     def show_resolution(self):
         """Zeigt die Auflösung der Frage, spielt das Video ab und markiert die korrekte Antwort."""
+        self.question_timer.stop()
         self.engine.state = "RESOLUTION"
         q = self.engine.get_current_question()
         
@@ -353,7 +393,8 @@ class HostWindow(QMainWindow):
 
     def handle_media_status(self, status):
         """Behandelt den Status des Media Players, um nach Videoende fortzufahren."""
-        if status == QMediaPlayer.MediaStatus.EndOfMedia:
+        # Nur zur nächsten Frage springen, wenn wir in der Auflösungsphase sind
+        if status == QMediaPlayer.MediaStatus.EndOfMedia and self.engine.state == "RESOLUTION":
             self.trigger_next_question()
 
     def show_final_results(self):
@@ -370,4 +411,6 @@ class HostWindow(QMainWindow):
     def reset_everything(self):
         """Setzt das Spiel komplett zurück und kehrt zum Setup-Screen zurück."""
         self.engine.reset()
+        self.server.broadcast_game_reset()
+        self.ui_bridge.update_players_signal.emit(list(self.engine.players.values()))
         self.stack.setCurrentIndex(0) # Wechsel zum Setup-Screen

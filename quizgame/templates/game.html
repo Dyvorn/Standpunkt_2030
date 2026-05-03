@@ -39,9 +39,40 @@
         const socket = io();
         let canAnswer = false;
 
-        socket.on('new_question', (data) => {
-            document.getElementById('info').innerText = `Frage ${data.index} von ${data.total}`;
+        // Beim Laden des Spiels kurz Bescheid geben, damit der Server 
+        // ggf. die aktuelle Frage schickt, falls man später kommt
+        socket.on('connect', () => {
+            const name = localStorage.getItem('quiz_name');
+            if (name) {
+                socket.emit('join_game', {name: name});
+            }
+            socket.emit('request_current_state'); 
+        });
+
+        let currentQData = null;
+        
+        function hideOverlays() {
             document.getElementById('feedback').style.display = 'none';
+            document.getElementById('final').style.display = 'none';
+        }
+
+        socket.on('new_question', (data) => {
+            currentQData = data;
+            hideOverlays();
+            document.getElementById('info').innerText = "Bitte Frage lesen...";
+            canAnswer = false;
+            enableButtons(false);
+        });
+
+        // Auch bei Spielstart sicherstellen, dass alle alten Fenster zu sind
+        socket.on('game_start', () => {
+            hideOverlays();
+        });
+
+        socket.on('start_voting', () => {
+            if (currentQData) {
+                document.getElementById('info').innerText = `Frage ${currentQData.index} von ${currentQData.total}`;
+            }
             canAnswer = true;
             enableButtons(true);
         });
@@ -66,7 +97,7 @@
             
             fb.style.display = 'flex';
             fb.className = 'overlay ' + (data.your_correct ? 'correct' : 'wrong');
-            st.innerText = data.your_correct ? "RICHTIG!" : "FALSCH";
+            st.innerHTML = data.your_correct ? "RICHTIG!" : `FALSCH<br><span style="font-size: 1rem; font-weight: normal;">Richtig wäre: ${data.correct_text}</span>`;
             pt.innerText = `Gesamtpunkte: ${data.points}`;
         });
 
@@ -79,6 +110,11 @@
                 <p>Platz ${me.rank}</p>
                 <p>${me.points} Punkte</p>
             `;
+        });
+
+        // Wenn der Lehrer ein neues Spiel startet, zurück in die Lobby
+        socket.on('game_reset', () => {
+            window.location.href = '/lobby';
         });
 
         // Falls die Verbindung unterbrochen wird, zur Startseite

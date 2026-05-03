@@ -19,6 +19,12 @@
         const socket = io();
         const name = localStorage.getItem('quiz_name');
         document.getElementById('welcome').innerText = `Bereit, ${name}!`;
+        
+        socket.on('connect', () => {
+            if (name) {
+                socket.emit('join_game', {name: name});
+            }
+        });
 
         socket.on('player_joined', (data) => {
             document.getElementById('player-count').innerText = `${data.count} Spieler sind im Raum`;

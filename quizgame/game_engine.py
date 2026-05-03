@@ -9,10 +9,17 @@ class GameEngine:
         self.state = "SETUP"  # SETUP, LOBBY, QUESTION, RESOLUTION, RESULTS
         self.question_start_time = 0
         self.answers_received = 0
+        self.is_reading_time = False
 
     def add_player(self, sid: str, name: str):
-        if sid not in self.players:
-            self.players[sid] = {"name": name, "points": 0, "last_correct": False, "rank": 0}
+        # Falls ein Spieler mit diesem Namen schon existiert (z.B. Refresh), SID aktualisieren
+        for old_sid in list(self.players.keys()):
+            if self.players[old_sid]["name"] == name:
+                player_data = self.players.pop(old_sid)
+                self.players[sid] = player_data
+                return
+        
+        self.players[sid] = {"name": name, "points": 0, "last_correct": False, "rank": 0, "answered": False}
 
     def load_questions(self, selected_data: List[dict]):
         self.questions = []
@@ -24,6 +31,7 @@ class GameEngine:
         self.current_question_index += 1
         if self.current_question_index < len(self.questions):
             self.state = "QUESTION"
+            self.is_reading_time = True
             self.answers_received = 0
             self.question_start_time = time.time()
             # Reset player answer status
@@ -32,8 +40,12 @@ class GameEngine:
         self.state = "RESULTS"
         return None
 
+    def start_voting(self):
+        self.is_reading_time = False
+        self.question_start_time = time.time()
+
     def submit_answer(self, sid: str, answer_index: int) -> bool:
-        if self.state != "QUESTION" or sid not in self.players:
+        if self.state != "QUESTION" or self.is_reading_time or sid not in self.players:
             return False
         
         player = self.players[sid]
@@ -72,7 +84,14 @@ class GameEngine:
         return None
 
     def reset(self):
-        self.players = {}
+        # Behalte die Spieler (sid/name), aber setze die Spielwerte zurück
+        for sid in self.players:
+            self.players[sid].update({
+                "points": 0,
+                "last_correct": False,
+                "rank": 0,
+                "answered": False
+            })
         self.questions = []
         self.current_question_index = -1
         self.state = "SETUP"
