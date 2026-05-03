@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quiz Game</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <style>
+        body { font-family: system-ui, sans-serif; margin: 0; background: #0f172a; color: white; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+        .header { padding: 15px; text-align: center; background: #1e293b; font-weight: bold; font-size: 1.1rem; border-bottom: 1px solid #334155; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 15px; padding: 15px; flex: 1; }
+        .btn { border: none; border-radius: 20px; font-size: 4rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: transform 0.1s, opacity 0.2s; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2); }
+        .btn:active { transform: scale(0.95); }
+        .btn:disabled { opacity: 0.5; cursor: default; }
+        .red { background: #ef4444; } .blue { background: #3b82f6; } .yellow { background: #f59e0b; } .green { background: #10b981; }
+        .overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 10; font-size: 2.5rem; font-weight: bold; backdrop-filter: blur(8px); }
+        .correct { background: rgba(16, 185, 129, 0.9); } .wrong { background: rgba(239, 68, 68, 0.9); }
+    </style>
+</head>
+<body>
+    <div class="header" id="info">Frage lädt...</div>
+    <div class="grid" id="grid">
+        <button class="btn red" onclick="answer(0)">▲</button>
+        <button class="btn blue" onclick="answer(1)">◆</button>
+        <button class="btn yellow" onclick="answer(2)">●</button>
+        <button class="btn green" onclick="answer(3)">■</button>
+    </div>
+
+    <div id="feedback" class="overlay">
+        <div id="status-text"></div>
+        <div id="points-text" style="font-size: 1.2rem; margin-top: 10px;"></div>
+    </div>
+
+    <div id="final" class="overlay" style="background: #2c3e50; display: none;">
+        <h1>Endergebnis</h1>
+        <div id="rank"></div>
+    </div>
+
+    <script>
+        const socket = io();
+        let canAnswer = false;
+
+        socket.on('new_question', (data) => {
+            document.getElementById('info').innerText = `Frage ${data.index} von ${data.total}`;
+            document.getElementById('feedback').style.display = 'none';
+            canAnswer = true;
+            enableButtons(true);
+        });
+
+        function answer(idx) {
+            if(!canAnswer) return;
+            socket.emit('submit_answer', {index: idx});
+            canAnswer = false;
+            enableButtons(false);
+            document.getElementById('info').innerText = "Antwort gesendet. Warte auf Auflösung...";
+        }
+
+        function enableButtons(on) {
+            const btns = document.getElementsByClassName('btn');
+            for(let b of btns) b.disabled = !on;
+        }
+
+        socket.on('resolution', (data) => {
+            const fb = document.getElementById('feedback');
+            const st = document.getElementById('status-text');
+            const pt = document.getElementById('points-text');
+            
+            fb.style.display = 'flex';
+            fb.className = 'overlay ' + (data.your_correct ? 'correct' : 'wrong');
+            st.innerText = data.your_correct ? "RICHTIG!" : "FALSCH";
+            pt.innerText = `Gesamtpunkte: ${data.points}`;
+        });
+
+        socket.on('final_results', (data) => {
+            const name = localStorage.getItem('quiz_name');
+            const me = data.leaderboard.find(p => p.name === name);
+            
+            document.getElementById('final').style.display = 'flex';
+            document.getElementById('rank').innerHTML = `
+                <p>Platz ${me.rank}</p>
+                <p>${me.points} Punkte</p>
+            `;
+        });
+
+        // Falls die Verbindung unterbrochen wird, zur Startseite
+        socket.on('disconnect', () => { window.location.href = '/'; });
+    </script>
+</body>
+</html>
