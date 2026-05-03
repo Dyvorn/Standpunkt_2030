@@ -74,5 +74,8 @@ def broadcast_results():
     leaderboard = engine.get_leaderboard()
     socketio.emit('final_results', {'leaderboard': leaderboard})
 
+def broadcast_game_start():
+    socketio.emit('game_start')
+
 def run_server(host, port):
     socketio.run(app, host=host, port=port, debug=False, use_reloader=False)

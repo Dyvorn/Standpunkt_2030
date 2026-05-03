@@ -90,19 +90,30 @@ class HostWindow(QMainWindow):
         self.scroll_layout = QVBoxLayout(self.scroll_content)
         
         self.checkboxes = []
-        data_dir = Path("data")
-        if data_dir.exists():
-            for file in data_dir.glob("*.json"):
-                try:
-                    with open(file, "r", encoding="utf-8") as f:
-                        data = json.load(f)
-                        cb = QCheckBox(f"{data['bereich']} ({len(data['fragen'])} Fragen)")
-                        cb.setProperty("data", data) # Speichert die JSON-Daten direkt im Checkbox-Objekt
-                        cb.setCursor(Qt.CursorShape.PointingHandCursor)
-                        self.scroll_layout.addWidget(cb)
-                        self.checkboxes.append(cb)
-                except Exception as e:
-                    QMessageBox.warning(self, "Fehler beim Laden", f"Konnte Datei {file.name} nicht laden: {e}")
+        # Suche nach JSON-Dateien im Verzeichnis des Skripts und in 'data'-Ordnern
+        base_path = Path(__file__).parent
+        search_dirs = [base_path, base_path / "data", Path("data")]
+        
+        processed_files = set()
+        for d in search_dirs:
+            if d.exists():
+                for file in d.glob("*.json"):
+                    resolved_path = file.resolve()
+                    if resolved_path in processed_files:
+                        continue
+                    processed_files.add(resolved_path)
+                    try:
+                        with open(file, "r", encoding="utf-8") as f:
+                            data = json.load(f)
+                        # Nur Dateien laden, die das Quiz-Format (bereich & fragen) haben
+                        if isinstance(data, dict) and "bereich" in data and "fragen" in data:
+                            cb = QCheckBox(f"{data['bereich']} ({len(data['fragen'])} Fragen)")
+                            cb.setProperty("data", data)
+                            cb.setCursor(Qt.CursorShape.PointingHandCursor)
+                            self.scroll_layout.addWidget(cb)
+                            self.checkboxes.append(cb)
+                    except Exception:
+                        continue
         
         self.scroll.setWidget(self.scroll_content)
         self.scroll.setWidgetResizable(True)
@@ -278,8 +289,8 @@ class HostWindow(QMainWindow):
         self.start_btn.setEnabled(len(players) > 0)
 
     def start_game(self):
-        """Startet das Spiel und sendet das 'game_start'-Event an alle Schüler."""
-        self.server.socketio.emit('game_start', broadcast=True) # broadcast=True ist wichtig für alle Clients
+        """Startet das Spiel und sendet das 'game_start'-Event an alle Schüler über die Server-Funktion."""
+        self.server.broadcast_game_start()
         self.trigger_next_question()
 
     def trigger_next_question(self):
