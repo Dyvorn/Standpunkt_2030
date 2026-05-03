@@ -1,39 +1,15 @@
 {
-  "bereich": "Tierschutz",
-  "farbe": "#e67e22",
+  "bereich": "Themenname",
   "fragen": [
     {
-      "id": 1,
-      "frage": "Welche Haltungsform bietet Schweinen am meisten Platz?",
+      "frage": "Deine Frage?",
       "antworten": [
-        {"text": "Haltungsform 4 (Premium)", "korrekt": true},
-        {"text": "Haltungsform 1 (Stall)", "korrekt": false},
-        {"text": "Haltungsform 2 (Stall+)", "korrekt": false},
-        {"text": "Haltungsform 3 (Außenklima)", "korrekt": false}
+        {"text": "Antwort A", "korrekt": true},
+        {"text": "Antwort B", "korrekt": false},
+        {"text": "Antwort C", "korrekt": false},
+        {"text": "Antwort D", "korrekt": false}
       ],
-      "video": "schwein_1.mp4"
-    },
-    {
-      "id": 2,
-      "frage": "Was bedeutet 'Kükenschreddern' Verbot seit 2022?",
-      "antworten": [
-        {"text": "In Ovo Geschlechtsbestimmung", "korrekt": true},
-        {"text": "Importverbot für Eier", "korrekt": false},
-        {"text": "Bio-Eier Pflicht", "korrekt": false},
-        {"text": "Freilandhaltung für alle", "korrekt": false}
-      ],
-      "video": "huehner_2.mp4"
-    },
-    {
-      "id": 3,
-      "frage": "Wie viel Platz hat ein Huhn in Bodenhaltung (Standard)?",
-      "antworten": [
-        {"text": "9 Hennen pro m²", "korrekt": true},
-        {"text": "1 Henne pro m²", "korrekt": false},
-        {"text": "25 Hennen pro m²", "korrekt": false},
-        {"text": "3 Hennen pro m²", "korrekt": false}
-      ],
-      "video": "platz_3.mp4"
+      "video": "video_dateiname.mp4"
     }
   ]
 }
