@@ -1,15 +1,245 @@
 {
-  "bereich": "Themenname",
+"bereich": "Tierschutz",
   "fragen": [
     {
-      "frage": "Deine Frage?",
+      "frage": "Welches Futter ist für die meisten gesunden Wohnungskatzen im Alltag am besten geeignet?",
       "antworten": [
-        {"text": "Antwort A", "korrekt": true},
-        {"text": "Antwort B", "korrekt": false},
-        {"text": "Antwort C", "korrekt": false},
-        {"text": "Antwort D", "korrekt": false}
+        {"text": "Platzhalter Antwort A", "korrekt": true},
+        {"text": "Platzhalter Antwort B", "korrekt": false},
+        {"text": "Platzhalter Antwort C", "korrekt": false},
+        {"text": "Platzhalter Antwort D", "korrekt": false}
       ],
-      "video": "video_dateiname.mp4"
+      "video": "katzen_futter.mp4"
+    },
+    {
+      "frage": "Worauf ist bei der Haltung mehrerer Katzen im selben Haushalt besonders zu achten?",
+      "antworten": [
+        {"text": "Platzhalter Antwort A", "korrekt": true},
+        {"text": "Platzhalter Antwort B", "korrekt": false},
+        {"text": "Platzhalter Antwort C", "korrekt": false},
+        {"text": "Platzhalter Antwort D", "korrekt": false}
+      ],
+      "video": "mehrkatzenhaushalt.mp4"
+    },
+    {
+      "frage": "Welche Methode ist bei der Vergesellschaftung bisher fremder Katzen am sinnvollsten?",
+      "antworten": [
+        {"text": "Platzhalter Antwort A", "korrekt": true},
+        {"text": "Platzhalter Antwort B", "korrekt": false},
+        {"text": "Platzhalter Antwort C", "korrekt": false},
+        {"text": "Platzhalter Antwort D", "korrekt": false}
+      ],
+      "video": "vergesellschaftung.mp4"
+    },
+    {
+      "frage": "Welches Risiko besteht, wenn eine Katze nach der Adoption nicht krankenversichert oder zumindest finanziell abgesichert ist?",
+      "antworten": [
+        {"text": "Platzhalter Antwort A", "korrekt": true},
+        {"text": "Platzhalter Antwort B", "korrekt": false},
+        {"text": "Platzhalter Antwort C", "korrekt": false},
+        {"text": "Platzhalter Antwort D", "korrekt": false}
+      ],
+      "video": "versicherung_risiko.mp4"
+    },
+    {
+      "frage": "Welche Vorbereitung im Haushalt ist sinnvoll, bevor eine neue Katze aus dem Tierschutz einzieht?",
+      "antworten": [
+        {"text": "Platzhalter Antwort A", "korrekt": true},
+        {"text": "Platzhalter Antwort B", "korrekt": false},
+        {"text": "Platzhalter Antwort C", "korrekt": false},
+        {"text": "Platzhalter Antwort D", "korrekt": false}
+      ],
+      "video": "einzug_vorbereitung.mp4"
+    },
+    {
+      "frage": "Was ist bei der Vergesellschaftung von Kaninchen besonders zu beachten?",
+      "antworten": [
+        {"text": "Platzhalter Antwort A", "korrekt": true},
+        {"text": "Platzhalter Antwort B", "korrekt": false},
+        {"text": "Platzhalter Antwort C", "korrekt": false},
+        {"text": "Platzhalter Antwort D", "korrekt": false}
+      ],
+      "video": "kaninchen_vergesellschaftung.mp4"
+    },
+    {
+      "frage": "Welche Voraussetzungen sollte ein Haushalt haben, bevor er ein Kaninchen adoptieren darf?",
+      "antworten": [
+        {"text": "Platzhalter Antwort A", "korrekt": true},
+        {"text": "Platzhalter Antwort B", "korrekt": false},
+        {"text": "Platzhalter Antwort C", "korrekt": false},
+        {"text": "Platzhalter Antwort D", "korrekt": false}
+      ],
+      "video": "kaninchen_voraussetzungen.mp4"
+    },
+    {
+      "frage": "Was ist bei der Fütterung von Nagetieren besonders wichtig?",
+      "antworten": [
+        {"text": "Platzhalter Antwort A", "korrekt": true},
+        {"text": "Platzhalter Antwort B", "korrekt": false},
+        {"text": "Platzhalter Antwort C", "korrekt": false},
+        {"text": "Platzhalter Antwort D", "korrekt": false}
+      ],
+      "video": "nager_fütterung.mp4"
+    },
+    {
+      "frage": "Wie viele kleine Nagetiere sollte man mindestens halten?",
+      "antworten": [
+        {"text": "Platzhalter Antwort A", "korrekt": true},
+        {"text": "Platzhalter Antwort B", "korrekt": false},
+        {"text": "Platzhalter Antwort C", "korrekt": false},
+        {"text": "Platzhalter Antwort D", "korrekt": false}
+      ],
+      "video": "nager_anzahl.mp4"
+    },
+    {
+      "frage": "Wie kann ein Verein Straßentauben tierschutzgerecht versorgen und gleichzeitig ihre Population kontrollieren?",
+      "antworten": [
+        {"text": "Platzhalter Antwort A", "korrekt": true},
+        {"text": "Platzhalter Antwort B", "korrekt": false},
+        {"text": "Platzhalter Antwort C", "korrekt": false},
+        {"text": "Platzhalter Antwort D", "korrekt": false}
+      ],
+      "video": "tauben_population.mp4"
+    },
+    {
+      "frage": "Was genau ist ein Taubenschlag, und wie wird er im Rahmen des Taubenmanagements eingesetzt?",
+      "antworten": [
+        {"text": "Platzhalter Antwort A", "korrekt": true},
+        {"text": "Platzhalter Antwort B", "korrekt": false},
+        {"text": "Platzhalter Antwort C", "korrekt": false},
+        {"text": "Platzhalter Antwort D", "korrekt": false}
+      ],
+      "video": "was_ist_taubenschlag.mp4"
+    },
+    {
+      "frage": "Welche Rolle spielt die regelmäßige Reinigung und Betreuung eines Taubenschlags?",
+      "antworten": [
+        {"text": "Platzhalter Antwort A", "korrekt": true},
+        {"text": "Platzhalter Antwort B", "korrekt": false},
+        {"text": "Platzhalter Antwort C", "korrekt": false},
+        {"text": "Platzhalter Antwort D", "korrekt": false}
+      ],
+      "video": "taubenschlag_pflege.mp4"
+    },
+    {
+      "frage": "Wie sollte man als Anwohner in der Stadt verantwortungsvoll mit Tauben umgehen?",
+      "antworten": [
+        {"text": "Platzhalter Antwort A", "korrekt": true},
+        {"text": "Platzhalter Antwort B", "korrekt": false},
+        {"text": "Platzhalter Antwort C", "korrekt": false},
+        {"text": "Platzhalter Antwort D", "korrekt": false}
+      ],
+      "video": "anwohner_tauben.mp4"
+    },
+    {
+      "frage": "Was ist eine artgerechte Fütterung für verschiedene kleine und große Ziervögel?",
+      "antworten": [
+        {"text": "Platzhalter Antwort A", "korrekt": true},
+        {"text": "Platzhalter Antwort B", "korrekt": false},
+        {"text": "Platzhalter Antwort C", "korrekt": false},
+        {"text": "Platzhalter Antwort D", "korrekt": false}
+      ],
+      "video": "voegel_fütterung.mp4"
+    },
+    {
+      "frage": "Welche Voraussetzungen sollte man erfüllen, wenn man Vögel aus dem Tierschutz adoptieren möchte?",
+      "antworten": [
+        {"text": "Platzhalter Antwort A", "korrekt": true},
+        {"text": "Platzhalter Antwort B", "korrekt": false},
+        {"text": "Platzhalter Antwort C", "korrekt": false},
+        {"text": "Platzhalter Antwort D", "korrekt": false}
+      ],
+      "video": "voegel_adoption.mp4"
+    },
+    {
+      "frage": "Wie viele Vögel sollte man am besten zusammen halten, um ihr Wohlbefinden zu sichern?",
+      "antworten": [
+        {"text": "Platzhalter Antwort A", "korrekt": true},
+        {"text": "Platzhalter Antwort B", "korrekt": false},
+        {"text": "Platzhalter Antwort C", "korrekt": false},
+        {"text": "Platzhalter Antwort D", "korrekt": false}
+      ],
+      "video": "voegel_anzahl.mp4"
+    },
+    {
+      "frage": "Welche regelmäßige Pflege und tierärztliche Betreuung brauchen diese Vögel?",
+      "antworten": [
+        {"text": "Platzhalter Antwort A", "korrekt": true},
+        {"text": "Platzhalter Antwort B", "korrekt": false},
+        {"text": "Platzhalter Antwort C", "korrekt": false},
+        {"text": "Platzhalter Antwort D", "korrekt": false}
+      ],
+      "video": "voegel_pflege.mp4"
+    },
+    {
+      "frage": "Was ist bei der Betreuung von Igeln besonders wichtig, wenn sie in Menschenobhut kommen (z.B. nach Fund verletzt oder untergewichtig)?",
+      "antworten": [
+        {"text": "Platzhalter Antwort A", "korrekt": true},
+        {"text": "Platzhalter Antwort B", "korrekt": false},
+        {"text": "Platzhalter Antwort C", "korrekt": false},
+        {"text": "Platzhalter Antwort D", "korrekt": false}
+      ],
+      "video": "igel_betreuung.mp4"
+    },
+    {
+      "frage": "Wo sollte man sich hinwenden, wenn man einen Igel gefunden hat, der Hilfe braucht?",
+      "antworten": [
+        {"text": "Platzhalter Antwort A", "korrekt": true},
+        {"text": "Platzhalter Antwort B", "korrekt": false},
+        {"text": "Platzhalter Antwort C", "korrekt": false},
+        {"text": "Platzhalter Antwort D", "korrekt": false}
+      ],
+      "video": "igel_fund.mp4"
+    },
+    {
+      "frage": "Wie kann man Igeln helfen, dass sie sich gut vorbereiten und sicher überwintern können?",
+      "antworten": [
+        {"text": "Platzhalter Antwort A", "korrekt": true},
+        {"text": "Platzhalter Antwort B", "korrekt": false},
+        {"text": "Platzhalter Antwort C", "korrekt": false},
+        {"text": "Platzhalter Antwort D", "korrekt": false}
+      ],
+      "video": "igel_überwinterung.mp4"
+    },
+    {
+      "frage": "Welche Aussage zur Vorkontrolle bei Tieradoptionen trifft am ehesten zu?",
+      "antworten": [
+        {"text": "Platzhalter Antwort A", "korrekt": true},
+        {"text": "Platzhalter Antwort B", "korrekt": false},
+        {"text": "Platzhalter Antwort C", "korrekt": false},
+        {"text": "Platzhalter Antwort D", "korrekt": false}
+      ],
+      "video": "vorkontrolle.mp4"
+    },
+    {
+      "frage": "Warum ist es wichtig, bei der Adoption eines Tieres auch langfristig an die Kosten für Futter, Tierarzt und Versicherung zu denken?",
+      "antworten": [
+        {"text": "Platzhalter Antwort A", "korrekt": true},
+        {"text": "Platzhalter Antwort B", "korrekt": false},
+        {"text": "Platzhalter Antwort C", "korrekt": false},
+        {"text": "Platzhalter Antwort D", "korrekt": false}
+      ],
+      "video": "kosten_planung.mp4"
+    },
+    {
+      "frage": "Was sollte man beachten, wenn man sich zum ersten Mal für eine Adoption entscheidet, um dem Tier gerecht zu werden?",
+      "antworten": [
+        {"text": "Platzhalter Antwort A", "korrekt": true},
+        {"text": "Platzhalter Antwort B", "korrekt": false},
+        {"text": "Platzhalter Antwort C", "korrekt": false},
+        {"text": "Platzhalter Antwort D", "korrekt": false}
+      ],
+      "video": "erste_adoption.mp4"
+    },
+    {
+      "frage": "Was solltest du beim Umgang mit dem Tierschutz beachten?",
+      "antworten": [
+        {"text": "Platzhalter Antwort A", "korrekt": true},
+        {"text": "Platzhalter Antwort B", "korrekt": false},
+        {"text": "Platzhalter Antwort C", "korrekt": false},
+        {"text": "Platzhalter Antwort D", "korrekt": false}
+      ],
+      "video": "umgang_tierschutz.mp4"
     }
   ]
 }
