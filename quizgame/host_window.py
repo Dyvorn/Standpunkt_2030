@@ -381,10 +381,23 @@ class HostWindow(QMainWindow):
         self.server.broadcast_resolution()
         self.stack.setCurrentIndex(3) # Wechsel zum Resolution-Screen
 
-        # Video laden und abspielen
-        vid_path = Path("videos") / q["video"]
+        # Video laden und abspielen (Pfad relativ zum Skript-Pfad verankern)
+        base_path = Path(__file__).parent
+        videos_dir = base_path / "videos"
+
+        # Suchreihenfolge: fixed -> compressed -> original
+        fixed_vid_path = videos_dir / "fixed" / q["video"]
+        compressed_vid_path = videos_dir / "compressed" / q["video"]
+
+        if fixed_vid_path.exists():
+            vid_path = fixed_vid_path
+        elif compressed_vid_path.exists():
+            vid_path = compressed_vid_path
+        else:
+            vid_path = videos_dir / q["video"]
+
         if vid_path.exists():
-            self.media_player.setSource(QUrl.fromLocalFile(str(vid_path.absolute())))
+            self.media_player.setSource(QUrl.fromLocalFile(str(vid_path.resolve())))
             self.media_player.play()
         else:
             self.res_info.setText(f"{self.res_info.text()}\n(Video '{q['video']}' nicht gefunden oder Pfad falsch)")

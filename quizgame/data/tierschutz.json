@@ -4,240 +4,230 @@
     {
       "frage": "Welches Futter ist für die meisten gesunden Wohnungskatzen im Alltag am besten geeignet?",
       "antworten": [
-        {"text": "Platzhalter Antwort A", "korrekt": true},
-        {"text": "Platzhalter Antwort B", "korrekt": false},
-        {"text": "Platzhalter Antwort C", "korrekt": false},
-        {"text": "Platzhalter Antwort D", "korrekt": false}
+        {"text": "Billiges Trockenfutter mit viel Getreide", "korrekt": false},
+        {"text": "Rohes Fleisch ohne Zusätze", "korrekt": false},
+        {"text": "Hochwertiges Nassfutter mit hohem Fleischanteil", "korrekt": true},
+        {"text": "Nur Milch und Käse", "korrekt": false}
       ],
       "video": "katzen_futter.mp4"
     },
     {
       "frage": "Worauf ist bei der Haltung mehrerer Katzen im selben Haushalt besonders zu achten?",
       "antworten": [
-        {"text": "Platzhalter Antwort A", "korrekt": true},
-        {"text": "Platzhalter Antwort B", "korrekt": false},
-        {"text": "Platzhalter Antwort C", "korrekt": false},
-        {"text": "Platzhalter Antwort D", "korrekt": false}
+        {"text": "Ausreichend Ressourcen (Futter, Wasser, Toiletten, Kratzmöglichkeiten) für jede Katze", "korrekt": true},
+        {"text": "Sie müssen sich immer gut verstehen und spielen", "korrekt": false},
+        {"text": "Eine einzige große Katzentoilette reicht für alle", "korrekt": false},
+        {"text": "Sie brauchen nur einen gemeinsamen Fressnapf", "korrekt": false}
       ],
       "video": "mehrkatzenhaushalt.mp4"
     },
     {
       "frage": "Welche Methode ist bei der Vergesellschaftung bisher fremder Katzen am sinnvollsten?",
       "antworten": [
-        {"text": "Platzhalter Antwort A", "korrekt": true},
-        {"text": "Platzhalter Antwort B", "korrekt": false},
-        {"text": "Platzhalter Antwort C", "korrekt": false},
-        {"text": "Platzhalter Antwort D", "korrekt": false}
+        {"text": "Sie sofort zusammen in einen Raum setzen, damit sie sich arrangieren", "korrekt": false},
+        {"text": "Eine Katze einsperren, bis die andere sich an die Umgebung gewöhnt hat", "korrekt": false},
+        {"text": "Die Katzen einfach ignorieren, bis sie von selbst zueinander finden", "korrekt": false},
+        {"text": "Langsame, schrittweise Annäherung mit getrennten Räumen und Geruchsaustausch", "korrekt": true}
       ],
       "video": "vergesellschaftung.mp4"
     },
     {
       "frage": "Welches Risiko besteht, wenn eine Katze nach der Adoption nicht krankenversichert oder zumindest finanziell abgesichert ist?",
       "antworten": [
-        {"text": "Platzhalter Antwort A", "korrekt": true},
-        {"text": "Platzhalter Antwort B", "korrekt": false},
-        {"text": "Platzhalter Antwort C", "korrekt": false},
-        {"text": "Platzhalter Antwort D", "korrekt": false}
+        {"text": "Die Katze wird schneller krank", "korrekt": false},
+        {"text": "Hohe Tierarztkosten bei Krankheit oder Unfall können zu finanziellen Engpässen führen", "korrekt": true},
+        {"text": "Man bekommt keine Medikamente für die Katze", "korrekt": false},
+        {"text": "Die Katze darf nicht zum Tierarzt", "korrekt": false}
       ],
       "video": "versicherung_risiko.mp4"
     },
     {
       "frage": "Welche Vorbereitung im Haushalt ist sinnvoll, bevor eine neue Katze aus dem Tierschutz einzieht?",
       "antworten": [
-        {"text": "Platzhalter Antwort A", "korrekt": true},
-        {"text": "Platzhalter Antwort B", "korrekt": false},
-        {"text": "Platzhalter Antwort C", "korrekt": false},
-        {"text": "Platzhalter Antwort D", "korrekt": false}
+        {"text": "Alle Möbel entfernen, damit die Katze nichts kaputt macht", "korrekt": false},
+        {"text": "Einen sicheren Rückzugsort und Grundausstattung (Futter, Näpfe, Toilette, Kratzbaum) bereitstellen", "korrekt": true},
+        {"text": "Die Katze sofort mit anderen Haustieren bekannt machen", "korrekt": false},
+        {"text": "Eine große Party zur Begrüßung veranstalten", "korrekt": false}
       ],
       "video": "einzug_vorbereitung.mp4"
     },
     {
       "frage": "Was ist bei der Vergesellschaftung von Kaninchen besonders zu beachten?",
       "antworten": [
-        {"text": "Platzhalter Antwort A", "korrekt": true},
-        {"text": "Platzhalter Antwort B", "korrekt": false},
-        {"text": "Platzhalter Antwort C", "korrekt": false},
-        {"text": "Platzhalter Antwort D", "korrekt": false}
+        {"text": "Genügend Platz, neutrale Umgebung und langsame Annäherung unter Aufsicht", "korrekt": true},
+        {"text": "Sie müssen sofort in einem kleinen Käfig zusammenleben", "korrekt": false},
+        {"text": "Nur gleichgeschlechtliche Tiere vergesellschaften", "korrekt": false},
+        {"text": "Die Tiere müssen sich sofort mögen", "korrekt": false}
       ],
       "video": "kaninchen_vergesellschaftung.mp4"
     },
     {
       "frage": "Welche Voraussetzungen sollte ein Haushalt haben, bevor er ein Kaninchen adoptieren darf?",
       "antworten": [
-        {"text": "Platzhalter Antwort A", "korrekt": true},
-        {"text": "Platzhalter Antwort B", "korrekt": false},
-        {"text": "Platzhalter Antwort C", "korrekt": false},
-        {"text": "Platzhalter Antwort D", "korrekt": false}
+        {"text": "Ein kleiner Käfig im Wohnzimmer reicht aus", "korrekt": false},
+        {"text": "Ausreichend Platz, artgerechte Haltungsmöglichkeiten (Gehege), Wissen über Kaninchenbedürfnisse", "korrekt": true},
+        {"text": "Man muss bereits andere Kaninchen haben", "korrekt": false},
+        {"text": "Kaninchen sind Einzelgänger und brauchen keine Gesellschaft", "korrekt": false}
       ],
       "video": "kaninchen_voraussetzungen.mp4"
     },
     {
       "frage": "Was ist bei der Fütterung von Nagetieren besonders wichtig?",
       "antworten": [
-        {"text": "Platzhalter Antwort A", "korrekt": true},
-        {"text": "Platzhalter Antwort B", "korrekt": false},
-        {"text": "Platzhalter Antwort C", "korrekt": false},
-        {"text": "Platzhalter Antwort D", "korrekt": false}
+        {"text": "Viel Trockenfutter und Leckerlis", "korrekt": false},
+        {"text": "Nur Körner und Samen", "korrekt": false},
+        {"text": "Essensreste vom Tisch", "korrekt": false},
+        {"text": "Heu als Hauptbestandteil, frisches Gemüse, wenig bis kein Trockenfutter mit Getreide", "korrekt": true}
       ],
       "video": "nager_fütterung.mp4"
     },
     {
-      "frage": "Wie viele kleine Nagetiere sollte man mindestens halten?",
-      "antworten": [
-        {"text": "Platzhalter Antwort A", "korrekt": true},
-        {"text": "Platzhalter Antwort B", "korrekt": false},
-        {"text": "Platzhalter Antwort C", "korrekt": false},
-        {"text": "Platzhalter Antwort D", "korrekt": false}
-      ],
-      "video": "nager_anzahl.mp4"
-    },
-    {
       "frage": "Wie kann ein Verein Straßentauben tierschutzgerecht versorgen und gleichzeitig ihre Population kontrollieren?",
       "antworten": [
-        {"text": "Platzhalter Antwort A", "korrekt": true},
-        {"text": "Platzhalter Antwort B", "korrekt": false},
-        {"text": "Platzhalter Antwort C", "korrekt": false},
-        {"text": "Platzhalter Antwort D", "korrekt": false}
+        {"text": "Betreute Taubenschläge mit Fütterung und Eieraustausch", "korrekt": true},
+        {"text": "Tauben fangen und in andere Städte bringen", "korrekt": false},
+        {"text": "Sie verhungern lassen, um die Population zu reduzieren", "korrekt": false},
+        {"text": "Alle Tauben töten", "korrekt": false}
       ],
       "video": "tauben_population.mp4"
     },
     {
       "frage": "Was genau ist ein Taubenschlag, und wie wird er im Rahmen des Taubenmanagements eingesetzt?",
       "antworten": [
-        {"text": "Platzhalter Antwort A", "korrekt": true},
-        {"text": "Platzhalter Antwort B", "korrekt": false},
-        {"text": "Platzhalter Antwort C", "korrekt": false},
-        {"text": "Platzhalter Antwort D", "korrekt": false}
+        {"text": "Ein Ort, an dem Tauben gefangen und getötet werden", "korrekt": false},
+        {"text": "Ein reiner Futterplatz für Tauben", "korrekt": false},
+        {"text": "Ein Denkmal für Tauben", "korrekt": false},
+        {"text": "Eine betreute Unterkunft für Tauben, in der Eier gegen Attrappen ausgetauscht werden", "korrekt": true}
       ],
       "video": "was_ist_taubenschlag.mp4"
     },
     {
       "frage": "Welche Rolle spielt die regelmäßige Reinigung und Betreuung eines Taubenschlags?",
       "antworten": [
-        {"text": "Platzhalter Antwort A", "korrekt": true},
-        {"text": "Platzhalter Antwort B", "korrekt": false},
-        {"text": "Platzhalter Antwort C", "korrekt": false},
-        {"text": "Platzhalter Antwort D", "korrekt": false}
+        {"text": "Es ist nur wichtig, dass die Tauben Futter bekommen", "korrekt": false},
+        {"text": "Hygiene zur Krankheitsprävention und Kontrolle der Eier", "korrekt": true},
+        {"text": "Die Reinigung ist unwichtig, da Tauben robust sind", "korrekt": false},
+        {"text": "Die Betreuung ist nur für die Zucht wichtig", "korrekt": false}
       ],
       "video": "taubenschlag_pflege.mp4"
     },
     {
       "frage": "Wie sollte man als Anwohner in der Stadt verantwortungsvoll mit Tauben umgehen?",
       "antworten": [
-        {"text": "Platzhalter Antwort A", "korrekt": true},
-        {"text": "Platzhalter Antwort B", "korrekt": false},
-        {"text": "Platzhalter Antwort C", "korrekt": false},
-        {"text": "Platzhalter Antwort D", "korrekt": false}
+        {"text": "Regelmäßig füttern, um ihnen zu helfen", "korrekt": false},
+        {"text": "Sie vertreiben, wo immer man sie sieht", "korrekt": false},
+        {"text": "Nicht füttern, um die natürliche Nahrungssuche zu fördern und Überpopulation zu vermeiden", "korrekt": true},
+        {"text": "Nester zerstören", "korrekt": false}
       ],
       "video": "anwohner_tauben.mp4"
     },
     {
       "frage": "Was ist eine artgerechte Fütterung für verschiedene kleine und große Ziervögel?",
       "antworten": [
-        {"text": "Platzhalter Antwort A", "korrekt": true},
-        {"text": "Platzhalter Antwort B", "korrekt": false},
-        {"text": "Platzhalter Antwort C", "korrekt": false},
-        {"text": "Platzhalter Antwort D", "korrekt": false}
+        {"text": "Hochwertiges Körnermischfutter, frisches Obst und Gemüse, Grit und Mineralien", "korrekt": true},
+        {"text": "Nur Sonnenblumenkerne", "korrekt": false},
+        {"text": "Essensreste vom Tisch", "korrekt": false},
+        {"text": "Billiges Supermarktfutter", "korrekt": false}
       ],
       "video": "voegel_fütterung.mp4"
     },
     {
       "frage": "Welche Voraussetzungen sollte man erfüllen, wenn man Vögel aus dem Tierschutz adoptieren möchte?",
       "antworten": [
-        {"text": "Platzhalter Antwort A", "korrekt": true},
-        {"text": "Platzhalter Antwort B", "korrekt": false},
-        {"text": "Platzhalter Antwort C", "korrekt": false},
-        {"text": "Platzhalter Antwort D", "korrekt": false}
+        {"text": "Ein kleiner Käfig ist ausreichend", "korrekt": false},
+        {"text": "Vögel sind pflegeleicht und brauchen wenig Aufmerksamkeit", "korrekt": false},
+        {"text": "Man muss bereits andere Vögel haben", "korrekt": false},
+        {"text": "Ausreichend große Voliere oder Käfig, Wissen über die spezifischen Bedürfnisse der Vogelart, Zeit für Pflege", "korrekt": true}
       ],
       "video": "voegel_adoption.mp4"
     },
     {
       "frage": "Wie viele Vögel sollte man am besten zusammen halten, um ihr Wohlbefinden zu sichern?",
       "antworten": [
-        {"text": "Platzhalter Antwort A", "korrekt": true},
-        {"text": "Platzhalter Antwort B", "korrekt": false},
-        {"text": "Platzhalter Antwort C", "korrekt": false},
-        {"text": "Platzhalter Antwort D", "korrekt": false}
+        {"text": "Einer reicht, wenn man sich viel mit ihm beschäftigt", "korrekt": false},
+        {"text": "Mindestens zwei oder mehr, da die meisten Ziervögel soziale Tiere sind", "korrekt": true},
+        {"text": "So viele wie möglich in einem Käfig", "korrekt": false},
+        {"text": "Vögel sind Einzelgänger", "korrekt": false}
       ],
       "video": "voegel_anzahl.mp4"
     },
     {
       "frage": "Welche regelmäßige Pflege und tierärztliche Betreuung brauchen diese Vögel?",
       "antworten": [
-        {"text": "Platzhalter Antwort A", "korrekt": true},
-        {"text": "Platzhalter Antwort B", "korrekt": false},
-        {"text": "Platzhalter Antwort C", "korrekt": false},
-        {"text": "Platzhalter Antwort D", "korrekt": false}
+        {"text": "Vögel brauchen keine besondere Pflege", "korrekt": false},
+        {"text": "Man kann alle Krankheiten selbst behandeln", "korrekt": false},
+        {"text": "Krallen- und Schnabelpflege, regelmäßige Gesundheitschecks beim vogelkundigen Tierarzt", "korrekt": true},
+        {"text": "Nur bei offensichtlicher Krankheit zum Tierarzt", "korrekt": false}
       ],
       "video": "voegel_pflege.mp4"
     },
     {
       "frage": "Was ist bei der Betreuung von Igeln besonders wichtig, wenn sie in Menschenobhut kommen (z.B. nach Fund verletzt oder untergewichtig)?",
       "antworten": [
-        {"text": "Platzhalter Antwort A", "korrekt": true},
-        {"text": "Platzhalter Antwort B", "korrekt": false},
-        {"text": "Platzhalter Antwort C", "korrekt": false},
-        {"text": "Platzhalter Antwort D", "korrekt": false}
+        {"text": "Wärmezufuhr, artgerechte Fütterung (katzen-/igelfutter, kein Obst/Milch), tierärztliche Untersuchung", "korrekt": true},
+        {"text": "Milch und Obst füttern", "korrekt": false},
+        {"text": "Sofort in die Natur zurücksetzen", "korrekt": false},
+        {"text": "Sie als Haustier behalten", "korrekt": false}
       ],
       "video": "igel_betreuung.mp4"
     },
     {
       "frage": "Wo sollte man sich hinwenden, wenn man einen Igel gefunden hat, der Hilfe braucht?",
       "antworten": [
-        {"text": "Platzhalter Antwort A", "korrekt": true},
-        {"text": "Platzhalter Antwort B", "korrekt": false},
-        {"text": "Platzhalter Antwort C", "korrekt": false},
-        {"text": "Platzhalter Antwort D", "korrekt": false}
+        {"text": "Die örtliche Polizei oder Feuerwehr", "korrekt": false},
+        {"text": "Den Igel einfach ignorieren", "korrekt": false},
+        {"text": "Ihn selbst aufziehen, ohne Fachwissen", "korrekt": false},
+        {"text": "Igelstationen, Tierärzte oder Naturschutzorganisationen", "korrekt": true}
       ],
       "video": "igel_fund.mp4"
     },
     {
       "frage": "Wie kann man Igeln helfen, dass sie sich gut vorbereiten und sicher überwintern können?",
       "antworten": [
-        {"text": "Platzhalter Antwort A", "korrekt": true},
-        {"text": "Platzhalter Antwort B", "korrekt": false},
-        {"text": "Platzhalter Antwort C", "korrekt": false},
-        {"text": "Platzhalter Antwort D", "korrekt": false}
+        {"text": "Sie ins Haus holen", "korrekt": false},
+        {"text": "Laub- und Reisighaufen im Garten anbieten, Futterstellen im Herbst", "korrekt": true},
+        {"text": "Sie im Winter füttern, wenn Schnee liegt", "korrekt": false},
+        {"text": "Alle Laubhaufen entfernen", "korrekt": false}
       ],
       "video": "igel_überwinterung.mp4"
     },
     {
       "frage": "Welche Aussage zur Vorkontrolle bei Tieradoptionen trifft am ehesten zu?",
       "antworten": [
-        {"text": "Platzhalter Antwort A", "korrekt": true},
-        {"text": "Platzhalter Antwort B", "korrekt": false},
-        {"text": "Platzhalter Antwort C", "korrekt": false},
-        {"text": "Platzhalter Antwort D", "korrekt": false}
+        {"text": "Sie ist nur eine Formalität", "korrekt": false},
+        {"text": "Sie ist eine Schikane des Tierschutzes", "korrekt": false},
+        {"text": "Sie dient dazu, die Eignung des neuen Zuhauses und der Adoptanten zu prüfen", "korrekt": true},
+        {"text": "Sie ist nur für teure Rassehunde notwendig", "korrekt": false}
       ],
       "video": "vorkontrolle.mp4"
     },
     {
       "frage": "Warum ist es wichtig, bei der Adoption eines Tieres auch langfristig an die Kosten für Futter, Tierarzt und Versicherung zu denken?",
       "antworten": [
-        {"text": "Platzhalter Antwort A", "korrekt": true},
-        {"text": "Platzhalter Antwort B", "korrekt": false},
-        {"text": "Platzhalter Antwort C", "korrekt": false},
-        {"text": "Platzhalter Antwort D", "korrekt": false}
+        {"text": "Tiere verursachen laufende Kosten, die man sich leisten können muss, um eine artgerechte Haltung zu gewährleisten", "korrekt": true},
+        {"text": "Die Kosten sind vernachlässigbar", "korrekt": false},
+        {"text": "Der Tierschutz übernimmt alle Kosten", "korrekt": false},
+        {"text": "Tiere brauchen nur Futter und Wasser", "korrekt": false}
       ],
       "video": "kosten_planung.mp4"
     },
     {
       "frage": "Was sollte man beachten, wenn man sich zum ersten Mal für eine Adoption entscheidet, um dem Tier gerecht zu werden?",
       "antworten": [
-        {"text": "Platzhalter Antwort A", "korrekt": true},
-        {"text": "Platzhalter Antwort B", "korrekt": false},
-        {"text": "Platzhalter Antwort C", "korrekt": false},
-        {"text": "Platzhalter Antwort D", "korrekt": false}
+        {"text": "Das Tier nach dem Aussehen auswählen", "korrekt": false},
+        {"text": "Spontan entscheiden", "korrekt": false},
+        {"text": "Das Tier sofort mit nach Hause nehmen", "korrekt": false},
+        {"text": "Sich umfassend über die Bedürfnisse der Tierart informieren und die eigene Lebenssituation prüfen", "korrekt": true}
       ],
       "video": "erste_adoption.mp4"
     },
     {
       "frage": "Was solltest du beim Umgang mit dem Tierschutz beachten?",
       "antworten": [
-        {"text": "Platzhalter Antwort A", "korrekt": true},
-        {"text": "Platzhalter Antwort B", "korrekt": false},
-        {"text": "Platzhalter Antwort C", "korrekt": false},
-        {"text": "Platzhalter Antwort D", "korrekt": false}
+        {"text": "So tun, als wüsste man alles besser", "korrekt": false},
+        {"text": "Offen und ehrlich sein, Fragen beantworten und die Empfehlungen des Tierschutzes ernst nehmen", "korrekt": true},
+        {"text": "Den Tierschutz als Feind betrachten", "korrekt": false},
+        {"text": "Nur das Nötigste erzählen", "korrekt": false}
       ],
       "video": "umgang_tierschutz.mp4"
     }
