@@ -1,8 +1,10 @@
 import os
+import sys
 import json
 from pathlib import Path
 from PyQt6.QtWidgets import (QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, 
-                             QLabel, QPushButton, QStackedWidget, QCheckBox, 
+                             QLabel, QPushButton, QStackedWidget, QCheckBox,
+                             QSizePolicy, QApplication,
                              QScrollArea, QFrame, QGridLayout, QMessageBox)
 from PyQt6.QtCore import Qt, pyqtSignal, QObject, QUrl, QTimer
 from PyQt6.QtGui import QFont, QPixmap
@@ -224,18 +226,29 @@ class HostWindow(QMainWindow):
         layout = QVBoxLayout(self.res_page)
 
         self.video_widget = QVideoWidget()
-        self.video_widget.setMinimumHeight(400)
+        self.video_widget.setMinimumHeight(450)
+        self.video_widget.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        self.video_widget.setAttribute(Qt.WidgetAttribute.WA_OpaquePaintEvent)
         layout.addWidget(self.video_widget)
 
-        self.media_player = QMediaPlayer()
+        self.media_player = QMediaPlayer(self)
         self.audio_output = QAudioOutput()
+        self.audio_output.setVolume(1.0)
         self.media_player.setAudioOutput(self.audio_output)
         self.media_player.setVideoOutput(self.video_widget)
+        self.media_player.errorOccurred.connect(self.handle_video_error)
         self.media_player.mediaStatusChanged.connect(self.handle_media_status)
 
+        self.play_btn = QPushButton("▶ Video abspielen")
+        self.play_btn.setMinimumHeight(60)
+        self.play_btn.setStyleSheet("background-color: #3b82f6; font-size: 18px;")
+        self.play_btn.clicked.connect(self.toggle_playback)
+        layout.addWidget(self.play_btn)
+
         self.res_info = QLabel("Korrekte Antwort: ...")
-        self.res_info.setFont(QFont("Arial", 18))
+        self.res_info.setFont(QFont("Segoe UI", 18, QFont.Weight.Bold))
         self.res_info.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.res_info.setWordWrap(True)
         layout.addWidget(self.res_info)
 
         next_btn = QPushButton("Nächste Frage")
@@ -378,37 +391,72 @@ class HostWindow(QMainWindow):
         #     else:
         #         label.setStyleSheet(label.styleSheet() + "border: 3px solid red;")
 
+        
         self.server.broadcast_resolution()
         self.stack.setCurrentIndex(3) # Wechsel zum Resolution-Screen
 
-        # Video laden und abspielen (Pfad relativ zum Skript-Pfad verankern)
-        base_path = Path(__file__).parent
-        videos_dir = base_path / "videos"
+        # Video-Pfad ermitteln (berücksichtigt Entwicklung und Build)
+        video_filename = q.get("video")
+        
+        # Vor dem Laden sicherstellen, dass das Widget im Layout verankert ist
+        self.stack.setCurrentIndex(3)
+        QApplication.processEvents()
 
-        # Suchreihenfolge: fixed -> compressed -> original
-        fixed_vid_path = videos_dir / "fixed" / q["video"]
-        compressed_vid_path = videos_dir / "compressed" / q["video"]
-
-        if fixed_vid_path.exists():
-            vid_path = fixed_vid_path
-        elif compressed_vid_path.exists():
-            vid_path = compressed_vid_path
+        vid_path = self.get_video_path(video_filename)
+        if vid_path and vid_path.exists():
+            # Re-binding des VideoOutputs hilft oft, das Rendering-Fenster neu zu initialisieren
+            self.media_player.setVideoOutput(self.video_widget)
+            self.media_player.setSource(QUrl.fromLocalFile(str(vid_path.absolute())))
+            # Lehrer muss explizit auf Play drücken
+            self.play_btn.setText("▶ Video abspielen")
+            self.play_btn.setEnabled(True)
+            self.play_btn.setStyleSheet("background-color: #3b82f6; font-size: 18px;")
         else:
-            vid_path = videos_dir / q["video"]
+            self.res_info.setText(f"{self.res_info.text()}\n⚠️ Video '{video_filename}' nicht gefunden.")
+            self.play_btn.setEnabled(False)
+            self.play_btn.setStyleSheet("background-color: #334155; color: #94a3b8;")
 
-        if vid_path.exists():
-            self.media_player.setSource(QUrl.fromLocalFile(str(vid_path.resolve())))
+    def get_video_path(self, filename):
+        """Sucht nach dem Video in verschiedenen Verzeichnissen (Entwicklung & Build)."""
+        if not filename: return None
+        base_path = Path(getattr(sys, '_MEIPASS', Path(__file__).parent))
+        
+        candidates = [
+            base_path / "videos" / "fixed" / filename,
+            base_path / "videos" / "compressed" / filename,
+            base_path / "videos" / filename,
+            Path("videos") / "fixed" / filename,
+            Path("videos") / filename
+        ]
+        for p in candidates:
+            if p.exists(): return p
+        return None
+
+    def toggle_playback(self):
+        """Wechselt zwischen Wiedergabe und Pause."""
+        if self.media_player.playbackState() == QMediaPlayer.PlaybackState.PlayingState:
+            self.media_player.pause()
+            self.play_btn.setText("▶ Video fortsetzen")
+        elif self.media_player.mediaStatus() == QMediaPlayer.MediaStatus.EndOfMedia:
+            self.media_player.setPosition(0)
             self.media_player.play()
+            self.play_btn.setText("⏸ Video pausieren")
         else:
-            self.res_info.setText(f"{self.res_info.text()}\n(Video '{q['video']}' nicht gefunden oder Pfad falsch)")
-            # Wenn kein Video, direkt zur nächsten Frage nach kurzer Verzögerung
-            QTimer.singleShot(3000, self.trigger_next_question)
+            self.media_player.play()
+            self.play_btn.setText("⏸ Video pausieren")
+            # Kleiner UI-Refresh um das Rendering zu forcieren
+            self.video_widget.update()
 
     def handle_media_status(self, status):
-        """Behandelt den Status des Media Players, um nach Videoende fortzufahren."""
-        # Nur zur nächsten Frage springen, wenn wir in der Auflösungsphase sind
-        if status == QMediaPlayer.MediaStatus.EndOfMedia and self.engine.state == "RESOLUTION":
-            self.trigger_next_question()
+        """Reagiert auf Statusänderungen des Videos (z.B. Ende erreicht)."""
+        if status == QMediaPlayer.MediaStatus.EndOfMedia:
+            self.play_btn.setText("↺ Video erneut abspielen")
+            self.play_btn.setStyleSheet("background-color: #6366f1; font-size: 18px;")
+
+    def handle_video_error(self, error, error_string):
+        """Zeigt Fehlermeldungen des Media Players an."""
+        self.res_info.setText(f"{self.res_info.text()}\n❌ Video-Fehler: {error_string}")
+        print(f"Media Error: {error_string} (Code: {error})")
 
     def show_final_results(self):
         """Zeigt die finale Rangliste an."""

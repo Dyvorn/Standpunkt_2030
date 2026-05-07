@@ -2,16 +2,15 @@ from flask import Flask, render_template, request
 from flask_socketio import SocketIO, emit
 import logging
 
-# Logging deaktivieren für sauberere Konsole
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 
 app = Flask(__name__)
-socketio = SocketIO(app, cors_allowed_origins="*")
+socketio = SocketIO(app, cors_allowed_origins="*", async_mode='threading')
 
 # Wird von main.py gesetzt
 engine = None
-ui_bridge = None 
+ui_bridge = None
 
 @app.route('/')
 def index():

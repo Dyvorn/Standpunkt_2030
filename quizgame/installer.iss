@@ -1,28 +1,32 @@
 [Setup]
-AppName=QuizGame
+AppId={{C6E2E1A4-8D5C-4F9E-9E7D-5A2C8B3D4E5F}}
+AppName=Standpunkt 2030 Quiz
 AppVersion=1.0
-DefaultDirName={pf}\QuizGame
-DefaultGroupName=QuizGame
-OutputDir=installer_output
-OutputBaseFilename=QuizGame_Setup
+DefaultDirName={localappdata}\Standpunkt2030Quiz
+DefaultGroupName=Standpunkt 2030 Quiz
+AllowNoIcons=yes
+OutputDir=.
+OutputBaseFilename=Standpunkt2030_Setup
 Compression=lzma
 SolidCompression=yes
+WizardStyle=modern
+PrivilegesRequired=lowest
+
+[Languages]
+Name: "german"; MessagesFile: "compiler:Languages\German.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-; Hier wird das Ergebnis von PyInstaller erwartet
-Source: "dist\QuizGame\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "{#SourcePath}\dist\Standpunkt2030_Quiz\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
-Name: "{group}\QuizGame"; Filename: "{app}\QuizGame.exe"
-Name: "{commondesktop}\QuizGame"; Filename: "{app}\QuizGame.exe"; Tasks: desktopicon
+Name: "{group}\Standpunkt 2030 Quiz"; Filename: "{app}\Standpunkt2030_Quiz.exe"
+Name: "{autodesktop}\Standpunkt 2030 Quiz"; Filename: "{app}\Standpunkt2030_Quiz.exe"; Tasks: desktopicon
 
 [Run]
-Filename: "{app}\QuizGame.exe"; Description: "{cm:LaunchProgram,QuizGame}"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\Standpunkt2030_Quiz.exe"; Description: "{cm:LaunchProgram,Standpunkt 2030 Quiz}"; Flags: nowait postinstall skipifsilent
 
-[Code]
-// Optional: Prüfung auf Admin-Rechte oder Python (nicht nötig bei onedir)
-```
-
+[UninstallDelete]
+Type: filesandordirs; Name: "{app}"
