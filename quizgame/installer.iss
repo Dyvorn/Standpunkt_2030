@@ -1,16 +1,20 @@
 [Setup]
 AppId={{C6E2E1A4-8D5C-4F9E-9E7D-5A2C8B3D4E5F}}
 AppName=Standpunkt 2030 Quiz
-AppVersion=1.0
+AppVersion=1.0.1
+AppPublisher=Lennard Finn Penzler (Refined)
 DefaultDirName={localappdata}\Standpunkt2030Quiz
 DefaultGroupName=Standpunkt 2030 Quiz
 AllowNoIcons=yes
+SetupIconFile=Asset\logo.ico
 OutputDir=.
 OutputBaseFilename=Standpunkt2030_Setup
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
 PrivilegesRequired=lowest
+DiskSpanning=yes
+
 
 [Languages]
 Name: "german"; MessagesFile: "compiler:Languages\German.isl"
